@@ -1,0 +1,63 @@
+sweetalert: https://youtu.be/xQIEQfYWbT0
+
+Sweet Alert Delete Confirmation With Laravel Livewire: https://youtu.be/G5MfldrUCGM
+
+Insert data employee two table in Laravel 8.X | HR System Management:https://youtu.be/rAceebs451E
+
+Create form forgot password send mail login Laravel:https://youtu.be/0KdioWTRnAs
+
+https://www.youtube.com/watch?v=sqp1IlPWtEg
+
+***
+ <td style="text-align:center">{{ optional($classe->niveauScolaire)->nom }} ***
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<form>
+
+  <input onclick="t(0)" type="radio" name="colors" id="red">Nouveau<br>
+  <input onclick="t(1)" type="radio" name="colors" id="blue">Ancien
+</form>
+
+<select type="select" id="selection" onchange="send()">
+   <nom>langue</nom>
+   <libellé>Quelle est votre langue marternelle ?</libellé>
+   <option >Français</option>
+   <option>Néerlandais</option>
+   <option>Anglais</option>
+   <option>Autre</option>
+</select>
+
+
+<input type="text" name="nom" id="nom">
+<input type="text" name="prenom" id="prenom">
+
+<script>
+
+
+function send() {
+  var n = document.getElementById("selection").value
+  var p = document.getElementById("selection").value
+  document.getElementById('nom').value = n
+  document.getElementById('prenom').value = p
+}
+
+function t(r) {
+  if(r == 0){
+    document.getElementById('nom').value = ''
+  	document.getElementById("nom").disabled = false;
+  }else{
+  	document.getElementById("nom").disabled = true;
+  }
+}
+
+</script>
+
+</body>
+</html>
+
+the
+fallen sun

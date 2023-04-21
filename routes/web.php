@@ -1,0 +1,194 @@
+<?php
+
+use App\Http\Livewire\Etudiants;
+use App\Models\Matier;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\Console\Input\Input;
+
+// use Symfony\Component\Console\Input\Input;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); ->middleware("auth.superAdmin") ->middleware("auth.admin")
+
+// Route Etudiant
+
+Route::get('/etudiant', [App\Http\Controllers\EtudiantController::class, 'index'])->name ('etudiant')->middleware("auth.admin");
+Route::get('/addEtudiant', [App\Http\Controllers\EtudiantController::class, 'create'])->name ('addEtudiant')->middleware("auth.admin");
+Route::post('/createEtudiant', [App\Http\Controllers\EtudiantController::class, 'store'])->name ('createEtudiant')->middleware("auth.admin");
+Route::put('/update_etudiant/{id}', [App\Http\Controllers\EtudiantController::class, 'update'])->name ('update_etudiant')->middleware("auth.admin");
+Route::get('/etudiant={id}', [App\Http\Controllers\EtudiantController::class, 'edit'])->name ('editEtudiant')->middleware("auth.admin");
+Route::get('/detail={id}', [App\Http\Controllers\EtudiantController::class, 'detail'])->name ('detailEtudiant')->middleware("auth.admin");
+// Route::delete('/etudiant/{etudiant}', [App\Http\Controllers\EtudiantController::class, 'destroy'])->name ('delete_etudiant')->middleware("auth.admin");
+Route::get('/etudiant-delete/{id}', [App\Http\Controllers\EtudiantController::class, 'destroy'])->name ('delete_etudiant')->middleware("auth.admin");
+Route::get('/etudiant-delete-list', [App\Http\Controllers\EtudiantController::class, 'onlyTrashed'])->name ('etudiant-delete-list')->middleware("auth.admin");
+Route::get('/etudiant-restore/{id}', [App\Http\Controllers\EtudiantController::class, 'restore'])->name ('etudiant-restore')->middleware("auth.admin");
+
+
+// Route Annee scolaire
+Route::get('/anneeScolaire', [App\Http\Controllers\AnneeScolaireController::class, 'index'])->name ('anneeScolaire')->middleware("auth.admin");
+Route::get('/addAnneeScolaire', [App\Http\Controllers\AnneeScolaireController::class, 'create'])->name ('addAnneeScolaire')->middleware("auth.admin");
+Route::post('/createAnneeScolaire', [App\Http\Controllers\AnneeScolaireController::class, 'store'])->name ('createAnneeScolaire')->middleware("auth.admin");
+Route::delete('/anneeScolaire/{anneeScolaire}', [App\Http\Controllers\AnneeScolaireController::class, 'destroy'])->name ('delete_anneeScolaire')->middleware("auth.admin");
+Route::put('/anneeScolaire/{id}', [App\Http\Controllers\AnneeScolaireController::class, 'update'])->name ('update_anneeScolaire')->middleware("auth.admin");
+Route::get('/anneeScolaire={id}', [App\Http\Controllers\AnneeScolaireController::class, 'edit'])->name ('edit_anneeScolaire')->middleware("auth.admin");
+
+//Route utilisateur
+Route::get('/utilisateur', [App\Http\Controllers\UtilisateursController::class, 'index'])->name ('utilisateur')->middleware("auth.superAdmin");
+Route::get('/addutilisateur', [App\Http\Controllers\UtilisateursController::class, 'create'])->name ('addutilisateur')->middleware("auth.superAdmin");
+Route::post('/createutilisateur', [App\Http\Controllers\UtilisateursController::class, 'store'])->name ('createutilisateur')->middleware("auth.superAdmin");
+Route::get('/utilisateur={id}', [App\Http\Controllers\UtilisateursController::class, 'edit'])->name ('edit_utilisateur')->middleware("auth.superAdmin");
+Route::put('/update_utilisateur/{id}', [App\Http\Controllers\UtilisateursController::class, 'update'])->name ('update_utilisateur')->middleware("auth.superAdmin");
+
+
+//Route professeurs
+Route::get('/professeur', [App\Http\Controllers\professeurController::class, 'index'])->name ('professeur')->middleware("auth.admin");
+Route::get('/addprofesseur', [App\Http\Controllers\professeurController::class, 'create'])->name ('addprofesseur')->middleware("auth.admin");
+Route::post('/createprofesseur', [App\Http\Controllers\professeurController::class, 'store'])->name ('createprofesseur')->middleware("auth.admin");
+Route::delete('/professeurs/{professeur}', [App\Http\Controllers\professeurController::class, 'destroy'])->name ('delete_professeur')->middleware("auth.admin");
+Route::put('/update_professeur/{id}', [App\Http\Controllers\professeurController::class, 'update'])->name ('update_professeurs')->middleware("auth.admin");
+Route::get('/professeur={id}', [App\Http\Controllers\professeurController::class, 'edit'])->name ('editprofesseur')->middleware("auth.admin");
+Route::get('/detail={id}', [App\Http\Controllers\professeurController::class, 'detail'])->name ('detailprofesseur')->middleware("auth.admin");
+
+// Route::get('/professeur-classe-matieres', [App\Http\Controllers\professeurController::class,'disposer'])->name('disposer')->middleware("auth.admin");
+
+
+
+//Route inscriptions
+Route::get('/inscription', [App\Http\Controllers\InscriptionController::class, 'index'])->name ('inscription')->middleware("auth.admin");
+Route::get('/addinscription', [App\Http\Controllers\InscriptionController::class, 'create'])->name ('addinscription')->middleware("auth.admin");
+Route::post('/createinscription', [App\Http\Controllers\InscriptionController::class, 'store'])->name ('createinscription')->middleware("auth.admin");
+Route::get('/inscription={id}', [App\Http\Controllers\InscriptionController::class, 'edit'])->name ('edit_inscription')->middleware("auth.admin");
+Route::put('/update_inscription/{id}', [App\Http\Controllers\InscriptionController::class, 'update'])->name ('update_inscription')->middleware("auth.admin");
+
+//Route bulletin
+
+
+Route::get('/bulletin', [App\Http\Controllers\BulletinController::class, 'index'])->name('bulletin')->middleware("auth.professeur");
+Route::get('/addbulletin', [App\Http\Controllers\BulletinController::class, 'create'])->name ('addbulletin')->middleware("auth.professeur");
+Route::post('/createbulletin', [App\Http\Controllers\BulletinController::class, 'store'])->name ('createbulletin')->middleware("auth.professeur");
+
+// Route::post('/createbulletin', [App\Http\Controllers\BulletinController::class, 'store'])->name ('createbulletin')->middleware("auth.professeur");
+
+//Route ecole
+Route::get('/ecole', [App\Http\Controllers\EcoleController::class, 'index'])->name ('ecole')->middleware("auth.superAdmin");
+
+// Route::get('/ecole', [App\Http\Controllers\EcoleController::class, 'index'])->name ('ecole');
+Route::get('/addecole', [App\Http\Controllers\EcoleController::class, 'create'])->name ('addecole')->middleware("auth.superAdmin");
+Route::post('/createEcole', [App\Http\Controllers\EcoleController::class, 'store'])->name ('createecole')->middleware("auth.superAdmin");
+Route::get('/ecole={id}', [App\Http\Controllers\EcoleController::class, 'edit'])->name ('edit_ecole')->middleware("auth.superAdmin");
+Route::put('/update_ecole/{id}', [App\Http\Controllers\EcoleController::class, 'update'])->name ('update_ecole')->middleware("auth.superAdmin");
+Route::delete('/ecoles/{ecole}', [App\Http\Controllers\EcoleController::class, 'destroy'])->name ('delete_ecole')->middleware("auth.superAdmin");
+
+
+
+//Route classe
+Route::get('/classe', [App\Http\Controllers\ClasseController::class, 'index'])->name ('classe')->middleware("auth.admin");
+Route::get('/addclasse', [App\Http\Controllers\ClasseController::class, 'create'])->name ('addclasse')->middleware("auth.admin");
+Route::post('/createclasse', [App\Http\Controllers\ClasseController::class, 'store'])->name ('createclasse')->middleware("auth.admin");
+Route::get('/classes={id}', [App\Http\Controllers\ClasseController::class, 'edit'])->name ('edit_ecole')->middleware("auth.admin");
+Route::put('/update_classe/{id}', [App\Http\Controllers\ClasseController::class, 'update'])->name ('update_classe')->middleware("auth.admin");
+Route::delete('/classes/{ecole}', [App\Http\Controllers\ClasseController::class, 'destroy'])->name ('delete_classe')->middleware("auth.admin");
+
+//Route matiere
+Route::get('/matiere', [App\Http\Controllers\MatiereController::class, 'index'])->name('matier')->middleware("auth.admin");
+Route::get('/addmatiere', [App\Http\Controllers\MatiereController::class, 'create'])->name ('addmatier')->middleware("auth.admin");
+Route::post('/creatematiere', [App\Http\Controllers\MatiereController::class, 'store'])->name ('creatematier')->middleware("auth.admin");
+Route::put('/update_matiere/{id}', [App\Http\Controllers\MatiereController::class, 'update'])->name ('update_matiere')->middleware("auth.admin");
+Route::get('/matiere={id}', [App\Http\Controllers\MatiereController::class, 'edit'])->name ('edit_matiere')->middleware("auth.admin");
+Route::delete('/ecoles/{ecole}', [App\Http\Controllers\MatiereController::class, 'destroy'])->name ('delete_matiere')->middleware("auth.admin");
+
+
+
+//Route trimestre
+Route::get('/Typetrimestre', [App\Http\Controllers\TypeTrimestreController::class, 'index'])->name('trimestre')->middleware("auth.admin");
+Route::get('/addTypetrimestre', [App\Http\Controllers\TypeTrimestreController::class, 'create'])->name ('addtrimestre')->middleware("auth.admin");
+Route::post('/createTypetrimestre', [App\Http\Controllers\TypeTrimestreController::class, 'store'])->name ('createtrimestre')->middleware("auth.admin");
+Route::get('/TypeTrimestres={id}', [App\Http\Controllers\TypeTrimestreController::class, 'edit'])->name ('edit_trimestres')->middleware("auth.admin");
+Route::put('/update_Typetrimestres/{id}', [App\Http\Controllers\TypeTrimestreController::class, 'update'])->name ('update_trimestres')->middleware("auth.admin");
+
+//Route composition
+Route::get('/TypeComposition', [App\Http\Controllers\TypeCompositionController::class, 'index'])->name('TypeComposition')->middleware("auth.admin");
+Route::get('/addTypeComposition', [App\Http\Controllers\TypeCompositionController::class, 'create'])->name ('addTypeComposition')->middleware("auth.admin");
+Route::post('/createTypeComposition', [App\Http\Controllers\TypeCompositionController::class, 'store'])->name ('createTypeComposition')->middleware("auth.admin");
+Route::get('/typeCompositions={id}', [App\Http\Controllers\TypeCompositionController::class, 'edit'])->name ('edit_TypeComposition')->middleware("auth.admin");
+Route::put('/update_TypeComposition/{id}', [App\Http\Controllers\TypeCompositionController::class, 'update'])->name ('update_TypeComposition')->middleware("auth.admin");
+
+
+//Route Niveaux scolaires
+Route::get('/NiveauScolaires', [App\Http\Controllers\NiveauScolairesController::class, 'index'])->name('NiveauScolaires')->middleware("auth.superAdmin");
+Route::get('/addNiveauScolaires', [App\Http\Controllers\NiveauScolairesController::class, 'create'])->name ('addNiveauScolaires')->middleware("auth.superAdmin");
+Route::post('/createNiveauScolaire', [App\Http\Controllers\NiveauScolairesController::class, 'store'])->name ('createNiveauScolaire')->middleware("auth.superAdmin");
+Route::get('/NiveauScolaires={id}', [App\Http\Controllers\NiveauScolairesController::class, 'edit'])->name ('edit_NiveauScolaires')->middleware("auth.superAdmin");
+Route::put('/update_NiveauScolaires/{id}', [App\Http\Controllers\NiveauScolairesController::class, 'update'])->name ('update_NiveauScolaires')->middleware("auth.superAdmin");
+Route::delete('/NiveauScolaires/{NiveauScolaires}', [App\Http\Controllers\NiveauScolairesController::class, 'destroy'])->name ('delete_NiveauScolaires')->middleware("auth.superAdmin");
+
+//Route tuteur
+Route::get('/tuteur', [App\Http\Controllers\TuteurController::class, 'index'])->name('tuteur')->middleware("auth.admin");
+
+//Route matiere et coefficient
+Route::get('/matiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'index'])->name('matiere_coefficient')->middleware("auth.admin");
+Route::get('/addmatiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'create'])->name ('addMatiere_coefficient')->middleware("auth.admin");
+Route::post('/creatematiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'store'])->name ('createMatiere_coefficient')->middleware("auth.admin");
+
+
+//Route operation
+Route::get('/operation', [App\Http\Controllers\bulletinProfesseurTypecompositonMatier::class,'index'])->name('operation')->middleware("auth.professeur");
+Route::get('/addoperation', [App\Http\Controllers\bulletinProfesseurTypecompositonMatier::class,'create'])->name ('addoperation')->middleware("auth.professeur");
+Route::post('/createoperation', [App\Http\Controllers\bulletinProfesseurTypecompositonMatier::class,'store'])->name ('createoperation')->middleware("auth.professeur");
+
+//Route professeur-classe-matieres
+Route::get('/professeur-classe-matieres', [App\Http\Controllers\ProfesseurClasseMatiere::class,'index'])->name('disposer')->middleware("auth.admin");
+Route::get('/adddisposer', [App\Http\Controllers\ProfesseurClasseMatiere::class,'create'])->name('adddisposer')->middleware("auth.admin");
+Route::post('/createdisposer', [App\Http\Controllers\ProfesseurClasseMatiere::class,'store'])->name ('createdisposer')->middleware("auth.admin");
+
+
+//Route anneescolaire-classe-matieres
+Route::get('/anneescolaire-classe-matieres', [App\Http\Controllers\ClasseAnneescolaireMatiere::class, 'index'])->name('anneescolaire-classe-matieres')->middleware("auth.admin");
+
+
+Auth::routes();
+
+// Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware("auth.admin");
+
+Route::post('/admin', [App\Http\Controllers\Auth\profController::class,'loginProf'])->name('verification');
+
+Route::get('/dashbord', [App\Http\Controllers\Auth\profController::class,'dashbord']);
+
+Route::get('/', [App\Http\Controllers\HomeController::class,'index'])->name('home');
+
+Route::post('/superadmin', [App\Http\Controllers\UserPrincipalController::class,'loginSuperAdmin'])->name('superadmin');
+
+Route::get('/acceuil', [App\Http\Controllers\UserPrincipalController::class,'index'])->name('users');
+
+
+// Route::get('/matieres/{classeId}', function($id) {
+//     $professorId = ProfId(); // récupérer l'ID du professeur connecté
+
+//     $matieres = DB::table('matiers')
+//         ->join('professeur_classe_matieres', 'matiers.id', '=', 'professeur_classe_matieres.matiere_id')
+//         ->where('professeur_classe_matieres.classe_id', $classeId)
+//         ->where('professeur_classe_matieres.professeur_id', $professorId)
+//         ->distinct()
+//         ->get(['matiers.id', 'matiers.nom']);
+
+//     return response()->json($matieres);
+// });
+
+Route::get('/matieres', [App\Http\Controllers\BulletinProfesseurTypecompositonMatier::class,'GetClasseMatiere'])->name('GetClasseMatiere');
+

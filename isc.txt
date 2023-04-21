@@ -1,0 +1,110 @@
+ }elseif($request->na == 'nouveau' and $request->nw == 'old'){
+
+         //dd($request->nouveau);
+         $this->validate($request, [
+            'nom' => 'required',
+            'prenom' => 'required',
+            'sexe' => 'required',
+            'LieuNaissance'=>'required',
+            'dateNaissance'=>'required',
+            'telephone' => 'nullable|numeric|unique:etudiants,telephone',
+            'adresse' => 'required',
+            'email' => 'nullable|email|unique:etudiants,email',
+            'image' => 'image|nullable|max:1999',
+
+            'annee_scolaire_id'=>'required',
+            'classe_id' => 'required',
+            'date_insription' => 'required',
+            'etudiant_id' => 'required',
+            'tuteur_id' => 'required',
+
+        ]);
+        if ($request->hasFile('image')) {
+            //1 : get File with ext
+            $fileNameWithExt = $request->file('image')->getClientOriginalName();
+            //2 : get just file name
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+                // 3 : GET JUSTE FILE EXTENSION
+                $extension = $request->file('image')->getClientOriginalExtension();
+            //4 : file name to store
+            $fileNameTotore = $fileName.'_'.time().'.'.$extension;
+
+            //uploader l'image
+            $path = $request->file('image')->storeAs('public/images', $fileNameTotore);
+        } else {
+            $fileNameTotore = 'user.png';
+        }
+    //  User::create($request->all());
+    //save Etudiant
+        $etudiants = new Etudiant();
+        $etudiants->nom = $request->nom;
+        $etudiants->prenom = $request->prenom;
+        $etudiants->sexe = $request->sexe;
+        $etudiants->telephone = $request->telephone;
+        $etudiants->adresse = $request->adresse;
+        $etudiants->LieuNaissance = $request->LieuNaissance;
+        $etudiants->dateNaissance = $request->dateNaissance;
+        $etudiants->email = $request->email;
+        $etudiants->image = $fileNameTotore;
+
+        $etudiants->save();
+
+        //save inscriptions
+        $inscriptions = new inscription();
+        $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
+        $inscriptions->date_insription = $request->date_insription;
+        $inscriptions->classe_id = $request->classe_id;
+        $inscriptions->tuteur_id = $request->tuteur_id;
+        $inscriptions->etudiant_id = $request->etudiant_id;
+
+        $inscriptions->save();
+
+        return back()->with("success"," inscription realiser avec succè!");
+
+
+    } else {
+
+        // dd($request->nouveau);
+        $this->validate($request, [
+
+            // 'noms' => 'required',
+            // 'prenoms' => 'required',
+            // 'sex' => 'required',
+            // 'telephone1'=>'required|numeric|unique:tuteurs,telephone1',
+            // 'telephone2' => 'nullable|numeric|unique:tuteurs,telephone2',
+            // 'adresses' => 'required',
+            // 'emails' => 'required|email|unique:tuteurs,emails',
+
+            'annee_scolaire_id'=>'required',
+            'classe_id' => 'required',
+            'date_insription' => 'required',
+            'etudiant_id' => 'required',
+            'tuteur_id' => 'required'
+        ]);
+
+     //save tuteurs
+    //    $tuteurs = new Tuteur();
+    //    $tuteurs->noms = $request->noms;
+    //    $tuteurs->prenoms = $request->prenoms;
+    //    $tuteurs->sex = $request->sex;
+    //    $tuteurs->telephone1 = $request->telephone1;
+    //    $tuteurs->telephone2 = $request->telephone2;
+    //    $tuteurs->adresses = $request->adresses;
+    //    $tuteurs->emails = $request->emails;
+
+    //    $tuteurs->save();
+
+         //save inscriptions
+         $inscriptions = new inscription();
+         $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
+         $inscriptions->date_insription = $request->date_insription;
+         $inscriptions->classe_id = $request->classe_id;
+         $inscriptions->tuteur_id = $request->tuteur_id;
+         $inscriptions->etudiant_id = $request->etudiant_id;
+
+         $inscriptions->save();
+
+         return back()->with("success"," inscription realiser avec succè!");
+
+
+    }
