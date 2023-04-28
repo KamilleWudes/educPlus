@@ -205,8 +205,6 @@
                         etudiants = etudiants.filter(d => d.classe_id == classe_id)
                         console.log('avec filtre',etudiants);
                         console.log('avec filtre',etudiants);
-
-                        
                         var et = ''
 
                         for(let resp of etudiants){

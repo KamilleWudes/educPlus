@@ -32,6 +32,8 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" value="{{ EcolesId() }}" name="ecole_id"/>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
                         <button type="submit" class="btn btn-primary px-5 px-5" id="flash"

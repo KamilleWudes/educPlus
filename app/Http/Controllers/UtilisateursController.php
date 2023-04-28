@@ -77,7 +77,7 @@ class UtilisateursController extends Controller
         $users->password = hash::make($request->password);
 
         $users->save();
-        return back()->with("success","Utilisateur ajouté avec succè!");
+        return back()->with("success","Responsable ajouté avec succè!");
     }
 
     /**
@@ -115,7 +115,7 @@ class UtilisateursController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nom' => 'required',
+           'name' => 'required',
            'prenom' => 'required',
            'sexe' => 'required',
            'telephone' => 'nullable|numeric|' . Rule::unique('users')->ignore($id),
@@ -123,7 +123,7 @@ class UtilisateursController extends Controller
            'email' => 'required|email|' . Rule::unique('users')->ignore($id),
            //'role' => 'required',
            'ecole_id' => 'required',
-           'password' => ['required', 'string', 'min:8'],
+           'password' => ['required', 'string', 'min:8']
          ]);
 
          $users = User::find($id);
@@ -132,14 +132,14 @@ class UtilisateursController extends Controller
          $users->sexe = $request->sexe;
          $users->telephone = $request->telephone;
          $users->adresse = $request->adresse;
-         $users->role = $request->role;
+       //  $users->role = $request->role;
          $users->ecole_id = $request->ecole_id;
          $users->email = $request->email;
          $users->password = $request->password;
 
          $users->update();
 
-         return back()->with("success","Utilisateur mise à jour avec succè!");
+         return back()->with("success","Responsable mise à jour avec succè!");
       }
 
 

@@ -17,15 +17,23 @@ class ProfesseurClasseMatiere extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() 
+    public function index()
     {
         //$data = ModelsProfesseurClasseMatiere::all();
+        $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+
 
     $data = DB::table('professeur_classe_matieres')
     ->join('classes', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
     ->join('matiers', 'professeur_classe_matieres.matier_id', '=', 'matiers.id')
     ->join('professeurs', 'professeur_classe_matieres.professeur_id', '=', 'professeurs.id')
-    ->select('classes.nom as classe', 'matiers.nom as matiere', 'professeurs.nom as professeur','professeurs.prenom as prenom')
+
+    ->join('ecoles', 'ecoles.id', '=', 'classes.ecole_id')
+    ->join('users', 'users.ecole_id', '=', 'ecoles.id')
+
+    ->where('users.id', '=', $user_id)
+
+    ->select('classes.nom as classe', 'matiers.nom as matiere', 'professeurs.nom as professeur','professeurs.prenom as prenom','professeurs.matricule as matricule')
     ->orderBy('professeur_classe_matieres.created_at', 'desc')
     ->get();
 

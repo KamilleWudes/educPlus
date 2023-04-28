@@ -2,29 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\bulletin;
-use Illuminate\Contracts\Session\Session as SessionSession;
+use Illuminate\Http\Request;
 use App\Models\classe;
 
 use App\Models\Matier;
 use App\Models\Professeur;
 use App\Models\typeTrimestre;
 use App\Models\typeComposition;
-use Illuminate\Http\Request;
 use Session;
 use Illuminate\Support\Facades\DB;
 
-
-
-class BulletinProfesseurTypecompositonMatier extends Controller
+class AnTtriProfMatTcompIn extends Controller
 {
+
     public function __construct()
     {
-        // $this->middleware('isLoggedIn');
         $this->middleware('isLoggedProf');
 
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -33,8 +28,9 @@ class BulletinProfesseurTypecompositonMatier extends Controller
     public function index()
     {
         //
-    }
+        return view ('admin.Saisie-notes.liste');
 
+    }
     public function GetClasseMatiere(request $request){
         $professorId = ProfId(); // récupérer l'ID du professeur connecté
 
@@ -59,7 +55,7 @@ class BulletinProfesseurTypecompositonMatier extends Controller
         ->select(
             'classe_anneescolaire_matieres.*'
         )
-        ->get();
+        ->get(); 
         // dump(($mat));
 
                 $etudiantsInscrits = DB::table('inscriptions')
@@ -87,9 +83,6 @@ class BulletinProfesseurTypecompositonMatier extends Controller
 
 
     ]);
-
-    //return response()->json($matieres);
-
     }
 
     /**
@@ -102,7 +95,7 @@ class BulletinProfesseurTypecompositonMatier extends Controller
         $professeurs = Professeur::orderBy("id", "Desc")->get();
         $typeCompositions = typeComposition::orderBy("id", "asc")->get();
         $matieres = Matier::orderBy("id", "Desc")->get();
-        $bulletins= bulletin::all();
+       // $bulletins= bulletin::all();
 
         $typesTrimestreInfos = typeTrimestre::distinct()
         ->orderby('id','asc')
@@ -121,7 +114,7 @@ class BulletinProfesseurTypecompositonMatier extends Controller
             ->distinct()
             ->get(['classes.id', 'classes.nom']);
 
-        return view('admin.Operations.create', compact('professeurs','typesTrimestreInfos','matieres','bulletins','typeCompositions','data','classes'));
+        return view('admin.Saisie-notes.create', compact('professeurs','typesTrimestreInfos','matieres','typeCompositions','data','classes'));
     }
 
     /**

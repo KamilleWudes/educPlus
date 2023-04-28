@@ -53,6 +53,19 @@ function UserfullRole(){
         }
      }
 
+     //Ecole professeur
+     function fullEcoleProf(){
+        $data = array();
+        if(Session::has('Professeur')){
+            $data = Professeur::where('id','=', Session::get('Professeur'))->first()->ecole_id;
+
+            $ecoles = DB::table('ecoles')->where('id','=', $data)->first()->nom;
+
+            return 'Ecole : ' .$ecoles;
+
+        }
+     }
+
       //superadmin
     function FullNameSuperAdmin(){
         $data = array();
@@ -158,6 +171,6 @@ function EcolesId(){
 
      return $data;
  }}
-
+ 
 
 ?>

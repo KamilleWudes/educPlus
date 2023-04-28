@@ -42,7 +42,7 @@
                                     class="bx bxs-plus-square"></i>Nouvelle Ecole</a></div>
                         {{--  @include('admin.ecoles.create')  --}}
                     </div>
-                    <br> <br>
+                    <br>
                     <table id="example2" class="table table-striped table-bordered">
                         <thead>
                             <tr>

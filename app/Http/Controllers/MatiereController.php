@@ -5,6 +5,8 @@ use Illuminate\Validation\Rule;
 use App\Models\Matier;
 use Illuminate\Http\Request;
 use App\Models\ClasseAnneescolaireMatiere as ModelsClasseAnneescolaireMatiere;
+use Illuminate\Support\Facades\DB;
+
 
 
 class MatiereController extends Controller
@@ -21,9 +23,17 @@ class MatiereController extends Controller
      */
     public function index()
     {
-        $matier_coeficients= ModelsClasseAnneescolaireMatiere::all();
-        $matieres= Matier::all();
-        return view ('admin.matieres.liste',compact('matieres','matier_coeficients'));
+        // $matieres= Matier::all();
+        $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+        $matieres = DB::table('users')
+        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+        ->join('matiers', 'ecoles.id', '=', 'matiers.ecole_id')
+        ->where('users.id', '=', $user_id)
+        ->select('matiers.nom as nom','matiers.id as id')
+        ->orderBy("id","Desc")
+        ->get();
+
+        return view ('admin.matieres.liste',compact('matieres'));
     }
 
     /**
@@ -47,7 +57,12 @@ class MatiereController extends Controller
         $request->validate([
             "nom" =>'required|unique:matiers,nom',
          ]);
-         Matier::create($request->all());
+
+        $mat = new Matier();
+        $mat->nom = $request->nom;
+        $mat->ecole_id = $request->ecole_id;
+
+        $mat->save();
          return back()->with("success","Matière ajouté avec succè!");
     }
 

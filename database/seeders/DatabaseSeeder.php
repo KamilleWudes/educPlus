@@ -37,6 +37,8 @@ class DatabaseSeeder extends Seeder
           \App\Models\ProfesseurClasseMatiere::factory(10)->create();
           \App\Models\ClasseAnneescolaireMatiere::factory(10)->create();
           \App\Models\bulletinProfesseurTypecompositonMatier::factory(10)->create();
+          \App\Models\an_ttri_prof_mat_tcomp_in::factory(10)->create();
+
 
 
 

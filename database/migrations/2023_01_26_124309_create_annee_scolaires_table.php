@@ -18,8 +18,13 @@ return new class extends Migration
             //$table->string('anneeScolaire');
             $table->string('annee1')->unique();
             $table->string('annee2')->unique();
+            $table->foreignId("ecole_id")->constrained("ecoles");
+
             $table->timestamps();
         });
+
+        schema::enableForeignKeyConstraints();
+
     }
 
     /**
@@ -29,6 +34,9 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('annee_scolaires', function (Blueprint $table) {
+            $table->dropForeign(["ecole_id"]);
+        });
         Schema::dropIfExists('annee_scolaires');
     }
 };

@@ -16,6 +16,35 @@ class TuteurController extends Controller
         $this->middleware('isLoggedIn');
     }
 
+    public function GetTuteurs(request $request){
+        $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+
+        //dd($request->etudiant);
+       $data = DB::table('users')
+
+       ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+       ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+       ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+       ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+       ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+       ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+       ->select('inscriptions.id', 'inscriptions.date_insription','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','etudiants.id as etudiant_id','etudiants.nom as etudiant_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2','etudiants.prenom as etudiant_prenom','etudiants.sexe as etudiant_sexe','etudiants.matricule as matricule','annee_scolaires.annee1', 'annee_scolaires.annee2', 'ecoles.nom as ecole_nom','etudiants.adresse as etudiant_adresse')
+       ->where('users.id', '=', $user_id)
+       ->where('inscriptions.annee_scolaire_id','=', $request->tuteur)
+       ->orderBy('tuteur_id','desc')
+       ->get();
+
+      // dd($data);
+
+    return response()->json([
+        "tuteurs"=>$data,
+
+
+    ]);
+
+
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +67,20 @@ class TuteurController extends Controller
           ->where('users.id', '=', $user_id)
           ->orderBy("tuteurs_id","Desc")
           ->get();
-        return view ('admin.tuteurs.liste',compact('tuteurs'));
+
+
+          $anneeScolaires = DB::table('users')
+          ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+          ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+          ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+          ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+          ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+          ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+          ->select('annee_scolaires.annee1 as annee1','annee_scolaires.annee2 as annee2','annee_scolaires.id as id')
+          ->where('users.id', '=', $user_id)
+          ->distinct()
+          ->get();
+        return view ('admin.tuteurs.liste',compact('tuteurs','anneeScolaires'));
     }
 
     /**

@@ -39,10 +39,9 @@
                         <table id="example2" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th style="text-align:center">Numero</th>
+                                    <th style="text-align:center">Matricule</th>
                                     <th style="text-align:center">Nom</th>
                                     <th style="text-align:center">Sexe</th>
-                                    <th style="text-align:center">Adresse</th>
                                     <th style="text-align:center">Télephone</th>
 
                                     <th style="text-align:center">Détail</th>
@@ -52,7 +51,7 @@
                             <tbody>
                                 @foreach ($professeurs as $professeur)
                                     <tr>
-                                        <td style="text-align:center">{{ $professeur->id }}</td>
+                                        <td style="text-align:center">{{ $professeur->matricule }}</td>
                                         {{--  <td> <img src="/storage/images/{{$professeur->image}}" style="width:60px;height:60px;">
                                             </td>  --}}
                                         {{--  <td>
@@ -74,14 +73,13 @@
                                             @endif
                                         </td>
                                         {{--  <input type="hidden" class="serdelete_val_id" value={{ $professeur->id }}>  --}}
-                                        <td style="text-align:center">{{ $professeur->adresse }}</td>
                                         <td style="text-align:center">{{ $professeur->telephone1 }}</td>
 
                                         <td style="text-align:center"><a href="{{ url('detail=' . $professeur->id) }}"><button type="button"
                                                 class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
 
                                         <td>
-                                            @if (count($professeur->bulletin) == 0)
+                                            {{--  @if (count($professeur->bulletin) == 0)  --}}
                                                 <div class="d-flex order-actions">
 
                                                     <a href="{{ url('professeur=' . $professeur->id) }}" class=""><i
@@ -118,7 +116,7 @@
                                         id="btn-hapus">Suprimer</button>  --}}
 
                                                 </div>
-                                            @endif
+                                            {{--  @endif  --}}
 
                                         </td>
                                     </tr>

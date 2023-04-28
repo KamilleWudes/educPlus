@@ -61,3 +61,11 @@ function t(r) {
 
 the
 fallen sun
+
+
+ <td style="text-align:center">5${ resp.matricule} </td>
+                            <td style="text-align:center">${ resp.etudiant_prenom} ${ resp.etudiant_nom}</td>
+                            <td style="text-align:center">${ resp.etudiant_sexe} </td>
+                              <td style="text-align:center">${ resp.classe_nom}</td>
+                              <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
+                              <td style="text-align:center">${ resp.etudiant_adresse}</td>

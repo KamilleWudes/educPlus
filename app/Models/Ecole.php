@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Matier;
+
 
 class Ecole extends Model
 {
@@ -18,6 +20,10 @@ class Ecole extends Model
 
     public function prof(){
         return $this->hasMany(Professeur::class);
+    }
+
+    public function mat(){
+        return $this->hasMany(Matier::class);
     }
 
     protected $fillable = ["nom","adresse","email","telephone1","telephone2"];

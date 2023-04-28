@@ -41,7 +41,7 @@
                             <h5 class="mb-0 text-white">Edition utilisateur</h5>
                         </div>
                         <hr>
-                        <form class="row g-3" method="POST" action="{{ url('update_utilisateur/'. $users->id) }}">
+                        <form class="row g-3" method="POST" action="{{ url('update_responsable/'. $users->id) }}">
                             @csrf
                             @method('PUT')
                             <div class="col-md-6">
@@ -93,7 +93,7 @@
                                     <span class="error" style="color:red">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-6">
+                            {{--  <div class="col-md-6">
                                 <label for="inputAddress3" class="form-label">Role</label>
                                 <div class="input-group"> <span class="input-group-text"><i class='bx bxs-user'></i></span>
                                     <select class="form-select mb-0 @error('role_id') is-invalid  @enderror" name="role_id"
@@ -114,8 +114,8 @@
                                 @error('role_id')
                                     <span class="error" style="color:red">{{ $message }}</span>
                                 @enderror
-                            </div>
-                            <div class="col-md-6">
+                            </div>  --}}
+                            <div class="col-12">
                                 <label class="form-label">Ecole</label>
                                 <div class="input-group">
                                     <button class="btn btn-outline-secondary" type="button"><i class='bx bx-search'></i>

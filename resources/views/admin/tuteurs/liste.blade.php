@@ -15,19 +15,14 @@
                     </nav>
                 </div>
                 <div class="ms-auto">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light">Settings</button>
-                        <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                                href="javascript:;">Action</a>
-                            <a class="dropdown-item" href="javascript:;">Another action</a>
-                            <a class="dropdown-item" href="javascript:;">Something else here</a>
-                            <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated
-                                link</a>
-                        </div>
-                    </div>
+                    <label for="validationCustom04" class="form-label">Année scolaire</label>
+                    <select class="form-select" id="idtut" name="annee_scolaire_id">
+                        <option value="">Annee Scolaires </option>
+
+                        @foreach ($anneeScolaires as $AnneeScolaire)
+                            <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} - {{ $AnneeScolaire->annee2 }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <!--end breadcrumb-->
@@ -48,7 +43,8 @@
                                     <th style="text-align:center">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tut">
+
                                 @foreach ($tuteurs as $tuteur)
                                     <tr>
                                         <td style="text-align:center">{{ $tuteur->tuteurs_id }}</td>
@@ -92,3 +88,74 @@
         </div>
     </div>
 @endsection
+
+
+@push('tuteur')
+
+    <script>
+
+        $(document).ready(function(){
+            console.log("hello word");
+            $('#idtut').on("change",function(){
+                var classe_id = $('#idtut').val();
+                console.log(classe_id);
+              $.ajax({
+                    type: 'GET',
+                    url: '{{ route('GetTuteur') }}',
+                    datatype: 'JSON',
+                    data:{tuteur:classe_id},
+                    success: (response)=>{
+                        console.log("matiere",response.tuteurs)
+                        inscri = response.tuteurs
+                            console.log('avec filtre',inscri);
+                            //inscri = inscri.filter(d => d.annee == classe_id)
+
+                        var tuteur = ''
+
+                        for(let resp of inscri){
+
+                            tuteur += `<tr>
+                              <td style="text-align:center">${ resp.id} </td>
+                              <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
+                              <td style="text-align:center">${ resp.etudiant_sexe} </td>
+                              <td style="text-align:center">${ resp.tuteur_adresse}</td>
+                              <td style="text-align:center">${ resp.etudiant_prenom} ${ resp.etudiant_nom}</td>
+
+                                    <td style="text-align:center">
+                                        <button type="button"
+                                        class="btn btn-light btn-sm radius-30 px-4">View Details</button>
+                                    </td>
+
+                                <td>
+                                    <div class="d-flex order-actions" style="margin:2%">
+                                        <a href="" class=""><i
+                                            class='bx bxs-edit' style="text-align:center" disabled></i></a>
+                                        <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'
+                                                style="text-align:center"></i></a>
+                                    </div>
+                                </td>
+                            </tr>`
+
+                        }
+
+                        if(response.tuteurs.length > 0){
+
+                            $('#tut').html(tuteur);
+                           // console.log('tt',$('#ins').val())
+
+                        }else{
+                            $('#ins').html('');
+
+                        }
+
+                    },
+
+                })
+            })
+        });
+
+
+
+    </script>
+
+  @endpush

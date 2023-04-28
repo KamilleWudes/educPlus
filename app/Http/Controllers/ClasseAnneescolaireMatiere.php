@@ -25,15 +25,44 @@ class ClasseAnneescolaireMatiere extends Controller
      */
     public function index()
     {
-       // $data = ModelsClasseAnneescolaireMatiere::all();
+     $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
      $data = DB::table('classe_anneescolaire_matieres')
     ->join('classes', 'classes.id', '=', 'classe_anneescolaire_matieres.classe_id')
     ->join('matiers', 'matiers.id', '=', 'classe_anneescolaire_matieres.matier_id')
     ->join('annee_scolaires', 'annee_scolaires.id', '=', 'classe_anneescolaire_matieres.annee_scolaire_id')
+    ->join('ecoles', 'ecoles.id', '=', 'classes.ecole_id')
+    ->join('users', 'users.ecole_id', '=', 'ecoles.id')
+    ->where('users.id', '=', $user_id)
     ->select('classes.nom as classe_nom', 'matiers.nom as matiere_nom', 'annee_scolaires.annee1 as anneescolaire_annee1', 'annee_scolaires.annee2 as anneescolaire_annee2', 'classe_anneescolaire_matieres.coefficient')
     ->orderBy('classe_anneescolaire_matieres.created_at', 'desc')
     ->get();
     return view ('admin.matiere_coefficient.liste', compact('data'));
+
+    }
+ 
+    public function GetClasses(request $request){
+
+        //dd($request->classe_id);
+       $matieres = DB::table('matiers')
+         ->join('professeur_classe_matieres', 'professeur_classe_matieres.matier_id', '=', 'matiers.id')
+
+         //->join('classe_anneescolaire_matieres', 'classe_anneescolaire_matieres.matier_id', '=', 'matiers.id')
+         //  ->join('classe_anneescolaire_matieres', 'matiers.id', '=', 'classe_anneescolaire_matieres.matier_id')
+
+         ->where('professeur_classe_matieres.classe_id', $request->classe_id)
+         ->distinct()
+         ->select(
+             'matiers.id','matiers.nom'
+         )
+         ->get();
+
+        //  return response()->json($matieres);
+        // dd($matieres);
+        return response()->json([
+            "matieres"=>$matieres,
+        ]);
+
+
 
     }
 

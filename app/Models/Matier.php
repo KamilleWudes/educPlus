@@ -37,6 +37,10 @@ class Matier extends Model
         return $this->belongsToMany(classe::class,"professeur_classe_matieres","matier_id","classe_id");
      }
 
+     public function ecoles(){
+        return $this->belongsTo(Ecole::class,"ecole_id","id");
+    }
+
 
      protected $fillable = ["nom"];
 }

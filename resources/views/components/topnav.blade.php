@@ -8,7 +8,7 @@
                     <br>
                     {{--  <input type="text" class="form-control search-control" placeholder="Type to search..."> <span class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>--}}
                     {{--  <span class="position-absolute top-50 search-close translate-middle-y"><i class='bx bx-x'></i></span>  --}}
-                    <p class="user-name mb-0" style="font-size:20px;"> {{ UserEcoles() }} </p><br>
+                    <p class="user-name mb-0" style="font-size:20px;"> {{ UserEcoles() }} {{ fullEcoleProf() }} </p><br>
 
                 </div>
             </div>
@@ -353,7 +353,11 @@
                     <li>
                         <div class="dropdown-divider mb-0"></div>
                     </li>
-                    <li><a class="dropdown-item" href="javascript:;"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
+                    <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();"><i class='bx bx-log-out-circle'></i><span>Déconnexion</span></a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     </li>
                 </ul>
             </div>

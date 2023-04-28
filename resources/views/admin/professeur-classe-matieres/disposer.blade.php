@@ -39,6 +39,7 @@
                         <table id="example2" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
+                                    <th style="text-align:center">Matricule</th>
                                     <th style="text-align:center">Professeurs</th>
                                     <th style="text-align:center">Classes</th>
                                     <th style="text-align:center">Matières</th>
@@ -49,6 +50,8 @@
                             <tbody>
                             @foreach ($data as $dat)
                                     <tr>
+                                        <td style="text-align:center">{{$dat->matricule}}</td>
+
                                         <td style="text-align:center">{{$dat->professeur}} {{$dat->prenom}}</td>
 
                                         <td style="text-align:center">{{ $dat->classe }}</td>

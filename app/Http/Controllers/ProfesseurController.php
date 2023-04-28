@@ -36,8 +36,13 @@ class ProfesseurController extends Controller
      */
     public function index()
     {
-        $professeurs = Professeur::orderBy("id","Desc")
-        ->orderBy('created_at', 'desc')
+        $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+        $professeurs = DB::table('users')
+        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+        ->join('professeurs', 'ecoles.id', '=', 'professeurs.ecole_id')
+        ->where('users.id', '=', $user_id)
+        ->select('professeurs.nom as nom','professeurs.id as id', 'professeurs.matricule as matricule', 'professeurs.prenom as prenom','professeurs.sexe as sexe','professeurs.telephone1 as telephone1')
+        ->orderBy("id","Desc")
         ->get();
 
         return view('admin.professeurs.liste', compact('professeurs'));
@@ -62,15 +67,23 @@ class ProfesseurController extends Controller
         $classes = DB::table('users')
         ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
         ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
-        ->join('niveau_scolaires', 'classes.niveau_scolaires_id', '=', 'niveau_scolaires.id')
         ->where('users.id', '=', $user_id)
-        ->select('ecoles.nom as ecole_nom', 'classes.id as id', 'classes.nom as nom','niveau_scolaires.nom as niveau_scolaire')
+        ->select('classes.id as id', 'classes.nom as nom')
         ->orderBy("id","Desc")
         ->get();
         // $classes = classe::orderBy("id", "Desc")->get();
-        $matieres = Matier::orderBy("id", "Desc")->get();
+       // $matieres = Matier::orderBy("id", "Desc")->get();
+
         $professeurss = Professeur::offset(0)->limit(1)->orderBy("id", "Desc")->get();
         $professeurs = Professeur::orderBy("id","Desc")->get();
+
+        $matieres = DB::table('users')
+        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+        ->join('matiers', 'ecoles.id', '=', 'matiers.ecole_id')
+        ->where('users.id', '=', $user_id)
+        ->select('matiers.nom as nom','matiers.id as id')
+        ->orderBy("id","Desc")
+        ->get();
 
         return view('admin.professeurs.create', compact('professeurs', 'classes', 'matieres', 'professeurss'));
     }
@@ -134,13 +147,7 @@ class ProfesseurController extends Controller
             $professeurs->save();
             //$professeurs->id;
 
-            // $ProfesseurClasseMatieres = new ProfesseurClasseMatiere();
-            // $ProfesseurClasseMatieres->classe_id = $request->classe_id;
-            // $ProfesseurClasseMatieres->matier_id = $request->matier_id;
-            // $ProfesseurClasseMatieres->professeur_id = $professeurs->id;
-
-            // $ProfesseurClasseMatieres->save();
-            $matiere_ids = $request->input('matier_id');
+             $matiere_ids = $request->input('matier_id');
              $classe_ids = $request->input('classe_id');
 
                 foreach ($classe_ids as $classe_id) {
@@ -154,8 +161,15 @@ class ProfesseurController extends Controller
                     }
 
                 }
+
+                $annes = substr(AnneScolaires(), 7, 2);
+                $matricule = substr($professeurs->nom, 0, 3) . substr($professeurs->prenom, 0, 1).$annes;
+                $professeurs->matricule = $matricule;
+
+                $professeurs->save();
            return back()->with("success", "Professeur ajouté avec succè!");
-        } else {
+
+           } else {
             $this->validate($request, [
                 'matier_id' => 'required|array',
                 'professeur_id' => 'required',

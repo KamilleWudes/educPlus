@@ -44,10 +44,10 @@
                             <button class="btn btn-outline-secondary" type="button"><i class='bx bx-search'></i>
                             </button>
                             <select class="form-select @error('classe_id') is-invalid  @enderror single-select"
-                            id="classe" name="classe_id" aria-label="Example select with button addon">
+                            id="idclasses" name="classe_id" aria-label="Example select with button addon">
                                 <option value="">Selectionnez la classe</option>
-                                @foreach ($classes as $classes)
-                                    <option value="{{ $classes->id }}"> {{ $classes->nom }}
+                                @foreach ($classes as $classe)
+                                    <option value="{{ $classe->id }}"> {{ $classe->nom }}
                                     </option>
                                 @endforeach
                             </select>
@@ -62,17 +62,9 @@
                     <div class="row gy-3">
                         <div class="col-md-4">
                             <label for="inputLastName1" class="form-label">Ajouter Matière</label>
-                            {{--  <input type="text" class="form-control @error('nom') is-invalid  @enderror" name="nom" value="{{ old('nom') }}">  --}}
-                            <select class="single-select  @error('matier_id') is-invalid  @enderror form-select" id="matiere"  name="matier_id">
-                                <option value="">Selectionnez la Matière</option>
-                                @foreach ($matieres as $matiere)
-                                   <option value="{{ $matiere->id }}"> {{ $matiere->nom }}
-                                    </option>
-                                @endforeach
+                            <select class="single-select  @error('matier_id') is-invalid  @enderror form-select" id="idmatieres"  name="matier_id">
                             </select>
-                            @error('matier_id')
-                            <span class="error"style="color:red">{{ $message }}</span>
-                        @enderror
+
                         </div>
 
                         <div class="col-md-4">
@@ -100,3 +92,45 @@
         </div>
     </form>
 @endsection
+
+@push('classeMatieres')
+    <script>
+        $(document).ready(function(){
+            console.log("Bonjour");
+            $('#idclasses').on("change",function(){
+                var classe_ids = $('#idclasses').val();
+                console.log(classe_ids);
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('GetClasses') }}',
+                    datatype: 'JSON',
+                    data:{classe_id:classe_ids},
+                    success: (response)=>{
+                        console.log("matiere",response.matieres)
+ 
+                        var matiere = '';
+
+                        for( var i = 0; i < response.matieres.length; i++){
+                            matiere += '<option  value="'+response.matieres[i].id+'">'+response.matieres[i].nom+'</option>';
+                        }
+
+
+                        if(response.matieres.length > 0){
+
+                            $('#idmatieres').html(matiere);
+                            console.log('tt',$('#idmatieres').val())
+
+                        }else{
+
+                        }
+                    },
+
+                })
+            })
+        });
+
+
+    </script>
+
+
+@endpush

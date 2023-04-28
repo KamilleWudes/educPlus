@@ -105,9 +105,13 @@
 						<div class="menu-title"> Gestions des Bulettins</div>
 					</a>
 					<ul>
-                        <li> <a href="{{ route('addoperation') }}"><i class="bx bx-right-arrow-alt"></i>Saisie de note</a>
+                        <li> <a href="{{ route('addoperation') }}"><i class="bx bx-right-arrow-alt"></i>Operation</a>
 						</li>
-						<li> <a href="{{ route('bulletin') }}"><i class="bx bx-right-arrow-alt"></i>Liste des notes</a>
+						<li> <a href="{{ route('bulletin') }}"><i class="bx bx-right-arrow-alt"></i>Liste des Operation</a>
+						</li>
+                        <li> <a href="{{ route('add-saisi-note') }}"><i class="bx bx-right-arrow-alt"></i>Saisie de note</a>
+						</li>
+						<li> <a href="{{ route('saisi-note') }}"><i class="bx bx-right-arrow-alt"></i>Liste des notes</a>
 						</li>
 					</ul>
 
@@ -147,6 +151,8 @@
                         @endif
                         @if(fullRoleSuperAdmin()=="SuperAdmin")
                         <li> <a href="{{ route('utilisateur') }}"><i class="bx bx-right-arrow-alt"></i>Responsables</a>
+						</li>
+                        <li> <a href="{{ route('SuperAdmin') }}"><i class="bx bx-right-arrow-alt"></i>Utilisateurs</a>
 						</li>
                         @endif
 					</ul>

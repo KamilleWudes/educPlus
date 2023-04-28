@@ -26,6 +26,14 @@ use Symfony\Component\Console\Input\Input;
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); ->middleware("auth.superAdmin") ->middleware("auth.admin")
 
+// Route SuperAdmin
+
+Route::get('/utilisateur', [App\Http\Controllers\superAdminController::class, 'index'])->name ('SuperAdmin')->middleware("auth.superAdmin");
+Route::get('/addutilisateur', [App\Http\Controllers\superAdminController::class, 'create'])->name ('addSuperAdmin')->middleware("auth.superAdmin");
+Route::post('/createutilisateur', [App\Http\Controllers\superAdminController::class, 'store'])->name ('createSuperAdmin')->middleware("auth.superAdmin");
+Route::put('/update_utilisateur/{id}', [App\Http\Controllers\superAdminController::class, 'update'])->name ('update_superAdmin')->middleware("auth.superAdmin");
+Route::get('/utilisateur={id}', [App\Http\Controllers\superAdminController::class, 'edit'])->name ('editsuperAdmin')->middleware("auth.superAdmin");
+
 // Route Etudiant
 
 Route::get('/etudiant', [App\Http\Controllers\EtudiantController::class, 'index'])->name ('etudiant')->middleware("auth.admin");
@@ -49,11 +57,11 @@ Route::put('/anneeScolaire/{id}', [App\Http\Controllers\AnneeScolaireController:
 Route::get('/anneeScolaire={id}', [App\Http\Controllers\AnneeScolaireController::class, 'edit'])->name ('edit_anneeScolaire')->middleware("auth.admin");
 
 //Route utilisateur
-Route::get('/utilisateur', [App\Http\Controllers\UtilisateursController::class, 'index'])->name ('utilisateur')->middleware("auth.superAdmin");
-Route::get('/addutilisateur', [App\Http\Controllers\UtilisateursController::class, 'create'])->name ('addutilisateur')->middleware("auth.superAdmin");
-Route::post('/createutilisateur', [App\Http\Controllers\UtilisateursController::class, 'store'])->name ('createutilisateur')->middleware("auth.superAdmin");
-Route::get('/utilisateur={id}', [App\Http\Controllers\UtilisateursController::class, 'edit'])->name ('edit_utilisateur')->middleware("auth.superAdmin");
-Route::put('/update_utilisateur/{id}', [App\Http\Controllers\UtilisateursController::class, 'update'])->name ('update_utilisateur')->middleware("auth.superAdmin");
+Route::get('/responsable', [App\Http\Controllers\UtilisateursController::class, 'index'])->name ('utilisateur')->middleware("auth.superAdmin");
+Route::get('/addresponsable', [App\Http\Controllers\UtilisateursController::class, 'create'])->name ('addutilisateur')->middleware("auth.superAdmin");
+Route::post('/createResponsable', [App\Http\Controllers\UtilisateursController::class, 'store'])->name ('createutilisateur')->middleware("auth.superAdmin");
+Route::get('/responsable={id}', [App\Http\Controllers\UtilisateursController::class, 'edit'])->name ('edit_utilisateur')->middleware("auth.superAdmin");
+Route::put('/update_responsable/{id}', [App\Http\Controllers\UtilisateursController::class, 'update'])->name ('update_utilisateur')->middleware("auth.superAdmin");
 
 
 //Route professeurs
@@ -147,6 +155,7 @@ Route::get('/addmatiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireM
 Route::post('/creatematiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'store'])->name ('createMatiere_coefficient')->middleware("auth.admin");
 
 
+
 //Route operation
 Route::get('/operation', [App\Http\Controllers\bulletinProfesseurTypecompositonMatier::class,'index'])->name('operation')->middleware("auth.professeur");
 Route::get('/addoperation', [App\Http\Controllers\bulletinProfesseurTypecompositonMatier::class,'create'])->name ('addoperation')->middleware("auth.professeur");
@@ -177,18 +186,18 @@ Route::post('/superadmin', [App\Http\Controllers\UserPrincipalController::class,
 Route::get('/acceuil', [App\Http\Controllers\UserPrincipalController::class,'index'])->name('users');
 
 
-// Route::get('/matieres/{classeId}', function($id) {
-//     $professorId = ProfId(); // récupérer l'ID du professeur connecté
+//Route saisi de note
+Route::get('/saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'index'])->name('saisi-note')->middleware("auth.professeur");
+Route::get('/add-saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'create'])->name ('add-saisi-note')->middleware("auth.professeur");
+Route::post('/create-saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'store'])->name ('create-saisi-note')->middleware("auth.professeur");
 
-//     $matieres = DB::table('matiers')
-//         ->join('professeur_classe_matieres', 'matiers.id', '=', 'professeur_classe_matieres.matiere_id')
-//         ->where('professeur_classe_matieres.classe_id', $classeId)
-//         ->where('professeur_classe_matieres.professeur_id', $professorId)
-//         ->distinct()
-//         ->get(['matiers.id', 'matiers.nom']);
-
-//     return response()->json($matieres);
-// });
-
+//Route Recuperation dans le select
 Route::get('/matieres', [App\Http\Controllers\BulletinProfesseurTypecompositonMatier::class,'GetClasseMatiere'])->name('GetClasseMatiere');
 
+Route::get('/classes_mat', [App\Http\Controllers\ClasseAnneescolaireMatiere::class, 'GetClasses'])->name('GetClasses');
+
+Route::get('/GetAnnee', [App\Http\Controllers\InscriptionController::class, 'GetAnnees'])->name('GetAnnee');
+
+Route::get('/GetTuteur', [App\Http\Controllers\TuteurController::class, 'GetTuteurs'])->name('GetTuteur');
+
+Route::get('/Getetude', [App\Http\Controllers\EtudiantController::class, 'Getetudes'])->name('Getetude');

@@ -23,6 +23,35 @@ class EtudiantController extends Controller
 
     }
 
+    public function Getetudes(request $request){
+        $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+
+        //dd($request->etudiant);
+       $data = DB::table('users')
+  
+       ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+       ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+       ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+       ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+       ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+       ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+       ->select('inscriptions.id', 'inscriptions.date_insription','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','etudiants.id as etudiant_id','etudiants.nom as etudiant_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2','etudiants.prenom as etudiant_prenom','etudiants.sexe as etudiant_sexe','etudiants.matricule as matricule','annee_scolaires.annee1', 'annee_scolaires.annee2', 'ecoles.nom as ecole_nom','etudiants.adresse as etudiant_adresse')
+       ->where('users.id', '=', $user_id)
+       ->where('inscriptions.annee_scolaire_id','=', $request->etudiant)
+       ->orderBy('etudiant_id','desc')
+       ->get();
+
+      // dd($data);
+
+    return response()->json([
+        "etudiants"=>$data,
+
+
+    ]);
+
+
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -43,12 +72,23 @@ class EtudiantController extends Controller
           ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
           ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
           ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
-          ->select('inscriptions.id', 'inscriptions.date_insription','etudiants.matricule as matricule','ecoles.nom as ecole_nom','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2', 'etudiants.nom as etudiant_nom', 'etudiants.prenom as etudiant_prenom','annee_scolaires.annee1', 'annee_scolaires.annee2','etudiants.adresse as etudiant_adresse', 'etudiants.sexe as sexe','etudiants.id as id','etudiants.created_at as created_at')
+          ->select('inscriptions.id', 'inscriptions.date_insription','etudiants.matricule as matricule','ecoles.nom as ecole_nom','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2', 'etudiants.nom as etudiant_nom', 'etudiants.prenom as etudiant_prenom','annee_scolaires.annee1 as annee1', 'annee_scolaires.annee2 as annee2','etudiants.adresse as etudiant_adresse', 'etudiants.sexe as sexe','etudiants.id as id','etudiants.created_at as created_at')
           ->where('users.id', '=', $user_id)
           ->get();
 
+          $anneeScolaires = DB::table('users')
+          ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+          ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+          ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+          ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+          ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+          ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+          ->select('annee_scolaires.annee1 as annee1','annee_scolaires.annee2 as annee2','annee_scolaires.id as id')
+          ->where('users.id', '=', $user_id)
+          ->distinct()
+          ->get();
 
-        return view ('admin.etudiants.liste',compact('etudiants'));
+        return view ('admin.etudiants.liste',compact('etudiants','anneeScolaires'));
     }
 
     /**

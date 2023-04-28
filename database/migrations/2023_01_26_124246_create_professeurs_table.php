@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('prenom');
             $table->char('sexe');
             $table->string('adresse');
+            $table->string('matricule')->nullable();
             $table->string('telephone1')->unique();
             $table->string("image");
             $table->string('email')->unique();
@@ -31,6 +32,8 @@ return new class extends Migration
         //    $table->unique(["nom","prenom"]);
 
         });
+        schema::enableForeignKeyConstraints();
+
     }
 
     /**

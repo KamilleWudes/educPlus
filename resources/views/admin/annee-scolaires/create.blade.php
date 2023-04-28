@@ -34,6 +34,8 @@
 
                             </div>
                         </div>
+                        <input type="text" value="{{ EcolesId() }}" name="ecole_id"/>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>

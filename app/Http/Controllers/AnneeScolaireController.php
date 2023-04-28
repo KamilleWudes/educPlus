@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Contracts\Session\Session as SessionSession;
 use Illuminate\Http\Request;
 use Session;
+use Illuminate\Support\Facades\DB;
+
 
 use Illuminate\Validation\Rule;
 class AnneeScolaireController extends Controller
@@ -23,7 +25,15 @@ class AnneeScolaireController extends Controller
      */
     public function index()
     {
-        $anneeScolaires= anneeScolaire::all();
+        // $anneeScolaires= anneeScolaire::all();
+        $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+        $anneeScolaires = DB::table('users')
+        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+        ->join('annee_scolaires', 'ecoles.id', '=', 'annee_scolaires.ecole_id')
+        ->where('users.id', '=', $user_id)
+        ->select('annee_scolaires.annee1 as annee1','annee_scolaires.id as id','annee_scolaires.annee2 as annee2')
+        ->orderBy("id","Desc")
+        ->get();
 
         return view ('admin.annee-scolaires.liste',compact('anneeScolaires'));
     }
@@ -58,10 +68,12 @@ class AnneeScolaireController extends Controller
         $anneeScolaires = new anneeScolaire();
         $anneeScolaires->annee1 = $request->annee1;
         $anneeScolaires->annee2 = $request->annee2;
+        $anneeScolaires->ecole_id = $request->ecole_id;
 
         $anneeScolaires->save();
 
          return back()->with("success","Année scolaire ajouté avec succè!");
+
     }
 
     /**

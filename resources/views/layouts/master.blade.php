@@ -294,6 +294,14 @@
 
   @stack('select_matiere')
 
+  @stack('classeMatieres')
+
+  @stack('ins')
+
+  @stack('etude')
+
+  @stack('tuteur')
+
 
 
 </body>
