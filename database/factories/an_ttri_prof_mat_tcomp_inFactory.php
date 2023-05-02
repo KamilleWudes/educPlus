@@ -21,10 +21,14 @@ class an_ttri_prof_mat_tcomp_inFactory extends Factory
             "matier_id"=>rand(1,10),
             "classe_id"=>rand(1,10),
             "type_compo_id" =>rand(1,3),
-            "note"=>$this->faker->ean8,
+            //"note"=>$this->faker->ean8,
+            "note"=>$this->faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 20),
             "inscription_id" =>rand(1,10),
             "type_trimestre_id" =>rand(1,3),
             "annee_scolaire_id" =>rand(1,2)
+
+            //$note = $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 20);
+
         ];
     }
 }

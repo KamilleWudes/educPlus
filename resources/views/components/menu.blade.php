@@ -105,10 +105,10 @@
 						<div class="menu-title"> Gestions des Bulettins</div>
 					</a>
 					<ul>
-                        <li> <a href="{{ route('addoperation') }}"><i class="bx bx-right-arrow-alt"></i>Operation</a>
+                        {{--  <li> <a href="{{ route('addoperation') }}"><i class="bx bx-right-arrow-alt"></i>Operation</a>
 						</li>
 						<li> <a href="{{ route('bulletin') }}"><i class="bx bx-right-arrow-alt"></i>Liste des Operation</a>
-						</li>
+						</li>  --}}
                         <li> <a href="{{ route('add-saisi-note') }}"><i class="bx bx-right-arrow-alt"></i>Saisie de note</a>
 						</li>
 						<li> <a href="{{ route('saisi-note') }}"><i class="bx bx-right-arrow-alt"></i>Liste des notes</a>

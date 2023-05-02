@@ -86,6 +86,8 @@ function UserfullRole(){
          }
      }
 
+     // récupérer le Role du professeur connecté
+
      function UserfullRoleProf(){
         $data = array();
         if(Session::has('Professeur')){
@@ -94,6 +96,7 @@ function UserfullRole(){
          }
      }
 
+     // récupérer l'ID du professeur connecté
 
      function ProfId(){
         $data = array();
@@ -171,6 +174,6 @@ function EcolesId(){
 
      return $data;
  }}
- 
+
 
 ?>

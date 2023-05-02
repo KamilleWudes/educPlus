@@ -53,7 +53,7 @@
                             </thead>
                             <tbody id="ins">
 
-                                
+
                                 @foreach ($inscriptions as $inscription)
                                     <tr>
                                         {{--  <td style="text-align:center">{{ $inscription->id }}</td>  --}}
@@ -69,7 +69,7 @@
 
                                             <td style="text-align:center">
                                                 <button type="button"
-                                                class="btn btn-light btn-sm radius-30 px-4"@disabled(true)>View Details</button>
+                                                class="btn btn-light btn-sm radius-30 px-4">View Details</button>
                                             </td>
 
                                         <td>

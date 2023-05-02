@@ -21,10 +21,15 @@ return new class extends Migration
             $table->foreignId("annee_scolaire_id")->constrained("annee_scolaires");
             $table->foreignId("inscription_id")->constrained("inscriptions");
             $table->foreignId("type_trimestre_id")->constrained("type_trimestres");
-            $table->integer('note');
+           // $table->integer('note');
+            $table->decimal('note', 5, 2)->nullable();
+
             $table->timestamps();
         });
         schema::enableForeignKeyConstraints();
+
+        //$table->decimal('note', 5, 2)->nullable();
+
     }
 
     /**

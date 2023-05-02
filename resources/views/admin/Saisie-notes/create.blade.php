@@ -1,6 +1,6 @@
 @extends('layouts/master')
 @section('contenu')
-    <form class="row g-3" method="POST" action="{{ route('createMatiere_coefficient') }}">
+    <form class="row g-3" method="POST" action="{{ route('create-saisi-note') }}">
         @csrf
         <div class="page-content">
             <!--breadcrumb-->
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <input type="text" value=" {{ $data->id }}" />
+            <input type="text" value=" {{ ProfId() }}" name="professeur_id" />
 
 
             <div class="card">
@@ -37,21 +37,29 @@
                     <div class="row gy-3">
                         <div class="col-md-6">
                             <label class="form-label">Type Trimestre</label>
-                            <select class="single-select">
+                            <select class="single-select @error('type_trimestre_id') is-invalid  @enderror" name="type_trimestre_id">
+                                <option value="">Selectionnez Type Trimestre</option>
                                 @foreach ($typesTrimestreInfos->pluck('nom', 'id') as $id => $nom)
                                  <option value="{{ $id }}">{{ $nom }}</option>
                                @endforeach
                             </select>
+                            @error('type_trimestre_id')
+                            <span class="error" style="color:red">{{ $message }}</span>
+                        @enderror
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">Type Composition</label>
-                            <select class="single-select">
+                            <select class="single-select @error('type_compo_id') is-invalid @enderror" name="type_compo_id">
+                                <option value="">Selectionnez Type Composition</option>
                                 @foreach ($typeCompositions as $typeComposition)
                                     <option value="{{ $typeComposition->id }}">{{ $typeComposition->nom }}
                                     </option>
                                 @endforeach
                             </select>
+                            @error('type_compo_id')
+                            <span class="error" style="color:red">{{ $message }}</span>
+                        @enderror
                         </div>
                     </div>
 
@@ -64,17 +72,19 @@
                             <div class="input-group">
                                 <button class="btn btn-outline-secondary" type="button"><i class='bx bx-search'></i>
                                 </button>
-                                <select class="single-select form-select" id="classe-select" name="classe_id">
+                                <select class="single-select form-select @error('classe_id') is-invalid  @enderror" id="classe-select" name="classe_id">
                                     <option value="">Selectionnez la classe</option>
                                     @foreach($classes as $classe)
                                     <option value="{{ $classe->id }}">{{ $classe->nom }}</option>
                                 @endforeach
 
                                 </select>
+
+
                             </div>
                             @error('classe_id')
-                                <span class="error" style="color:red">{{ $message }}</span>
-                            @enderror
+                            <span class="error" style="color:red">{{ $message }}</span>
+                        @enderror
                         </div>
                         <br>
                         <div class="col-md-6">
@@ -82,16 +92,16 @@
                             <div class="input-group">
                                 <button class="btn btn-outline-secondary" type="button"><i class='bx bx-search'></i>
                                 </button>
-                                  <select class="form-select single-select" name="matiere_id" id="matiere">
-                                    {{--  <option value="">Selectionnez la matiere</option>  --}}
-
+                                  <select class="form-select single-select @error('matier_id') is-invalid  @enderror" name="matier_id" id="matiere">
                                     </select>
-
                             </div>
-                        </div>
-                        @error('classe_id')
+                            @error('matier_id')
                             <span class="error" style="color:red">{{ $message }}</span>
                         @enderror
+                        </div>
+                        {{--  @error('classe_id')
+                            <span class="error" style="color:red">{{ $message }}</span>
+                        @enderror  --}}
                     </div>
                     <br>
                 </div>
@@ -224,19 +234,17 @@
                                 </div>
                             </td>
                             <td>
-                                <input id="note" onkeyup='add()' type="number" min="0"
+                                <input id="note" onkeyup='add()' type="text" min="0"
                                     class="form-control @error('note') is-invalid  @enderror"
                                     name="note">
+                                    <input type="text" value=" ${ resp.id }" name="inscription_id" />
 
                             </td>
-                            {{--  <td></td>  --}}
+
+
                             <td id="re"></td>
                             <td>
-                            {{--  <div class="d-grid">
-                                <input id="todo-input" type="text"
-                                    class="form-control @error('coefficient') is-invalid  @enderror"
-                                    name="coefficient" value="{{ old('coefficient') }}">
-                            </div>  --}}
+
                         </td></tr>`;
                     }
 
