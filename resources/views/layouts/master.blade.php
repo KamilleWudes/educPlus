@@ -301,6 +301,11 @@
   @stack('etude')
 
   @stack('tuteur')
+  
+  @stack('bloquer')
+
+
+  @stack('detail')
 
 
 

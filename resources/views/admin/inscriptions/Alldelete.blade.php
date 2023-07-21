@@ -20,10 +20,10 @@
                         name="annee_scolaire_id">
                         <option value="">Annee Scolaires </option>
 
-                        @foreach ($AnneeScolaires as $AnneeScolaire)
+                        {{-- @foreach ($AnneeScolaires as $AnneeScolaire)
                             <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} -
                                 {{ $AnneeScolaire->annee2 }}</option>
-                        @endforeach
+                        @endforeach --}}
                     </select>
                     @error('annee_scolaire_id')
                         <span class="error" style="color:red">{{ $message }}</span>
@@ -63,22 +63,16 @@
                                         <td style="text-align:center">{{ $inscription->etudiant_prenom }} {{ $inscription->etudiant_nom }}</td>
                                         <td style="text-align:center">{{ $inscription->classe_nom}}</td>
                                         <td style="text-align:center">{{ $inscription->tuteur_prenoms }} {{ $inscription->tuteur_nom }}</td>
-                                        <td style="text-align:center">{{ $inscription->tuteur_telephone1 }}</td>
-
-                                        {{--  <td style="text-align:center">{{ $inscription->created_at->diffForHumans() }}</td>  --}}
+                                        <td style="text-align:center">{{ $inscription->tuteur_telephone1 }} / {{ $inscription->tuteur_telephone2 }}</td>
 
                                             <td style="text-align:center"><a href="{{ url('inscription-detail=' . $inscription->id) }}"><button type="button"
                                                 class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
 
                                         <td>
-                                            <div class="d-flex order-actions">
-                                                <a href="{{ url('inscription=' . $inscription->id) }}"><i
-                                                    class='bx bxs-edit @disabled(true)'></i></a>
-                                                {{-- <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'
-                                                        style="text-align:center"></i></a> --}}
-                                                         <a href="{{ url('inscription-delete/'. $inscription->id) }}" id="flash"
-                                                        data-flash="{!! session()->get('success') !!}" class="ms-3"><i class='bx bxs-trash'
-                                                        style="text-align:center"></i></a>
+                                            <div>
+                                                <a href="{{ url('inscription-restore/'. $inscription->id) }}"><button type="button" id="flash"
+                                                data-flash="{!! session()->get('success') !!}"
+                                                class="btn btn-light btn-sm radius-30 px-4"> Restaurer</button></a>
                                                        
                                             </div>
                                         </td>

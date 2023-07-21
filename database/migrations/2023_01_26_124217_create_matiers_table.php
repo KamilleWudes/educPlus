@@ -15,8 +15,15 @@ return new class extends Migration
     {
         Schema::create('matiers', function (Blueprint $table) {
             $table->id();
-            $table->string('nom')->unique();
-            $table->foreignId("ecole_id")->constrained("ecoles");
+            $table->string('nom');
+            $table->unsignedBigInteger('ecole_id');
+
+            $table->string('nom_ecole'); // Champ pour stocker le nom de l'école
+
+
+            $table->foreign('ecole_id')->references('id')->on('ecoles')->onDelete('cascade');
+            $table->unique(['nom', 'nom_ecole']); // Contrainte d'unicité sur annee et nom_ecole
+
 
             $table->timestamps();
         });

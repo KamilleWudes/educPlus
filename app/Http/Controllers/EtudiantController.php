@@ -179,7 +179,7 @@ class EtudiantController extends Controller
 
 
     public function detail($id)
-    {
+     {
         $etudiants = Etudiant::find($id);
 
         return view ('admin.etudiants.detail',compact('etudiants'));

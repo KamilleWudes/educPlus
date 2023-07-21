@@ -34,20 +34,20 @@
                         <table id="example2" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th style="text-align:center">Numero</th>
+                                    {{-- <th style="text-align:center">Numero</th> --}}
                                     <th style="text-align:center">Nom Tuteur</th>
                                     <th style="text-align:center">Sexe</th>
                                     <th style="text-align:center">Adresse</th>
                                     <th style="text-align:center">Nom etudiant</th>
                                     <th style="text-align:center">Détail</th>
-                                    <th style="text-align:center">Action</th>
+                                    {{-- <th style="text-align:center">Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody id="tut">
 
                                 @foreach ($tuteurs as $tuteur)
                                     <tr>
-                                        <td style="text-align:center">{{ $tuteur->tuteurs_id }}</td>
+                                        {{-- <td style="text-align:center">{{ $tuteur->tuteurs_id }}</td> --}}
                                         <td style="text-align:center">{{ $tuteur->prenoms }} {{ $tuteur->noms }}</td>
                                         <td style="text-align:center">
                                             @if ($tuteur->sex == 'F')
@@ -61,10 +61,10 @@
                                         <td style="text-align:center">{{ $tuteur->etudiant_prenom }} {{ $tuteur->etudiant_nom }}</td>
 
 
-                                        <td style="text-align:center"><a href="{{ url('detail=' . $tuteur->id) }}"><button type="button"
+                                        <td style="text-align:center"><a href="{{ url('detail-tuteur=' . $tuteur->id) }}"><button type="button"
                                             class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
 
-                                        <td>
+                                        {{-- <td>
 
                                             <div class="d-flex order-actions">
                                                 <a href="{{ url('etudiant=' . $tuteur->id) }}" class=""><i
@@ -75,7 +75,7 @@
 
                                             </div>
 
-                                        </td>
+                                        </td> --}}
 
                                     </tr>
                                 @endforeach

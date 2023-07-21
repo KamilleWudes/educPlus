@@ -470,6 +470,7 @@ class InscriptionController extends Controller
 
 
        return back()->with("success"," inscription Mise à jour avec succè!");
+       
         }
 
     /**
@@ -478,8 +479,36 @@ class InscriptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+     public function detail($id)
+     {
+        $inscriptions = inscription::find($id);
+        $classes = classe::orderBy("id","Desc")->get();
+        $AnneeScolaires = anneeScolaire::orderBy("id","Desc")->get();
+
+
+        return view ('admin.inscriptions.detail',compact('inscriptions','AnneeScolaires','classes'));
+    }
+
     public function destroy($id)
     {
-        //
+        inscription::find($id)->delete();
+        return back()->with("success","Etudiant supprimer avec succè!");
     }
+
+    public function onlyTrashed()
+    {
+        $inscriptions = inscription::onlyTrashed()->get();
+        return view('admin.inscriptions.Alldelete',compact('inscriptions'));
+
+    }
+
+    public function restore($id)
+    {
+        $inscriptions = inscription::onlyTrashed()->findOrFail($id);
+        $inscriptions->restore();
+        return back()->with("success","Etudiant Restaurer avec succè!");
+
+    }
+
 }

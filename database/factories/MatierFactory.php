@@ -18,7 +18,9 @@ class MatierFactory extends Factory
     {
         return [
             'nom' => $this->faker->name(),
-            "ecole_id" =>rand(1,10)
+            "ecole_id" =>rand(1,10),
+            "nom_ecole"=>$this->faker->lastName()
+
 
         ];
     }

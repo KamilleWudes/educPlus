@@ -46,7 +46,7 @@
                                     <th style="text-align:center">Tuteur etudiant</th>
                                      <th style="text-align:center">Adresse</th>
                                     <th style="text-align:center">Détail</th>
-                                    <th style="text-align:center">Action</th>
+                                    {{-- <th style="text-align:center">Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody id="etud">
@@ -60,7 +60,7 @@
                                                 F
                                             @else
                                                 M
-                                            @endif
+                                            @endif  
                                         </td>
                                         <td style="text-align:center">{{ $etudiant->classe_nom }}</td>
                                         <td style="text-align:center">{{ $etudiant->tuteur_prenoms }} {{ $etudiant->tuteur_nom }}</td>
@@ -71,25 +71,25 @@
 
                                         {{--  <td>{{ $etudiant->inscription->implode('classe_id') }}</td>  --}}
 
-                                        <td style="text-align:center"><a href="{{ url('detail=' . $etudiant->id) }}"><button type="button"
+                                        <td style="text-align:center"><a href="{{ url('detail-etudiant=' . $etudiant->id) }}"><button type="button"
                                             class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
 
-                                        <td>
+                                        {{-- <td> --}}
 
-                                            <div class="d-flex order-actions">
+                                            {{-- <div class="d-flex order-actions"> --}}
                                                 {{--  @if(count($etudiant->inscription) == 0)  --}}
-                                                <a href="{{ url('etudiant=' . $etudiant->id) }}" class=""><i
-                                                    class='bx bxs-edit' style="text-align:center"></i></a>
+                                                {{-- <a href="{{ url('etudiant=' . $etudiant->id) }}" class=""><i
+                                                    class='bx bxs-edit' style="text-align:center"></i></a> --}}
 
                                             {{--  <a href="{{ route('delete_etudiant', $etudiant->id) }}" id="btn-hapus" data-id="{{ $etudiant->id }}" nom-id="{{ $etudiant->nom }}" prenom-id="{{ $etudiant->prenom }}" class="ms-4"><i class='bx bxs-trash'
                                                     style="text-align:center"></i></a>  --}}
-                                                    <a href="{{ url('etudiant-delete/'. $etudiant->id) }}" id="flash"
+                                                    {{-- <a href="{{ url('etudiant-delete/'. $etudiant->id) }}" id="flash"
                                                         data-flash="{!! session()->get('success') !!}" class="ms-4"><i class='bx bxs-trash'
-                                                        style="text-align:center"></i></a>
+                                                        style="text-align:center"></i></a> --}}
                                                         {{--  @endif  --}}
-                                            </div>
+                                            {{-- </div> --}}
 
-                                        </td>
+                                        {{-- </td> --}}
 
                                     </tr>
                                 @endforeach

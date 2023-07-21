@@ -8,9 +8,9 @@
 			<div class="card shadow-none bg-transparent">
 				<div class="card-body p-md-5 text-center">
 
-					<h2 class="text-white">10:53 AM</h2>
+					{{-- <h2 class="text-white">10:53 AM</h2> --}}
                     {{--  @foreach ($userPrincipals as $userPrincipal)  --}}
-					<h5 class="text-white">Tuesday, January 14, 2021</h5>
+					<h3 class="text-white" id="t">Tuesday, January 14, 2021</h3>
                     {{--  <h5 class="text-white">{{ $userPrincipal->created_at->diffForHumans()}}</h5>  --}}
 
                     {{--  @endforeach  --}}
@@ -51,3 +51,5 @@
 
 
 @endsection
+
+

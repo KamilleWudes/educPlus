@@ -48,8 +48,8 @@
 						</li>
 						<li> <a href="{{ route('etudiant') }}"><i class="bx bx-right-arrow-alt"></i>Liste Etudiant</a>
 						</li>
-                        <li> <a href="{{ route('etudiant-delete-list') }}"><i class="bx bx-right-arrow-alt"></i>Corbeille Etudiant</a>
-						</li>
+                        {{-- <li> <a href="{{ route('etudiant-delete-list') }}"><i class="bx bx-right-arrow-alt"></i>Corbeille Etudiant</a>
+						</li> --}}
 					</ul>
 				</li>
                 <li>
@@ -80,7 +80,7 @@
 						</li>
 					</ul>
 				</li>  --}}
-				<li class="menu-label">Inscrptions</li>
+				<li class="menu-label">Inscriptions</li>
 				<li>
 					<a href="javascript:;" class="has-arrow">
 						<div class="parent-icon"><i class='bx bx-desktop'></i>
@@ -88,9 +88,11 @@
 						<div class="menu-title">Gestions des Inscriptions</div>
 					</a>
 					<ul>
-						<li> <a href="{{ route('addinscription') }}"><i class="bx bx-right-arrow-alt"></i>Nouvel Inscrption</a>
+						<li> <a href="{{ route('addinscription') }}"><i class="bx bx-right-arrow-alt"></i>Nouvel Inscription</a>
 						</li>
-						<li> <a href="{{ route('inscription') }}"><i class="bx bx-right-arrow-alt"></i>Liste des Inscrptions</a>
+						<li> <a href="{{ route('inscription') }}"><i class="bx bx-right-arrow-alt"></i>Liste des Inscriptions</a>
+						</li>
+						 <li> <a href="{{ route('inscription-delete-list') }}"><i class="bx bx-right-arrow-alt"></i>Corbeille Inscription</a>
 						</li>
 					</ul>
 				</li>
@@ -138,9 +140,9 @@
                         @if(UserFullRole()=="Admin")
 						<li> <a href="{{ route('classe') }}"><i class="bx bx-right-arrow-alt"></i>Classes</a>
 						</li>
-                        <li> <a href="{{ route('matier') }}"><i class="bx bx-right-arrow-alt"></i>Matieres</a>
+                        <li> <a href="{{ route('matier') }}"><i class="bx bx-right-arrow-alt"></i>Matières</a>
 						</li>
-                        <li> <a href="{{ route('anneescolaire-classe-matieres') }}"><i class="bx bx-right-arrow-alt"></i>Matieres et coefficients</a>
+                        <li> <a href="{{ route('anneescolaire-classe-matieres') }}"><i class="bx bx-right-arrow-alt"></i>Matières et coefficients</a>
 						</li>
                         <li> <a href="{{ route('tuteur') }}"><i class="bx bx-right-arrow-alt"></i>Tuteurs</a>
 						</li>

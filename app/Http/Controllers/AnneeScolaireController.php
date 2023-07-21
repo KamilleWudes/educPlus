@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 class AnneeScolaireController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('isLoggedIn');
@@ -57,18 +58,27 @@ class AnneeScolaireController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-           // "anneeScolaire" =>'required|unique:annee_scolaires,anneeScolaire',
-            "annee1" =>'required|numeric|unique:annee_scolaires,annee1',
-            "annee2" =>'required|numeric|unique:annee_scolaires,annee2',
+       
+       $request->validate([
+        'ecole_id' => 'required|exists:ecoles,id',
+        'annee1' => [
+            'required',
+            Rule::unique('annee_scolaires')->where(function ($query) use ($request) {
+                return $query->where('ecole_id', $request->ecole_id)
+                             ->where('nom_ecole', Ecoles());
+            })
+            
+        ]
+        
 
-            "annee1"=>['required','min:4','max:4'],
-            "annee2"=>['required','min:4','max:4'],
-        ]);
+    ]);
+
         $anneeScolaires = new anneeScolaire();
         $anneeScolaires->annee1 = $request->annee1;
         $anneeScolaires->annee2 = $request->annee2;
         $anneeScolaires->ecole_id = $request->ecole_id;
+        $anneeScolaires->nom_ecole = Ecoles();
+
 
         $anneeScolaires->save();
 
@@ -108,19 +118,8 @@ class AnneeScolaireController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $request->validate([
-        //     "anneeScolaire" =>'required',
-        //     "annee1" =>'required|numeric'. Rule::unique('annee_scolaires')->ignore($id),
-        //     "annee2" =>'required|numeric'. Rule::unique('annee_scolaires')->ignore($id)
-        //  ]);
-
-        //  $anneeScolaires = anneeScolaire::find($id);
-        //  $anneeScolaires->annee1 = $request->annee1;
-        //  $anneeScolaires->annee2 = $request->annee2;
 
 
-        //  $anneeScolaires->update();
-        //  return back()->with("success","Année scolaire mise à jour avec succè!");
     }
 
     /**

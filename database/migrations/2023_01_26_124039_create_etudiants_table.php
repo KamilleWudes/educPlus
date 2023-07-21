@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('telephone')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
-             $table->softDeletes();
+            $table->softDeletes();
         });
     }
 

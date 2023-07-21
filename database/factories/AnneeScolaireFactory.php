@@ -21,6 +21,7 @@ class AnneeScolaireFactory extends Factory
             "annee1" =>$this->faker->ean8,
             "annee2" =>$this->faker->ean8,
             "ecole_id" =>rand(1,10),
+            "nom_ecole"=>$this->faker->lastName()
 
         ];
     }

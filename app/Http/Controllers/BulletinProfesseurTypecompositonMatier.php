@@ -64,7 +64,14 @@ class BulletinProfesseurTypecompositonMatier extends Controller
 
                 $etudiantsInscrits = DB::table('inscriptions')
                 ->join('etudiants', 'etudiants.id', '=', 'inscriptions.etudiant_id')
+
+                ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+                //->join('ecoles', 'annee_scolaires.ecole_id', '=', 'ecoles.id')
+
                 ->select('inscriptions.*','etudiants.nom', 'etudiants.prenom','etudiants.matricule')
+                ->where('inscriptions.annee_scolaire_id','=', AnneScolairesId())
+              //  ->where('annee_scolaires.ecole_id','=', EcolesId())
+
                 ->get();
 
 
@@ -74,9 +81,11 @@ class BulletinProfesseurTypecompositonMatier extends Controller
                 ->join('ecoles', 'ecoles.id', '=', 'classes.ecole_id')
                 ->join('professeur_classe_matieres', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
                 ->select('etudiants.*', 'classes.nom as nom_classe', 'ecoles.nom as nom_ecole')
+
                 ->where('professeur_classe_matieres.classe_id', $request->classe_id)
                 ->where('professeur_classe_matieres.matier_id',  $request->matieres)
                 ->where('professeur_classe_matieres.professeur_id', '=', $professorId)
+
                 ->get();
 
     return response()->json([

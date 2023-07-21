@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreignId("classe_id")->constrained("classes");
             $table->foreignId("annee_scolaire_id")->constrained("annee_scolaires");
             $table->timestamps();
+            $table->softDeletes();
+
         });
         schema::enableForeignKeyConstraints();
 

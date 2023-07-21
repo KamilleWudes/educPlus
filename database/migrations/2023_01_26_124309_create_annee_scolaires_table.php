@@ -15,10 +15,18 @@ return new class extends Migration
     {
         Schema::create('annee_scolaires', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('ecole_id');
             //$table->string('anneeScolaire');
-            $table->string('annee1')->unique();
-            $table->string('annee2')->unique();
-            $table->foreignId("ecole_id")->constrained("ecoles");
+            $table->string('annee1');
+            $table->string('annee2');
+            $table->string('nom_ecole'); // Champ pour stocker le nom de l'école
+
+           // $table->foreignId("ecole_id")->constrained("ecoles");
+
+            $table->foreign('ecole_id')->references('id')->on('ecoles')->onDelete('cascade');
+            $table->unique(['annee1', 'nom_ecole']); // Contrainte d'unicité sur annee et nom_ecole
+
+
 
             $table->timestamps();
         });

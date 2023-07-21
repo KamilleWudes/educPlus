@@ -196,6 +196,14 @@
         function theme15() {
             $('body').attr('class', 'bg-theme bg-theme15');
         }
+
+     var d = new Date();
+        old = d.toUTCString();
+        console.log('eeeee',old); 
+
+        document.getElementById('t').innerText = old;
+
+
     </script>
 </body>
 

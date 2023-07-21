@@ -48,7 +48,7 @@
                             <tr>
                                 <th style="text-align:center">Numero</th>
                                 <th style="text-align:center">Annee scolaire</th>
-                                <th style="text-align:center">Actions</th>
+                                {{-- <th style="text-align:center">Actions</th> --}}
 
                             </tr>
                         </thead>
@@ -61,7 +61,7 @@
                                         {{--  <a href="{{ url('anneeScolaire/'.$anneeScolaire->id) }}" <button type="button"
                                                     class="btn btn-warning px-5 radius-30">Détail</button></a>  --}}
 
-                                    <td>
+                                    {{-- <td>
                                         <div class="d-flex order-actions">
                                             <a href="javascript:;" class=""><i class='bx bxs-edit'
                                                     style="text-align:center" type="submit"></i></a>
@@ -70,7 +70,7 @@
                                         </div>
                                         {{--  <a href="{{ url('anneeScolaire/'.$anneeScolaire->id) }}"<button type="button" class="btn btn-dark px-5 radius-30">Modifier</button></a>  --}}
 
-                                    </td>
+                                    {{-- </td>  --}}
                                     {{--  <td>
                                             <button type=""  class="btn btn-danger px-5 radius-30"
                                             onclick="if(confirm('Voulez vous vraiment supprimer cet anneeScolaire?')){document.getElementById('form-{{ $anneeScolaire->id }}').submit()}">Suprimer</button>
@@ -93,3 +93,5 @@
         <br> <br> <br> <br> <br>
 
     @endsection
+
+    

@@ -110,7 +110,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <h5 class="mb-0">Orders Summary</h5>
+                            <h5 class="mb-0">Listes des etudiants</h5>
                         </div>
                         <div class="font-22 ms-auto">
                             {{--  <i class='bx bx-dots-horizontal-rounded'>  --}}
@@ -237,7 +237,7 @@
                                 <input id="note" onkeyup='add()' type="text" min="0"
                                     class="form-control @error('note') is-invalid  @enderror"
                                     name="note">
-                                    <input type="text" value=" ${ resp.id }" name="inscription_id" />
+                                    <input type="text" value="${ resp.id }" name="inscription_id" />
 
                             </td>
 

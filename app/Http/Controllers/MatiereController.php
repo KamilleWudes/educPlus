@@ -54,13 +54,28 @@ class MatiereController extends Controller
      */
     public function store(Request $request)
     {
+        // $request->validate([
+        //     "nom" =>'required|unique:matiers,nom',
+        //  ]);
         $request->validate([
-            "nom" =>'required|unique:matiers,nom',
-         ]);
+            'ecole_id' => 'required|exists:ecoles,id',
+            'nom' => [
+                'required',
+                Rule::unique('matiers')->where(function ($query) use ($request) {
+                    return $query->where('ecole_id', $request->ecole_id)
+                                 ->where('nom_ecole', Ecoles());
+                })
+                
+            ]
+            
+    
+        ]);
+    
 
         $mat = new Matier();
         $mat->nom = $request->nom;
         $mat->ecole_id = $request->ecole_id;
+        $mat->nom_ecole = Ecoles();
 
         $mat->save();
          return back()->with("success","Matière ajouté avec succè!");

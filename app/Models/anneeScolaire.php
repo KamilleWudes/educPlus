@@ -35,6 +35,11 @@ class anneeScolaire extends Model
     //     return $this->belongsToMany(classe::class,"classe_anneescolaire_matiere","annee_scolaire_id","classe_id","matier_id");
     //  }
 
+    public function ecole()
+    {
+        return $this->belongsTo(Ecole::class);
+    }
+
 
     public function getNextYear()
     {

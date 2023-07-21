@@ -100,7 +100,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <h5 class="mb-0">Orders Summary</h5>
+                            <h5 class="mb-0">Listes des etudiants</h5>
                         </div>
                         <div class="font-22 ms-auto">
                             {{--  <i class='bx bx-dots-horizontal-rounded'>  --}}
@@ -118,7 +118,7 @@
                                     <th style="text-align: center">Notes</th>
                                     {{--  <th>Coefficient</th>  --}}
                                     <th>Note coficié</th>
-                                    {{--  <th style="text-align: center">Apreciation</th>  --}}
+                                     <th style="text-align: center">Apreciation</th> 
                                 </tr>
                             </thead>
                             <tbody id="etu">

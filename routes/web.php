@@ -41,7 +41,7 @@ Route::get('/addEtudiant', [App\Http\Controllers\EtudiantController::class, 'cre
 Route::post('/createEtudiant', [App\Http\Controllers\EtudiantController::class, 'store'])->name ('createEtudiant')->middleware("auth.admin");
 Route::put('/update_etudiant/{id}', [App\Http\Controllers\EtudiantController::class, 'update'])->name ('update_etudiant')->middleware("auth.admin");
 Route::get('/etudiant={id}', [App\Http\Controllers\EtudiantController::class, 'edit'])->name ('editEtudiant')->middleware("auth.admin");
-Route::get('/detail={id}', [App\Http\Controllers\EtudiantController::class, 'detail'])->name ('detailEtudiant')->middleware("auth.admin");
+Route::get('/detail-etudiant={id}', [App\Http\Controllers\EtudiantController::class, 'detail'])->name ('detailEtudiant')->middleware("auth.admin");
 // Route::delete('/etudiant/{etudiant}', [App\Http\Controllers\EtudiantController::class, 'destroy'])->name ('delete_etudiant')->middleware("auth.admin");
 Route::get('/etudiant-delete/{id}', [App\Http\Controllers\EtudiantController::class, 'destroy'])->name ('delete_etudiant')->middleware("auth.admin");
 Route::get('/etudiant-delete-list', [App\Http\Controllers\EtudiantController::class, 'onlyTrashed'])->name ('etudiant-delete-list')->middleware("auth.admin");
@@ -83,6 +83,12 @@ Route::get('/addinscription', [App\Http\Controllers\InscriptionController::class
 Route::post('/createinscription', [App\Http\Controllers\InscriptionController::class, 'store'])->name ('createinscription')->middleware("auth.admin");
 Route::get('/inscription={id}', [App\Http\Controllers\InscriptionController::class, 'edit'])->name ('edit_inscription')->middleware("auth.admin");
 Route::put('/update_inscription/{id}', [App\Http\Controllers\InscriptionController::class, 'update'])->name ('update_inscription')->middleware("auth.admin");
+Route::get('/inscription-detail={id}', [App\Http\Controllers\InscriptionController::class, 'detail'])->name ('detail_inscription')->middleware("auth.admin");
+
+
+Route::get('/inscription-delete/{id}', [App\Http\Controllers\InscriptionController::class, 'destroy'])->name ('delete_inscription')->middleware("auth.admin");
+Route::get('/inscription-delete-list', [App\Http\Controllers\InscriptionController::class, 'onlyTrashed'])->name ('inscription-delete-list')->middleware("auth.admin");
+Route::get('/inscription-restore/{id}', [App\Http\Controllers\InscriptionController::class, 'restore'])->name ('inscription-restore')->middleware("auth.admin");
 
 //Route bulletin
 
@@ -148,7 +154,10 @@ Route::delete('/NiveauScolaires/{NiveauScolaires}', [App\Http\Controllers\Niveau
 
 //Route tuteur
 Route::get('/tuteur', [App\Http\Controllers\TuteurController::class, 'index'])->name('tuteur')->middleware("auth.admin");
-
+Route::put('/update_tuteur/{id}', [App\Http\Controllers\TuteurController::class, 'update'])->name ('update_tuteur')->middleware("auth.admin");
+Route::get('/tuteur={id}', [App\Http\Controllers\TuteurController::class, 'edit'])->name ('edittuteur')->middleware("auth.admin");
+Route::get('/detail-tuteur={id}', [App\Http\Controllers\TuteurController::class, 'detail'])->name ('detailtuteur')->middleware("auth.admin");
+//
 //Route matiere et coefficient
 Route::get('/matiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'index'])->name('matiere_coefficient')->middleware("auth.admin");
 Route::get('/addmatiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'create'])->name ('addMatiere_coefficient')->middleware("auth.admin");
