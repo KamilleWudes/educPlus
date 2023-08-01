@@ -140,9 +140,9 @@
                 </div>
             </div>
                 <div class="col-md-6">
-            <button type="submit" class="btn btn-primary px-5" id="flash"
-            data-flash="{!! session()->get('success') !!}"><i
-                class="bx bx-check-circle mr-1"></i>Enregistrer</button>
+                     <button type="submit" onclick="insertNotes()" class="btn btn-primary px-5" ><i
+                class="bx bx-check-circle mr-1"></i>Enregistrer</button> 
+
         <a href=""> <button type="button" class="btn btn-danger px-5"
                 onclick="error_noti()"><i class="bx bx-x-circle mr-1"></i> Annuler</button> </a>
                 </div><br>
@@ -154,9 +154,25 @@
 
 @push('select_matiere')
     <script>
+        var etuu = []
+        var note_etudiants = [];
+        
 
         var allCoef = []
         var calc = 0
+
+        function insertNotes(){
+           
+            for(let resp of etuu){
+                var note_etudiant = {};
+                note_etudiant.etu = resp.id
+                note_etudiant.note = document.getElementById('note'+resp.id).value
+                
+                note_etudiants.push(note_etudiant);
+            }
+            //console.log(note_etudiants)
+            alert(JSON.stringify(note_etudiants)) 
+        }
 
         $(document).ready(function(){
 
@@ -184,6 +200,7 @@
         });
 
         function add(){
+            console.log('br')
             $('#re').text($('#note').val() *  calc)
         }
       /*  $(document).ready(function(){
@@ -194,6 +211,10 @@
             })
         });*/
 
+        
+
+        // declaring each grid element as a Object having three properties
+        
 
         var etudiants = [];
         $(document).ready(function(){
@@ -211,13 +232,16 @@
                         console.log("yy",response.matieres[0].coefficient)
                         console.log("matiere",response.matieres)
                         etudiants = response.etudiantsInscrits
+                        
                         console.log('sans filtre',etudiants);
                         etudiants = etudiants.filter(d => d.classe_id == classe_id)
+                        etuu = etudiants
                         console.log('avec filtre',etudiants);
                         console.log('avec filtre',etudiants);
                         var et = ''
 
                         for(let resp of etudiants){
+                            
                         et += `<tr><td>   ${ resp.matricule }
 
                             <td>
@@ -234,7 +258,7 @@
                                 </div>
                             </td>
                             <td>
-                                <input id="note" onkeyup='add()' type="text" min="0"
+                                <input id="note${ resp.id }" onkeyup='add()' type="text" min="0"
                                     class="form-control @error('note') is-invalid  @enderror"
                                     name="note">
                                     <input type="text" value="${ resp.id }" name="inscription_id" />
@@ -246,6 +270,9 @@
                             <td>
 
                         </td></tr>`;
+
+
+
                     }
 
 
