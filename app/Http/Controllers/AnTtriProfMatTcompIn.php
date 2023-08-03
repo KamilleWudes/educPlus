@@ -9,6 +9,7 @@ use App\Models\Matier;
 use App\Models\Professeur;
 use App\Models\typeTrimestre;
 use App\Models\typeComposition;
+use App\Models\an_ttri_prof_mat_tcomp_in;
 use Session;
 use Illuminate\Support\Facades\DB;
 
@@ -128,45 +129,29 @@ class AnTtriProfMatTcompIn extends Controller
             'classe_id' => 'required',
             'matier_id' => 'required',
             'annee_scolaire_id' => 'required',
-            'inscription_id.*.*.*' => 'required',
+            'inscription_id' => 'required',
             'type_trimestre_id' =>'required',
-            'note.*.*.*.*' => 'required|numeric|min:0|max:20'
+            'note' => 'required|numeric|min:0|max:20'
 
         ]);
 
     //Récupérer les données de la demande
     // $notes = $request->input('note');
-    $notes = $request->all()['note'];
-  //  dd($notes);
 
-    $classe_id = $request->input('classe_id');
+    $notes = new an_ttri_prof_mat_tcomp_in();
 
-    $matiere_id = $request->input('matier_id');
-    $annee_scolaire_id = $request->input('annee_scolaire_id');
-    $type_compo_id = $request->input('type_compo_id');
-    $type_trimestre_id = $request->input('type_trimestre_id');
-    $inscription_id = $request->input('inscription_id');
+    $notes->type_compo_id = $request->type_compo_id;
+    $notes->professeur_id = $request->professeur_id;
+    $notes->classe_id = $request->classe_id;
+    $notes->matier_id = $request->matier_id;
+    $notes->annee_scolaire_id = $request->annee_scolaire_id;
+    $notes->inscription_id = $request->inscription_id;
+    $notes->type_trimestre_id = $request->type_trimestre_id;
+    $notes->note = $request->note;
 
-         // Mettre à jour les notes
-    foreach ($notes as $inscription_id => $etudiant_notes) {
-        foreach ($etudiant_notes as $matiere_id => $matiere_notes) {
-            foreach ($matiere_notes as $type_compo_id => $type_compo_notes) {
-                foreach ($type_compo_notes as $type_trimestre_id => $trimestre_notes) {
-                    foreach ($trimestre_notes as $note) {
-                        DB::table('an_ttri_prof_mat_tcomp_ins')
-                            ->where('inscription_id', '=', $inscription_id)
-                            ->where('type_compo_id', '=', $type_compo_id)
-                            ->where('type_trimestre_id', '=', $type_trimestre_id)
-                            ->where('annee_scolaire_id', '=', $annee_scolaire_id)
-                            ->where('classe_id', '=', $classe_id)
-                            ->where('matier_id', '=', $matiere_id)
-                            ->update(['note' => $note]);
-                    }
-                }
-            }
-        }
-    }
-        return back()->with("success","Année scolaire ajouté avec succè!");
+    $notes->save();
+    
+ return back()->with("success","Note ajouté avec succè!");
 
 
 
