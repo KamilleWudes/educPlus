@@ -135,6 +135,8 @@
 
 
                             </tbody>
+                                    <input type="text" name="note" id="notes">
+
                         </table>
                     </div>
                 </div>
@@ -166,12 +168,17 @@
             for(let resp of etuu){
                 var note_etudiant = {};
                 note_etudiant.etu = resp.id
+
                 note_etudiant.note = document.getElementById('note'+resp.id).value
 
                 note_etudiants.push(note_etudiant);
             }
             //console.log(note_etudiants)
-            alert(JSON.stringify(note_etudiants))
+            //alert(JSON.stringify(note_etudiants))
+                    document.getElementById('notes').value = JSON.stringify(note_etudiants);
+                    // Soumettez le formulaire
+                document.querySelector('form').submit();
+
         }
 
         $(document).ready(function(){

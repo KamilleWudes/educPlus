@@ -138,20 +138,42 @@ class AnTtriProfMatTcompIn extends Controller
     //Récupérer les données de la demande
     // $notes = $request->input('note');
 
-    $notes = new an_ttri_prof_mat_tcomp_in();
+    // $notes = new an_ttri_prof_mat_tcomp_in();
 
-    $notes->type_compo_id = $request->type_compo_id;
-    $notes->professeur_id = $request->professeur_id;
-    $notes->classe_id = $request->classe_id;
-    $notes->matier_id = $request->matier_id;
-    $notes->annee_scolaire_id = $request->annee_scolaire_id;
-    $notes->inscription_id = $request->inscription_id;
-    $notes->type_trimestre_id = $request->type_trimestre_id;
-    $notes->note = $request->note;
+    // $notes->type_compo_id = $request->type_compo_id;
+    // $notes->professeur_id = $request->professeur_id;
+    // $notes->classe_id = $request->classe_id;
+    // $notes->matier_id = $request->matier_id;
+    // $notes->annee_scolaire_id = $request->annee_scolaire_id;
+    // $notes->inscription_id = $request->inscription_id;
+    // $notes->type_trimestre_id = $request->type_trimestre_id;
+    // $notes->note = $request->note;
 
-    $notes->save();
+    // $notes->save();
     
- return back()->with("success","Note ajouté avec succè!");
+     $note_etudiants = json_decode($request->input('note'), true);
+     if (is_array($note_etudiants)) {
+
+        foreach ($note_etudiants as $note) {
+            $noteModel = new an_ttri_prof_mat_tcomp_in();
+            $noteModel->annee_scolaire_id = $request->input('annee_scolaire_id');
+            $noteModel->professeur_id = $request->input('professeur_id');
+            $noteModel->type_trimestre_id = $request->input('type_trimestre_id');
+            $noteModel->type_compo_id = $request->input('type_compo_id');
+            $noteModel->classe_id = $request->input('classe_id');
+            $noteModel->matier_id = $note['matier_id'];
+            $noteModel->inscription_id = $note['inscription_id'];
+            $noteModel->note = $note['note'];
+            $noteModel->save();
+        }
+        
+     return back()->with("success","Note ajouté avec succè!");
+    } else {
+       
+        return ("error!");
+    }
+
+   
 
 
 
