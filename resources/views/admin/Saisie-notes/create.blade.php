@@ -174,11 +174,30 @@
                 note_etudiants.push(note_etudiant);
             }
             //console.log(note_etudiants)
-            //alert(JSON.stringify(note_etudiants))
-                    document.getElementById('notes').value = JSON.stringify(note_etudiants);
-                    // Soumettez le formulaire
-                document.querySelector('form').submit();
+           // alert(JSON.stringify(note_etudiants))
 
+    if (note_etudiants.length > 0) {
+
+        fetch('/create-saisi-note', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': 'csrfToken',
+            },
+            body: JSON.stringify({ note_etudiants: notes }),
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            console.log(data);
+        })
+        .catch(error => {
+            
+            console.error('Erreur lors de l\'envoi des données :', error);
+        });
+    } else {
+        console.log("Aucune note saisie.");
+    }
         }
 
         $(document).ready(function(){

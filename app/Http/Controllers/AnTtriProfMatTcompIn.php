@@ -131,7 +131,9 @@ class AnTtriProfMatTcompIn extends Controller
             'annee_scolaire_id' => 'required',
             'inscription_id' => 'required',
             'type_trimestre_id' =>'required',
-            'note' => 'required|numeric|min:0|max:20'
+            'note' => 'required|array|numeric|min:0|max:20',
+            //'note' => 'required|array'
+
 
         ]);
 
@@ -151,33 +153,46 @@ class AnTtriProfMatTcompIn extends Controller
 
     // $notes->save();
     
-     $note_etudiants = json_decode($request->input('note'), true);
-     if (is_array($note_etudiants)) {
+    //  $note_etudiants = json_decode($request->input('note'), true);
+    //  if (is_array($note_etudiants)) {
 
-        foreach ($note_etudiants as $note) {
-            $noteModel = new an_ttri_prof_mat_tcomp_in();
-            $noteModel->annee_scolaire_id = $request->input('annee_scolaire_id');
-            $noteModel->professeur_id = $request->input('professeur_id');
-            $noteModel->type_trimestre_id = $request->input('type_trimestre_id');
-            $noteModel->type_compo_id = $request->input('type_compo_id');
-            $noteModel->classe_id = $request->input('classe_id');
-            $noteModel->matier_id = $note['matier_id'];
-            $noteModel->inscription_id = $note['inscription_id'];
-            $noteModel->note = $note['note'];
-            $noteModel->save();
-        }
+    //     foreach ($note_etudiants as $note) {
+    //         $noteModel = new an_ttri_prof_mat_tcomp_in();
+    //         $noteModel->annee_scolaire_id = $request->input('annee_scolaire_id');
+    //         $noteModel->professeur_id = $request->input('professeur_id');
+    //         $noteModel->type_trimestre_id = $request->input('type_trimestre_id');
+    //         $noteModel->type_compo_id = $request->input('type_compo_id');
+    //         $noteModel->classe_id = $request->input('classe_id');
+    //         $noteModel->matier_id = $note['matier_id'];
+    //         $noteModel->inscription_id = $note['inscription_id'];
+    //         $noteModel->note = $note['note'];
+    //         $noteModel->save();
+    //     }
         
-     return back()->with("success","Note ajouté avec succè!");
-    } else {
+    //  return back()->with("success","Note ajouté avec succè!");
+    // } else {
        
-        return ("error!");
+    //     return ("error!");
+    // }
+
+    
+    foreach ($data['note_etudiants'] as $note) {
+        $noteModel = new an_ttri_prof_mat_tcomp_in();
+        $noteModel->annee_scolaire_id = $data['annee_scolaire_id'];
+        $noteModel->professeur_id = $data['professeur_id'];
+        $noteModel->type_trimestre_id = $data['type_trimestre_id'];
+        $noteModel->type_compo_id = $data['type_compo_id'];
+        $noteModel->classe_id = $data['classe_id'];
+        $noteModel->matier_id = $note['matier_id'];
+        $noteModel->inscription_id = $note['inscription_id'];
+        $noteModel->note = $note['note'];
+
+        $noteModel->save();
     }
 
-   
-
-
-
+    return response()->json(['success' => true, 'message' => 'Enregistrement réussi']);
 }
+
 
     /**
      * Display the specified resource.
