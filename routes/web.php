@@ -197,8 +197,8 @@ Route::get('/acceuil', [App\Http\Controllers\UserPrincipalController::class,'ind
 
 //Route saisi de note
 Route::get('/saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'index'])->name('saisi-note')->middleware("auth.professeur");
-Route::get('/add-saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'create'])->name ('add-saisi-note')->middleware("auth.professeur");
-Route::post('/create-saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'store'])->name ('create-saisi-note')->middleware("auth.professeur");
+Route::get('/add-saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'create'])->name('add-saisi-note')->middleware("auth.professeur");
+Route::post('/create-saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'store'])->name('create-saisi-note')->middleware("auth.professeur");
 
 //Route Recuperation dans le select
 Route::get('/matieres', [App\Http\Controllers\BulletinProfesseurTypecompositonMatier::class,'GetClasseMatiere'])->name('GetClasseMatiere');

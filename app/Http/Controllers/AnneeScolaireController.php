@@ -58,7 +58,7 @@ class AnneeScolaireController extends Controller
      */
     public function store(Request $request)
     {
-       
+
        $request->validate([
         'ecole_id' => 'required|exists:ecoles,id',
         'annee1' => [
@@ -67,9 +67,9 @@ class AnneeScolaireController extends Controller
                 return $query->where('ecole_id', $request->ecole_id)
                              ->where('nom_ecole', Ecoles());
             })
-            
+
         ]
-        
+
 
     ]);
 

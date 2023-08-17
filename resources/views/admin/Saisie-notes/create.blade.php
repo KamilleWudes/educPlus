@@ -1,6 +1,6 @@
 @extends('layouts/master')
 @section('contenu')
-    <form class="row g-3" method="POST" action="{{ route('create-saisi-note') }}">
+    <form class="row g-3" method="POST">
         @csrf
         <div class="page-content">
             <!--breadcrumb-->
@@ -135,12 +135,14 @@
 
 
                             </tbody>
+                                    <input type="text" name="note" id="notes">
+
                         </table>
                     </div>
                 </div>
             </div>
                 <div class="col-md-6">
-                     <button type="submit" onclick="insertNotes()" class="btn btn-primary px-5" ><i
+                     <button onclick="insertNotes()" class="btn btn-primary px-5" ><i
                 class="bx bx-check-circle mr-1"></i>Enregistrer</button> 
 
         <a href=""> <button type="button" class="btn btn-danger px-5"
@@ -170,8 +172,23 @@
                 
                 note_etudiants.push(note_etudiant);
             }
-            //console.log(note_etudiants)
-            alert(JSON.stringify(note_etudiants)) 
+            //console.log("no",note_etudiants)
+           
+
+            $.ajax({ 
+                    type: "POST",
+                    url: "/create-saisi-note",
+                    datatype: 'json',
+                    data : note_etudiants,
+                    cache : false,
+    				processData: false,
+					contentType: false,
+                    success: (response)=>{
+                        console.log(response)
+                   }
+
+            }) 
+            //alert(JSON.stringify(note_etudiants)) 
         }
 
         $(document).ready(function(){
@@ -215,6 +232,10 @@
 
         // declaring each grid element as a Object having three properties
         
+
+
+        // declaring each grid element as a Object having three properties
+
 
         var etudiants = [];
         $(document).ready(function(){
