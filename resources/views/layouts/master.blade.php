@@ -105,6 +105,12 @@
 
     <script src="assets/plugins/select2/js/select2.min.js"></script>
 	<script>
+        $.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+			}
+		})
+
 		$('.single-select').select2({
 			theme: 'bootstrap4',
 			width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',

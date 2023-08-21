@@ -1,7 +1,8 @@
 @extends('layouts/master')
 @section('contenu')
-    <form class="row g-3" method="POST">
+    <form class="row g-3" method="POST" action="{{route('create-saisi-note')}}">
         @csrf
+        <input type="text" name="etudiant_et_notes" id="etudiant_et_notes" hidden>
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -172,23 +173,20 @@
                 
                 note_etudiants.push(note_etudiant);
             }
-            //console.log("no",note_etudiants)
-           
+            document.getElementById('etudiant_et_notes').value = JSON.stringify(note_etudiants) 
 
+            /*             
             $.ajax({ 
                     type: "POST",
-                    url: "/create-saisi-note",
                     datatype: 'json',
+                    url: "{{ route('create-saisi-note') }}",
                     data : note_etudiants,
-                    cache : false,
-    				processData: false,
-					contentType: false,
                     success: (response)=>{
                         console.log(response)
-                   }
+                    }
 
-            }) 
-            //alert(JSON.stringify(note_etudiants)) 
+            })  
+            alert(JSON.stringify(this.note_etudiants)) */
         }
 
         $(document).ready(function(){
@@ -200,7 +198,8 @@
                 calc = coeff[0].coefficient
                 $('#coef').html(`<h5 class="mb-0">coefficient : ${coeff[0].coefficient}</h5>`);
 
-               /* $.ajax({ AzraelMic
+                /* 
+                $.ajax({ AzraelMic
                     type: 'GET',
                     url: 'http://192.168.17.210:8000/api/get-all-region',
                     datatype: 'JSON',
@@ -212,7 +211,8 @@
                         $('#matiere').html(matiere);
                  }
 
-                 })  */
+                 })  
+                */
             })
         });
 
@@ -220,7 +220,7 @@
             console.log('br')
             $('#re').text($('#note').val() *  calc)
         }
-      /*  $(document).ready(function(){
+        /*  $(document).ready(function(){
 
             $('#note').on("onKeydown",function(){
                 console.log('yygfryhj')
