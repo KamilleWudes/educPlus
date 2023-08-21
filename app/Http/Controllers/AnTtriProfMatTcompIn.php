@@ -123,14 +123,20 @@ class AnTtriProfMatTcompIn extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
       // dd($request->all());
         $request->validate([
+=======
+        //dd($request->all());
+        $this->validate($request, [
+>>>>>>> origin/zeus
             'type_compo_id' => 'required',
             'professeur_id' => 'required',
             'classe_id' => 'required',
             'matier_id' => 'required',
             'annee_scolaire_id' => 'required',
             'inscription_id' => 'required',
+<<<<<<< HEAD
             'type_trimestre_id' => 'required',
             'note_etudiants.*.note' => 'required|numeric|min:0|max:20',
         ], [
@@ -195,6 +201,31 @@ class AnTtriProfMatTcompIn extends Controller
     return response()->json(['success' => false, 'message' => 'Erreur : ' . $e->getMessage()]);
 }
 
+=======
+            'type_trimestre_id' =>'required',
+
+        ]);
+
+    $t = array();
+    $t = json_decode($request->etudiant_et_notes, true);
+    
+
+    for ($i=0; $i < count($t); $i++) { 
+        $noteModel = new an_ttri_prof_mat_tcomp_in();
+        $noteModel->annee_scolaire_id = 1;
+        $noteModel->professeur_id = 1;
+        $noteModel->type_trimestre_id = 1;
+        $noteModel->type_compo_id = 1;
+        $noteModel->classe_id = 1;
+        $noteModel->matier_id = 1;
+        $noteModel->inscription_id = $t[$i]['etu'];
+        $noteModel->note = $t[$i]['note'];
+
+        $noteModel->save();
+    }
+    return response()->json(['success' => true, 'message' => 'Enregistrement réussi']);
+    
+>>>>>>> origin/zeus
 }
 
 

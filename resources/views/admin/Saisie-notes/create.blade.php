@@ -1,7 +1,12 @@
 @extends('layouts/master')
 @section('contenu')
+<<<<<<< HEAD
     <form class="row g-3" method="POST" action="{{ route('create-saisi-note') }}">
+=======
+    <form class="row g-3" method="POST" action="{{route('create-saisi-note')}}">
+>>>>>>> origin/zeus
         @csrf
+        <input type="text" name="etudiant_et_notes" id="etudiant_et_notes" hidden>
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -181,6 +186,7 @@
 
                 note_etudiants.push(note_etudiant);
             }
+<<<<<<< HEAD
 
 
             $.ajax({
@@ -198,6 +204,22 @@
                     console.error(error);
                 }
             });
+=======
+            document.getElementById('etudiant_et_notes').value = JSON.stringify(note_etudiants) 
+
+            /*             
+            $.ajax({ 
+                    type: "POST",
+                    datatype: 'json',
+                    url: "{{ route('create-saisi-note') }}",
+                    data : note_etudiants,
+                    success: (response)=>{
+                        console.log(response)
+                    }
+
+            })  
+            alert(JSON.stringify(this.note_etudiants)) */
+>>>>>>> origin/zeus
         }
 
 
@@ -210,6 +232,7 @@
                 calc = coeff[0].coefficient
                 $('#coef').html(`<h5 class="mb-0">coefficient : ${coeff[0].coefficient}</h5>`);
 
+<<<<<<< HEAD
                 /* $.ajax({ AzraelMic
                      type: 'GET',
                      url: 'http://192.168.17.210:8000/api/get-all-region',
@@ -223,6 +246,23 @@
                   }
 
                   })  */
+=======
+                /* 
+                $.ajax({ AzraelMic
+                    type: 'GET',
+                    url: 'http://192.168.17.210:8000/api/get-all-region',
+                    datatype: 'JSON',
+                    success: (response)=>{
+                        console.log(response.regions)
+                              for( var i = 0; i < response.regions.length; i++){
+                            matiere += '<option  value="'+response.regions[i].id+'">'+response.regions[i].intitule+'</option>';
+                        }
+                        $('#matiere').html(matiere);
+                 }
+
+                 })  
+                */
+>>>>>>> origin/zeus
             })
         });
 
