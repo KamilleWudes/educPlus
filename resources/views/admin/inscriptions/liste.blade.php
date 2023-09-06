@@ -57,29 +57,31 @@
                                 @foreach ($inscriptions as $inscription)
                                     <tr>
                                         {{--  <td style="text-align:center">{{ $inscription->id }}</td>  --}}
-                                      <td style="text-align:center">{{ $inscription->matricule }}</td>
-                                        <td style="text-align:center">{{ $inscription->annee1}} - {{ $inscription->annee2}}</td>
+                                        <td style="text-align:center">{{ $inscription->matricule }}</td>
+                                        <td style="text-align:center">{{ $inscription->annee1 }} -
+                                            {{ $inscription->annee2 }}</td>
                                         <td style="text-align:center">{{ $inscription->date_insription }}</td>
-                                        <td style="text-align:center">{{ $inscription->etudiant_prenom }} {{ $inscription->etudiant_nom }}</td>
-                                        <td style="text-align:center">{{ $inscription->classe_nom}}</td>
-                                        <td style="text-align:center">{{ $inscription->tuteur_prenoms }} {{ $inscription->tuteur_nom }}</td>
+                                        <td style="text-align:center">{{ $inscription->etudiant_prenom }}
+                                            {{ $inscription->etudiant_nom }}</td>
+                                        <td style="text-align:center">{{ $inscription->classe_nom }}</td>
+                                        <td style="text-align:center">{{ $inscription->tuteur_prenoms }}
+                                            {{ $inscription->tuteur_nom }}</td>
                                         <td style="text-align:center">{{ $inscription->tuteur_telephone1 }}</td>
 
-                                        {{--  <td style="text-align:center">{{ $inscription->created_at->diffForHumans() }}</td>  --}}
-
-                                            <td style="text-align:center"><a href="{{ url('inscription-detail=' . $inscription->id) }}"><button type="button"
-                                                class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
+                                        <td style="text-align:center"><a
+                                                href="{{ url('inscription-detail=' . $inscription->id) }}"><button
+                                                    type="button" class="btn btn-light btn-sm radius-30 px-4"> Voir
+                                                    Détail</button></a></td>
 
                                         <td>
                                             <div class="d-flex order-actions">
                                                 <a href="{{ url('inscription=' . $inscription->id) }}"><i
-                                                    class='bx bxs-edit @disabled(true)'></i></a>
-                                                {{-- <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'
-                                                        style="text-align:center"></i></a> --}}
-                                                         <a href="{{ url('inscription-delete/'. $inscription->id) }}" id="flash"
-                                                        data-flash="{!! session()->get('success') !!}" class="ms-3"><i class='bx bxs-trash'
-                                                        style="text-align:center"></i></a>
-                                                       
+                                                        class='bx bxs-edit @disabled(true)'></i></a>
+
+                                                <a href="{{ url('inscription-delete/' . $inscription->id) }}" id="flash"
+                                                    data-flash="{!! session()->get('success') !!}" class="ms-3"><i
+                                                        class='bx bxs-trash' style="text-align:center"></i></a>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -95,43 +97,41 @@
 @endsection
 
 @push('ins')
-
-  <script>
-
-    $(document).ready(function(){
-        console.log("hello word");
-        $('#idannee').on("change",function(){
-            var classe_id = $('#idannee').val();
-            console.log(classe_id);
-          $.ajax({
-                type: 'GET',
-                url: '{{ route('GetAnnee') }}',
-                datatype: 'JSON',
-                data:{annee:classe_id},
-                success: (response)=>{
-                    console.log("matiere",response.inscriptions)
-                    inscri = response.inscriptions
-                        console.log('avec filtre',inscri);
+    <script>
+        $(document).ready(function() {
+            console.log("hello word");
+            $('#idannee').on("change", function() {
+                var classe_id = $('#idannee').val();
+                console.log(classe_id);
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('GetAnnee') }}',
+                    datatype: 'JSON',
+                    data: {
+                        annee: classe_id
+                    },
+                    success: (response) => {
+                        console.log("matiere", response.inscriptions)
+                        inscri = response.inscriptions
+                        console.log('avec filtre', inscri);
                         //inscri = inscri.filter(d => d.annee == classe_id)
 
-                    var is = ''
+                        var is = ''
 
-                    for(let resp of inscri){
+                        for (let resp of inscri) {
 
-                        is += `<tr>
+                            is += `<tr>
                           <td style="text-align:center">${ resp.matricule} </td>
                             <td style="text-align:center">${ resp.annee1} - ${ resp.annee2}</td>
                             <td style="text-align:center">${ resp.date_insription} </td>
                             <td style="text-align:center">${ resp.etudiant_prenom} ${ resp.etudiant_nom}</td>
                             <td style="text-align:center">${ resp.classe_nom}</td>
                             <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
-                            <td style="text-align:center">${ resp.tuteur_telephone1} / ${ resp.tuteur_telephone2}</td>
+                            <td style="text-align:center">${ resp.tuteur_telephone1}</td>
 
-                                <td style="text-align:center">
-                                    <button type="button"
-                                    class="btn btn-light btn-sm radius-30 px-4">View Details</button>
-                                </td>
-
+                                <td style="text-align:center"><a href="{{ url('inscription-detail=' . $inscription->id) }}"><button type="button"
+                                  class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
+                                
                             <td>
                                 <div class="d-flex order-actions" style="margin:2%">
                                     <a href="" class=""><i
@@ -142,27 +142,22 @@
                             </td>
                         </tr>`
 
-                    }
+                        }
 
-                    if(response.inscriptions.length > 0){
+                        if (response.inscriptions.length > 0) {
 
-                        $('#ins').html(is);
-                       // console.log('tt',$('#ins').val())
+                            $('#ins').html(is);
+                            // console.log('tt',$('#ins').val())
 
-                    }else{
-                        $('#ins').html('');
+                        } else {
+                            $('#ins').html('');
 
-                    }
+                        }
 
-                },
+                    },
 
+                })
             })
-        })
-    });
-
-
-</script>
-
-
+        });
+    </script>
 @endpush
-

@@ -43,6 +43,7 @@ class InscriptionController extends Controller
        ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
        ->select('inscriptions.id', 'inscriptions.date_insription','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','etudiants.nom as etudiant_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2','etudiants.prenom as etudiant_prenom','etudiants.matricule as matricule','annee_scolaires.annee1', 'annee_scolaires.annee2', 'ecoles.nom as ecole_nom')
        ->where('users.id', '=', $user_id)
+       ->orderBy("id","Desc")
        ->where('inscriptions.annee_scolaire_id','=', $request->annee)
        ->get();
 
@@ -71,7 +72,7 @@ class InscriptionController extends Controller
     ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
     ->select('inscriptions.id', 'inscriptions.date_insription', 'ecoles.nom as ecole_nom','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2', 'etudiants.nom as etudiant_nom','etudiants.prenom as etudiant_prenom','etudiants.matricule as matricule','annee_scolaires.annee1', 'annee_scolaires.annee2')
     ->where('users.id', '=', $user_id)
-    ->where('inscriptions.annee_scolaire_id', '=', $anneeScolaireEnCours->id)
+    ->where('annee_scolaires.annee1',lastAneeScolaire())
     ->get();
 
     $AnneeScolaires = DB::table('users')
@@ -107,7 +108,6 @@ class InscriptionController extends Controller
         $tuteurs = Tuteur::offset(0)->limit(1)->orderBy("id","Desc")->get();
 
         $AnneeScolaires = anneeScolaire::offset(0)->limit(1)->orderBy("id","Desc")->get();
-      //  $classes = classe::orderBy("id","Desc")->get();
         $etudiants = Etudiant::orderBy("id","Desc")->get();
         $Tuteurss = Tuteur::orderBy("id","Desc")->get();
 

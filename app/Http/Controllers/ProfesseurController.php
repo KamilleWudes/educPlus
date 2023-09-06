@@ -36,17 +36,59 @@ class ProfesseurController extends Controller
      */
     public function index()
     {
-        $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
-        $professeurs = DB::table('users')
-        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-        ->join('professeurs', 'ecoles.id', '=', 'professeurs.ecole_id')
-        ->where('users.id', '=', $user_id)
-        ->select('professeurs.nom as nom','professeurs.id as id', 'professeurs.matricule as matricule', 'professeurs.prenom as prenom','professeurs.sexe as sexe','professeurs.telephone1 as telephone1')
+
+            $userId = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+            $ecoleId = DB::table('users')
+            ->where('id', $userId)
+            ->value('ecole_id');
+
+        $professeurs = DB::table('professeurs')
+            ->join('professeur_classe_matieres', 'professeurs.id', '=', 'professeur_classe_matieres.professeur_id')
+            ->join('classes', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
+            ->join('ecoles', 'classes.ecole_id', '=', 'ecoles.id')
+            ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->select('professeurs.*')
+            ->where('ecoles.id', $ecoleId)
+            ->where('annee_scolaires.annee1',lastAneeScolaire())
+            ->distinct()
+            ->get();
+
+            $anneesScolairesEcole = DB::table('annee_scolaires')
+            ->join('professeur_classe_matieres', 'annee_scolaires.id', '=', 'professeur_classe_matieres.annee_scolaire_id')
+            ->join('classes', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
+            ->join('ecoles', 'classes.ecole_id', '=', 'ecoles.id')
+            ->select('annee_scolaires.*')
+            ->where('ecoles.id', $ecoleId)
+            ->distinct()
+            ->get();
+
+        return view('admin.professeurs.liste', compact('professeurs','anneesScolairesEcole'));
+    }
+
+    public function GetProfesseur(request $request){
+        $userId = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+        $ecoleId = DB::table('users')
+        ->where('id', $userId)
+        ->value('ecole_id');
+
+        $anneeScolaire = $request->input('professeur'); // Récupération de l'id de l'annee scolaire depuis le ajax
+        $data = DB::table('professeurs')
+        ->join('professeur_classe_matieres', 'professeurs.id', '=', 'professeur_classe_matieres.professeur_id')
+        ->join('classes', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
+        ->join('ecoles', 'classes.ecole_id', '=', 'ecoles.id')
+        ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
+        ->select('professeurs.*')
+        ->where('ecoles.id', $ecoleId)
+        ->where('annee_scolaires.id','=', $anneeScolaire)
         ->orderBy("id","Desc")
+        ->distinct()
         ->get();
 
-        return view('admin.professeurs.liste', compact('professeurs'));
-    }
+    return response()->json([
+        "professeurs"=>$data,
+
+    ]);
+}
 
     public function disposer()
     {
@@ -141,8 +183,6 @@ class ProfesseurController extends Controller
             $professeurs->image = $fileNameTotore;
             $professeurs->password = hash::make($request->password);
             $professeurs->role = $request->role;
-            $professeurs->ecole_id = $request->ecole_id;
-
 
             $professeurs->save();
             //$professeurs->id;
@@ -156,6 +196,9 @@ class ProfesseurController extends Controller
                         $ProfesseurClasseMatiere->professeur_id =$professeurs->id;
                         $ProfesseurClasseMatiere->classe_id = $classe_id;
                         $ProfesseurClasseMatiere->matier_id = $matier_id;
+                        $ProfesseurClasseMatiere->ecole_id = $request->ecole_id;
+                        $ProfesseurClasseMatiere->annee_scolaire_id = $request->annee_scolaire_id;
+
                         $ProfesseurClasseMatiere->save();
 
                     }
@@ -195,6 +238,10 @@ class ProfesseurController extends Controller
                         $ProfesseurClasseMatiere->professeur_id =$request->professeur_id;
                         $ProfesseurClasseMatiere->classe_id = $classe_id;
                         $ProfesseurClasseMatiere->matier_id = $matier_id;
+                        $ProfesseurClasseMatiere->ecole_id = $request->ecole_id;
+                        $ProfesseurClasseMatiere->annee_scolaire_id = $request->annee_scolaire_id;
+
+
                         $ProfesseurClasseMatiere->save();
 
                     }

@@ -21,7 +21,8 @@
                         <option value="">Annee Scolaires </option>
 
                         @foreach ($anneeScolaires as $AnneeScolaire)
-                            <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} - {{ $AnneeScolaire->annee2 }}</option>
+                            <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} -
+                                {{ $AnneeScolaire->annee2 }}</option>
                         @endforeach
                     </select>
                     @error('annee_scolaire_id')
@@ -44,7 +45,7 @@
                                     <th style="text-align:center">Sexe</th>
                                     <th style="text-align:center">Classe</th>
                                     <th style="text-align:center">Tuteur etudiant</th>
-                                     <th style="text-align:center">Adresse</th>
+                                    <th style="text-align:center">Adresse</th>
                                     <th style="text-align:center">Détail</th>
                                     {{-- <th style="text-align:center">Action</th> --}}
                                 </tr>
@@ -54,43 +55,25 @@
                                     <tr>
                                         {{--  <td style="text-align:center">{{$loop->index+1}}</td>  --}}
                                         <td style="text-align:center">{{ $etudiant->matricule }}</td>
-                                        <td style="text-align:center">{{ $etudiant->etudiant_prenom }} {{ $etudiant->etudiant_nom }}</td>
+                                        <td style="text-align:center">{{ $etudiant->etudiant_prenom }}
+                                            {{ $etudiant->etudiant_nom }}</td>
                                         <td style="text-align:center">
                                             @if ($etudiant->sexe == 'F')
                                                 F
                                             @else
                                                 M
-                                            @endif  
+                                            @endif
                                         </td>
                                         <td style="text-align:center">{{ $etudiant->classe_nom }}</td>
-                                        <td style="text-align:center">{{ $etudiant->tuteur_prenoms }} {{ $etudiant->tuteur_nom }}</td>
+                                        <td style="text-align:center">{{ $etudiant->tuteur_prenoms }}
+                                            {{ $etudiant->tuteur_nom }}</td>
 
                                         <td style="text-align:center">{{ $etudiant->etudiant_adresse }}</td>
-                                        {{--  <td style="text-align:center">{{ $etudiant->created_at->diffForHumans()}}</td>  --}}
-                                        {{--  <td style="text-align:center">{{ $bulletin->inscription->etudiant->prenom }} {{ $bulletin->inscription->etudiant->nom }}</td>  --}}
 
-                                        {{--  <td>{{ $etudiant->inscription->implode('classe_id') }}</td>  --}}
-
-                                        <td style="text-align:center"><a href="{{ url('detail-etudiant=' . $etudiant->id) }}"><button type="button"
-                                            class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
-
-                                        {{-- <td> --}}
-
-                                            {{-- <div class="d-flex order-actions"> --}}
-                                                {{--  @if(count($etudiant->inscription) == 0)  --}}
-                                                {{-- <a href="{{ url('etudiant=' . $etudiant->id) }}" class=""><i
-                                                    class='bx bxs-edit' style="text-align:center"></i></a> --}}
-
-                                            {{--  <a href="{{ route('delete_etudiant', $etudiant->id) }}" id="btn-hapus" data-id="{{ $etudiant->id }}" nom-id="{{ $etudiant->nom }}" prenom-id="{{ $etudiant->prenom }}" class="ms-4"><i class='bx bxs-trash'
-                                                    style="text-align:center"></i></a>  --}}
-                                                    {{-- <a href="{{ url('etudiant-delete/'. $etudiant->id) }}" id="flash"
-                                                        data-flash="{!! session()->get('success') !!}" class="ms-4"><i class='bx bxs-trash'
-                                                        style="text-align:center"></i></a> --}}
-                                                        {{--  @endif  --}}
-                                            {{-- </div> --}}
-
-                                        {{-- </td> --}}
-
+                                        <td style="text-align:center"><a
+                                                href="{{ url('detail-etudiant=' . $etudiant->id) }}"><button type="button"
+                                                    class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
+                                        </td>
                                     </tr>
                                 @endforeach
 
@@ -105,30 +88,30 @@
 
 
 @push('etude')
-
-<script>
-
-    $(document).ready(function(){
-        console.log("hello word");
-        $('#idetud').on("change",function(){
-            var classe_id = $('#idetud').val();
-            console.log(classe_id);
-          $.ajax({
-                type: 'GET',
-                url: '{{ route('Getetude') }}',
-                datatype: 'JSON',
-                data:{etudiant:classe_id},
-                success: (response)=>{
-                    console.log("matiere",response.etudiants)
-                    inscri = response.etudiants
-                        console.log('avec filtre',inscri);
+    <script>
+        $(document).ready(function() {
+            console.log("hello word");
+            $('#idetud').on("change", function() {
+                var classe_id = $('#idetud').val();
+                console.log(classe_id);
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('Getetude') }}',
+                    datatype: 'JSON',
+                    data: {
+                        etudiant: classe_id
+                    },
+                    success: (response) => {
+                        console.log("matiere", response.etudiants)
+                        inscri = response.etudiants
+                        console.log('avec filtre', inscri);
                         //inscri = inscri.filter(d => d.annee == classe_id)
 
-                    var etud = ''
+                        var etud = ''
 
-                    for(let resp of inscri){
+                        for (let resp of inscri) {
 
-                        etud += `<tr>
+                            etud += `<tr>
                           <td style="text-align:center"> ${ resp.matricule} </td>
                           <td style="text-align:center">${ resp.etudiant_prenom} ${ resp.etudiant_nom}</td>
                           <td style="text-align:center">${ resp.etudiant_sexe} </td>
@@ -136,40 +119,29 @@
                             <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
                             <td style="text-align:center">${ resp.etudiant_adresse}</td>
 
-                                <td style="text-align:center">
-                                    <button type="button"
-                                    class="btn btn-light btn-sm radius-30 px-4">View Details</button>
-                                </td>
+                                <td style="text-align:center"><a
+                                                href="{{ url('detail-etudiant=' . $etudiant->id) }}"><button type="button"
+                                                    class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
+                                        </td>
 
-                            <td>
-                                <div class="d-flex order-actions" style="margin:2%">
-                                    <a href="" class=""><i
-                                        class='bx bxs-edit' style="text-align:center" disabled></i></a>
-                                    <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'
-                                            style="text-align:center"></i></a>
-                                </div>
-                            </td>
                         </tr>`
 
-                    }
+                        }
 
-                    if(response.etudiants.length > 0){
+                        if (response.etudiants.length > 0) {
 
-                        $('#etud').html(etud);
-                       // console.log('tt',$('#ins').val())
+                            $('#etud').html(etud);
+                            // console.log('tt',$('#ins').val())
 
-                    }else{
-                        $('#ins').html('');
+                        } else {
+                            $('#ins').html('');
 
-                    }
+                        }
 
-                },
+                    },
 
+                })
             })
-        })
-    });
-
-
-</script>
-
+        });
+    </script>
 @endpush

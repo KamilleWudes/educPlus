@@ -48,3 +48,39 @@
     <button onclick="displaySelected()">show selected</button>
 </body>
 </html>
+
+
+
+use Illuminate\Http\Request;
+use App\Models\Inscription;
+use Illuminate\Support\Facades\View;
+
+public function filterInscriptions(Request $request)
+{
+    // Récupérez les critères de filtrage depuis la requête
+    $anneeScolaire = $request->input('annee_scolaire');
+    $typeTrimestre = $request->input('type_trimestre');
+    $typeComposition = $request->input('type_composition');
+    $classe = $request->input('classe');
+    $matiere = $request->input('matiere');
+    $ecoleId = auth()->user()->ecole_id; // ID de l'école du professeur connecté
+
+    // Construisez la requête Eloquent pour filtrer les inscriptions
+    $inscriptions = Inscription::query()
+        ->join('an_ttri_prof_mat_tcomp_ins', 'inscriptions.id', '=', 'an_ttri_prof_mat_tcomp_ins.inscription_id')
+        ->where('an_ttri_prof_mat_tcomp_ins.annee_scolaire_id', $anneeScolaire)
+        ->where('an_ttri_prof_mat_tcomp_ins.type_trimestre_id', $typeTrimestre)
+        ->where('an_ttri_prof_mat_tcomp_ins.type_composition_id', $typeComposition)
+        ->where('an_ttri_prof_mat_tcomp_ins.classe_id', $classe)
+        ->where('an_ttri_prof_mat_tcomp_ins.matier_id', $matiere)
+        ->where('an_ttri_prof_mat_tcomp_ins.ecole_id', $ecoleId)
+        ->select('inscriptions.*')
+        ->get();
+
+    // Utilisez la vue partielle pour afficher les inscriptions filtrées
+    $view = View::make('partials.inscriptions_list', compact('inscriptions'))->render();
+
+    // Retournez les résultats de la requête sous forme de réponse JSON
+    return response()->json(['html' => $view]);
+}
+

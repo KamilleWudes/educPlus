@@ -16,9 +16,16 @@ return new class extends Migration
         Schema::create('type_trimestres', function (Blueprint $table) {
             $table->id();
             $table->string('nom')->unique();
+            $table->foreignId("ecole_id")->constrained("ecoles");
+            $table->unique(["nom","ecole_id"]);
             $table->timestamps();
+
+
         });
+        schema::enableForeignKeyConstraints();
+
     }
+
 
     /**
      * Reverse the migrations.
@@ -27,6 +34,9 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('type_trimestres', function (Blueprint $table) {
+            $table->dropForeign(["ecole_id"]);
+        });
         Schema::dropIfExists('type_trimestres');
     }
 };

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 // use Illuminate\Contracts\Session\Session;
-
+use App\Models\Ecole;
 use Illuminate\Http\Request;
 use Session;
 
@@ -43,7 +43,9 @@ class HomeController extends Controller
         // if(Session::has('user')){
         //     $data = User::where('id','=', Session::get('user'))->first();
         // }
-        return view('welcome');
+        $ecoles = Ecole::orderBy("id","Desc")->get();
+
+        return view('welcome',compact('ecoles'));
     }
 
 }

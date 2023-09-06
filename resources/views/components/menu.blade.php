@@ -44,8 +44,8 @@
 						<div class="menu-title">Gestions des Etudiants</div>
 					</a>
 					<ul>
-						<li> <a href="{{ route('addEtudiant') }}"><i class="bx bx-right-arrow-alt"></i>Nouvel Etudiant</a>
-						</li>
+						{{-- <li> <a href="{{ route('addEtudiant') }}"><i class="bx bx-right-arrow-alt"></i>Nouvel Etudiant</a>
+						</li> --}}
 						<li> <a href="{{ route('etudiant') }}"><i class="bx bx-right-arrow-alt"></i>Liste Etudiant</a>
 						</li>
                         {{-- <li> <a href="{{ route('etudiant-delete-list') }}"><i class="bx bx-right-arrow-alt"></i>Corbeille Etudiant</a>
@@ -107,10 +107,6 @@
 						<div class="menu-title"> Gestions des Bulettins</div>
 					</a>
 					<ul>
-                        {{--  <li> <a href="{{ route('addoperation') }}"><i class="bx bx-right-arrow-alt"></i>Operation</a>
-						</li>
-						<li> <a href="{{ route('bulletin') }}"><i class="bx bx-right-arrow-alt"></i>Liste des Operation</a>
-						</li>  --}}
                         <li> <a href="{{ route('add-saisi-note') }}"><i class="bx bx-right-arrow-alt"></i>Saisie de note</a>
 						</li>
 						<li> <a href="{{ route('saisi-note') }}"><i class="bx bx-right-arrow-alt"></i>Liste des notes</a>
@@ -149,6 +145,8 @@
 						<li> <a href="{{ route('trimestre') }}"><i class="bx bx-right-arrow-alt"></i>Types Trimestres</a>
 						</li>
                         <li> <a href="{{ route('TypeComposition') }}"><i class="bx bx-right-arrow-alt"></i>Types Compositions</a>
+						</li>
+						  <li> <a href="{{ route('notes-etudiants') }}"><i class="bx bx-right-arrow-alt"></i>Notes Etudiants</a>
 						</li>
                         @endif
                         @if(fullRoleSuperAdmin()=="SuperAdmin")

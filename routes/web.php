@@ -73,6 +73,7 @@ Route::put('/update_professeur/{id}', [App\Http\Controllers\professeurController
 Route::get('/professeur={id}', [App\Http\Controllers\professeurController::class, 'edit'])->name ('editprofesseur')->middleware("auth.admin");
 Route::get('/detail={id}', [App\Http\Controllers\professeurController::class, 'detail'])->name ('detailprofesseur')->middleware("auth.admin");
 
+
 // Route::get('/professeur-classe-matieres', [App\Http\Controllers\professeurController::class,'disposer'])->name('disposer')->middleware("auth.admin");
 
 
@@ -164,16 +165,12 @@ Route::get('/addmatiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireM
 Route::post('/creatematiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'store'])->name ('createMatiere_coefficient')->middleware("auth.admin");
 
 
-
-//Route operation
-Route::get('/operation', [App\Http\Controllers\bulletinProfesseurTypecompositonMatier::class,'index'])->name('operation')->middleware("auth.professeur");
-Route::get('/addoperation', [App\Http\Controllers\bulletinProfesseurTypecompositonMatier::class,'create'])->name ('addoperation')->middleware("auth.professeur");
-Route::post('/createoperation', [App\Http\Controllers\bulletinProfesseurTypecompositonMatier::class,'store'])->name ('createoperation')->middleware("auth.professeur");
-
 //Route professeur-classe-matieres
 Route::get('/professeur-classe-matieres', [App\Http\Controllers\ProfesseurClasseMatiere::class,'index'])->name('disposer')->middleware("auth.admin");
 Route::get('/adddisposer', [App\Http\Controllers\ProfesseurClasseMatiere::class,'create'])->name('adddisposer')->middleware("auth.admin");
 Route::post('/createdisposer', [App\Http\Controllers\ProfesseurClasseMatiere::class,'store'])->name ('createdisposer')->middleware("auth.admin");
+
+Route::get('/notes-etudiants', [App\Http\Controllers\ProfesseurClasseMatiere::class, 'notesEtudiants'])->name ('notes-etudiants')->middleware("auth.admin");
 
 
 //Route anneescolaire-classe-matieres
@@ -197,11 +194,16 @@ Route::get('/acceuil', [App\Http\Controllers\UserPrincipalController::class,'ind
 
 //Route saisi de note
 Route::get('/saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'index'])->name('saisi-note')->middleware("auth.professeur");
+
 Route::get('/add-saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'create'])->name('add-saisi-note')->middleware("auth.professeur");
+
 Route::post('/create-saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'store'])->name('create-saisi-note')->middleware("auth.professeur");
 
 //Route Recuperation dans le select
-Route::get('/matieres', [App\Http\Controllers\BulletinProfesseurTypecompositonMatier::class,'GetClasseMatiere'])->name('GetClasseMatiere');
+
+ Route::get('/GetClasseMatiere', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'GetClasseMatiere'])->name('GetClasseMatiere');
+
+//Route::get('/matieres', [App\Http\Controllers\BulletinProfesseurTypecompositonMatier::class,'GetClasseMatiere'])->name('GetClasseMatiere');
 
 Route::get('/classes_mat', [App\Http\Controllers\ClasseAnneescolaireMatiere::class, 'GetClasses'])->name('GetClasses');
 
@@ -210,3 +212,11 @@ Route::get('/GetAnnee', [App\Http\Controllers\InscriptionController::class, 'Get
 Route::get('/GetTuteur', [App\Http\Controllers\TuteurController::class, 'GetTuteurs'])->name('GetTuteur');
 
 Route::get('/Getetude', [App\Http\Controllers\EtudiantController::class, 'Getetudes'])->name('Getetude');
+
+Route::get('/GetProf', [App\Http\Controllers\professeurController::class, 'GetProfesseur'])->name('GetProf'); 
+
+Route::get('/GetProfesseurClasse', [App\Http\Controllers\ProfesseurClasseMatiere::class, 'GetProfesseurClasseEcole'])->name('GetProfesseurClasse'); 
+
+Route::get('/GetNotesEtude', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'GetNotesEtudes'])->name('GetNotesEtude'); 
+
+Route::get('/GetClassprof', [App\Http\Controllers\ProfesseurClasseMatiere::class, 'GetClassprofs'])->name ('GetClassprof');

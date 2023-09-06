@@ -12,6 +12,6 @@ class typeTrimestre extends Model
     public function bulletin(){
         return $this->hasMany(bulletin::class);
     }
-    protected $fillable = ["nom"];
+    protected $fillable = ["nom","ecole_id"];
 
 }

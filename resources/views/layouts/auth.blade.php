@@ -22,6 +22,10 @@
 
     <link href="assets/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
     <link href="assets/sweetalert2/animate.min.css" rel="stylesheet" />
+
+    <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
+	<link href="assets/plugins/select2/css/select2-bootstrap4.css" rel="stylesheet" />
+
     <title>Dashtreme - Multipurpose Bootstrap5 Admin Template</title>
 </head>
 
@@ -73,6 +77,8 @@
     <!--plugins-->
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/sweetalert2/sweetalert2.min.js"></script>
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
+
       {{--  <script>
     Swal.fire('Any fool can use a computer')
     </script>  --}}
@@ -120,7 +126,7 @@
             }),
 
 
-            $('#theme1').click(theme1);
+        $('#theme1').click(theme1);
         $('#theme2').click(theme2);
         $('#theme3').click(theme3);
         $('#theme4').click(theme4);
@@ -135,6 +141,8 @@
         $('#theme13').click(theme13);
         $('#theme14').click(theme14);
         $('#theme15').click(theme15);
+
+
 
 
         function theme1() {
@@ -203,7 +211,14 @@
 
         document.getElementById('t').innerText = old;
 
-
+    </script>
+    <script>
+     $('.single-select').select2({
+			theme: 'bootstrap4',
+			width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+			placeholder: $(this).data('placeholder'),
+			allowClear: Boolean($(this).data('allow-clear')),
+		});  
     </script>
 </body>
 

@@ -31,7 +31,7 @@ class TuteurController extends Controller
        ->select('inscriptions.id', 'inscriptions.date_insription','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','tuteurs.adresses as tuteur_adresse','etudiants.id as etudiant_id','etudiants.nom as etudiant_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2','etudiants.prenom as etudiant_prenom','etudiants.sexe as etudiant_sexe','etudiants.matricule as matricule','annee_scolaires.annee1', 'annee_scolaires.annee2', 'ecoles.nom as ecole_nom','etudiants.adresse as etudiant_adresse')
        ->where('users.id', '=', $user_id)
        ->where('inscriptions.annee_scolaire_id','=', $request->tuteur)
-       ->orderBy('tuteur_id','desc')
+       ->orderBy('id','desc')
        ->get();
 
       // dd($data);

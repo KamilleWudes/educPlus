@@ -20,6 +20,6 @@ class typeComposition extends Model
         return $this->belongsToMany(Professeur::class,"bulletin_professeur_typecompositon_matiers","type_compo_id","professeur_id");
      }
 
-     protected $fillable = ["nom"];
+     protected $fillable = ["nom","ecole_id"];
 
 }

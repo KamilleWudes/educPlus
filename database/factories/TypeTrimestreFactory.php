@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProfesseurClasseMatiere>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\type_trimestre>
  */
-class ProfesseurClasseMatiereFactory extends Factory
+class TypeTrimestreFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,12 +17,8 @@ class ProfesseurClasseMatiereFactory extends Factory
     public function definition()
     {
         return [
-            "classe_id" =>rand(1,10),
-            "matier_id"=>rand(1,10),
-            "professeur_id" =>rand(1,10),
+            "nom" =>$this->faker->name(),
             "ecole_id" =>rand(1,10),
-            "annee_scolaire_id" =>rand(1,2)
-
         ];
     }
 }

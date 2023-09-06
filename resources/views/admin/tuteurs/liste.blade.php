@@ -64,19 +64,6 @@
                                         <td style="text-align:center"><a href="{{ url('detail-tuteur=' . $tuteur->id) }}"><button type="button"
                                             class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
 
-                                        {{-- <td>
-
-                                            <div class="d-flex order-actions">
-                                                <a href="{{ url('etudiant=' . $tuteur->id) }}" class=""><i
-                                                    class='bx bxs-edit' style="text-align:center"></i></a>
-
-                                            <a href="{{ route('delete_etudiant', $tuteur->id) }}" id="btn-hapus" data-id="{{ $tuteur->id }}" nom-id="{{ $tuteur->noms }}" prenom-id="{{ $tuteur->prenoms }}" class="ms-4"><i class='bx bxs-trash'
-                                                    style="text-align:center"></i></a>
-
-                                            </div>
-
-                                        </td> --}}
-
                                     </tr>
                                 @endforeach
 
@@ -115,25 +102,15 @@
                         for(let resp of inscri){
 
                             tuteur += `<tr>
-                              <td style="text-align:center">${ resp.id} </td>
+                              {{-- <td style="text-align:center">${ resp.id} </td> --}}
                               <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
                               <td style="text-align:center">${ resp.etudiant_sexe} </td>
                               <td style="text-align:center">${ resp.tuteur_adresse}</td>
                               <td style="text-align:center">${ resp.etudiant_prenom} ${ resp.etudiant_nom}</td>
 
-                                    <td style="text-align:center">
-                                        <button type="button"
-                                        class="btn btn-light btn-sm radius-30 px-4">View Details</button>
-                                    </td>
+                                    <td style="text-align:center"><a href="{{ url('detail-tuteur=' . $tuteur->id) }}"><button type="button"
+                                            class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
 
-                                <td>
-                                    <div class="d-flex order-actions" style="margin:2%">
-                                        <a href="" class=""><i
-                                            class='bx bxs-edit' style="text-align:center" disabled></i></a>
-                                        <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'
-                                                style="text-align:center"></i></a>
-                                    </div>
-                                </td>
                             </tr>`
 
                         }

@@ -16,12 +16,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(TypeCompositionTableSeeder::class);
-        $this->call(TypeTrimestreTableSeeder::class);
+        // $this->call(TypeCompositionTableSeeder::class);
+        // $this->call(TypeTrimestreTableSeeder::class);
         $this->call(RoleTableSeeder::class);
-        $this->call(niveauScolaireTableSeeder::class);
+        $this->call(niveauScolaireTableSeeder::class);   
 
         \App\Models\Ecole::factory(10)->create();
+        \App\Models\TypeTrimestre::factory(3)->create();
+        \App\Models\typeComposition::factory(3)->create();
          \App\Models\User::factory(10)->create();
          \App\Models\Etudiant::factory(10)->create();
          \App\Models\Tuteur::factory(10)->create();

@@ -16,8 +16,14 @@ return new class extends Migration
         Schema::create('type_compositions', function (Blueprint $table) {
             $table->id();
             $table->string('nom')->unique();
+            $table->foreignId("ecole_id")->constrained("ecoles");
+
             $table->timestamps();
+            $table->unique(["nom","ecole_id"]);
+
         });
+        schema::enableForeignKeyConstraints();
+
     }
 
     /**
@@ -27,6 +33,9 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('type_compositions', function (Blueprint $table) {
+            $table->dropForeign(["ecole_id"]);
+        });
         Schema::dropIfExists('type_compositions');
     }
 };

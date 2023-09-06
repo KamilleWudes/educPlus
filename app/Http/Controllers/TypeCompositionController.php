@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Validation\Rule;
 use App\Models\typeComposition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class TypeCompositionController extends Controller
 {
@@ -19,8 +21,19 @@ class TypeCompositionController extends Controller
      */
     public function index()
     {
-        $typeCompositions= typeComposition::all();
+        // $typeCompositions= typeComposition::all();
+        // return view ('admin.type-compositions.liste',compact('typeCompositions'));
+
+        $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+        $typeCompositions = DB::table('users')
+        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+        ->join('type_compositions', 'ecoles.id', '=', 'type_compositions.ecole_id')
+        ->where('users.id', '=', $user_id)
+        ->select('ecoles.nom as ecole_nom', 'type_compositions.id as id', 'type_compositions.nom as nom')
+        ->orderby('id','desc')
+        ->get();
         return view ('admin.type-compositions.liste',compact('typeCompositions'));
+
     }
 
     /**
@@ -43,8 +56,10 @@ class TypeCompositionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nom' => 'required|unique:type_compositions,nom',
-       ]);
+            // 'nom' => 'required|unique:type_compositions,nom',
+            'nom' => 'required|unique:type_compositions,nom,NULL,id,ecole_id,'.$request->ecole_id,
+
+       ]); 
        typeComposition::create($request->all());
        return back()->with("success","Type composition ajouté avec succè!");
     }
@@ -84,7 +99,9 @@ class TypeCompositionController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'nom' => 'required|unique:type_compositions,nom',
+            // 'nom' => 'required|unique:type_compositions,nom',
+            'nom' => 'required|' . Rule::unique('type_compositions')->ignore($id),
+
          ]);
          $typeCompositions = typeComposition::find($id);
          $typeCompositions->nom = $request->nom;

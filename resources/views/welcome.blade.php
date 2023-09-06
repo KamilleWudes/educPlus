@@ -16,64 +16,7 @@
                             <input onclick="t(1)" type="radio" name="colors" id="blue"><span
                                 style="font-size:20px;">Professeur </span>
                         </div>
-                        {{--  <div id="label">  --}}
-                        {{--  <div class="card">
-                                <div class="card-body">
-                                    <div class="border p-4 rounded">
-                                        <div class="text-center">
-                                            <h3 class="">Sign in555</h3>
-
-                                        </div>
-
-                                        <div class="form-body">
-                                            <form class="row g-3" method="POST" action="{{ route('verification') }}">
-                                                @csrf
-                                                <div class="col-12">
-                                                    <label for="inputEmailAddress" class="form-label">Email Address</label>
-                                                    <input type="email"
-                                                        class="form-control @error('email') is-invalid @enderror"
-                                                        id="inputEmailAddress" name="email" value="{{ old('email') }}"
-                                                        placeholder="Email Address">
-                                                </div>
-                                                <div class="col-12">
-                                                    <label for="inputChoosePassword" class="form-label">Enter
-                                                        Password</label>
-                                                    <div class="input-group" id="show_hide_password">
-                                                        <input type="password"
-                                                            class="form-control border-end-0 @error('password') is-invalid @enderror"
-                                                            name="password" id="inputChoosePassword"
-                                                            placeholder="Enter Password"> <a href="javascript:;"
-                                                            class="input-group-text bg-transparent"><i
-                                                                class='bx bx-hide'></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            id="flexSwitchCheckChecked" checked>
-                                                        <label class="form-check-label"
-                                                            for="flexSwitchCheckChecked">Remember Me</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 text-end"> <a
-                                                        href="authentication-forgot-password.html">Forgot Password ?</a>
-                                                </div>
-                                                <input type="text" id="na" name="na">
-
-                                                <div class="col-12">
-                                                    <div class="d-grid">
-                                                        <button type="submit" class="btn btn-light"><i
-                                                                class="bx bxs-lock-open"></i>Se connecter</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>  --}}
-                        {{--  </div>  --}}
-
-                        {{--  <div id="label2">  --}}
+                    
                         <div class="card">
                             <div class="card-body">
                                 <div class="border p-4 rounded">
@@ -105,16 +48,25 @@
                                                             class='bx bx-hide'></i></a>
                                                 </div>
                                             </div>
+                                            <div class="col-12" id="ecoles">
+                                                <label class="form-label">Selectionnez l'ecole</label>
 
-                                            <div class="col-md-6">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="flexSwitchCheckChecked" checked>
-                                                    <label class="form-check-label" for="flexSwitchCheckChecked">Remember
-                                                        Me</label>
-                                                </div>
+                                                <select
+                                                    class="form-select single-select @error('ecole_id') is-invalid  @enderror"
+                                                    id="inputGroupSelect03" aria-label="Example select with button addon"
+                                                    name="ecole_id">
+
+                                                    <option value="">Selectionnez l'ecole</option>
+
+                                                    @foreach ($ecoles as $ecole)
+                                                        <option value="{{ $ecole->id }}">{{ $ecole->nom }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                            <div class="col-md-6 text-end"> <a href="authentication-forgot-password.html">Forgot Password ?</a>
+
+
+                                            <div class="col-md-6 text-end"> <a
+                                                    href="authentication-forgot-password.html"></a>
                                             </div>
                                             <input type="hidden" id="na" name="na">
 
@@ -153,11 +105,13 @@
 
 
                 document.getElementById('na').value = 'admin'
-                document.getElementById("inputEmailprof").hidden = true;
+                document.getElementById("ecoles").hidden = true;
+
+
             } else {
 
                 document.getElementById('na').value = 'professeur'
-                document.getElementById("inputEmailprof").hidden = false;
+                document.getElementById("ecoles").hidden = false;
 
             }
         }

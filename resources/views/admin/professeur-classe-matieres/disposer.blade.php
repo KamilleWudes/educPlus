@@ -10,23 +10,26 @@
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Liste Classes - Professeurs - Matières</li>
+                            <li class="breadcrumb-item active" aria-current="page">Liste Classes - Professeurs - Matières
+                            </li>
                         </ol>
                     </nav>
                 </div>
                 <div class="ms-auto">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light">Settings</button>
-                        <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                                href="javascript:;">Action</a>
-                            <a class="dropdown-item" href="javascript:;">Another action</a>
-                            <a class="dropdown-item" href="javascript:;">Something else here</a>
-                            <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated
-                                link</a>
-                        </div>
+                    <div class="ms-auto">
+                        <label for="validationCustom04" class="form-label">Année scolaire</label>
+                        <select class="form-select @error('annee_scolaire_id') is-invalid  @enderror" id="idProfEcole"
+                            name="annee_scolaire_id">
+                            <option value="">Annee Scolaires</option>
+
+                            @foreach ($anneesScolairesEcole as $AnneeScolaire)
+                                <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} -
+                                    {{ $AnneeScolaire->annee2 }}</option>
+                            @endforeach
+                        </select>
+                        @error('annee_scolaire_id')
+                            <span class="error" style="color:red">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -47,28 +50,29 @@
                                     <th style="text-align:center">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            @foreach ($data as $dat)
+                            <tbody id="proff">
+                                @foreach ($data as $dat)
                                     <tr>
-                                        <td style="text-align:center">{{$dat->matricule}}</td>
+                                        <td style="text-align:center">{{ $dat->matricule }}</td>
 
-                                        <td style="text-align:center">{{$dat->professeur}} {{$dat->prenom}}</td>
+                                        <td style="text-align:center">{{ $dat->nom }} {{ $dat->prenom }}</td>
 
                                         <td style="text-align:center">{{ $dat->classe }}</td>
 
                                         <td style="text-align:center">{{ $dat->matiere }}</td>
 
                                         <td style="text-align:center"><a href=""><button type="button"
-                                                class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
+                                                    class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
+                                        </td>
 
                                         <td>
-                                                <div class="d-flex order-actions">
+                                            <div class="d-flex order-actions">
 
-                                                    <a href="" class=""><i
-                                                            class='bx bxs-edit' style="text-align:center"></i></a>
+                                                <a href="" class=""><i class='bx bxs-edit'
+                                                        style="text-align:center"></i></a>
 
-                                                    <a href="" id="btn-hapus" prenom-id="" class="ms-4"><i class='bx bxs-trash'
-                                                            style="text-align:center"></i></a>
+                                                <a href="" id="btn-hapus" prenom-id="" class="ms-4"><i
+                                                        class='bx bxs-trash' style="text-align:center"></i></a>
 
                                         </td>
                                     </tr>
@@ -80,3 +84,67 @@
         </div>
     </div>
 @endsection
+
+@push('professeurEcole')
+    <script>
+        $(document).ready(function() {
+            console.log("hello");
+            $('#idProfEcole').on("change", function() {
+                var classe_id = $('#idProfEcole').val();
+                console.log('val', classe_id);
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('GetProfesseurClasse') }}',
+                    datatype: 'JSON',
+                    data: {
+                        professeurEcole: classe_id
+                    },
+                    success: (response) => {
+                        console.log("matiere", response.professeursEcole)
+                        inscri = response.professeursEcole
+                        console.log('avec filtre', inscri);
+                        //inscri = inscri.filter(d => d.annee == classe_id)
+
+                        var professeur = ''
+
+                        for (let resp of inscri) {
+
+                            professeur += `<tr>
+                              <td style="text-align:center">${ resp.matricule} </td>
+                              <td style="text-align:center">${ resp.prenom} ${ resp.nom}</td>
+                              <td style="text-align:center">${ resp.classe} </td>
+                              <td style="text-align:center">${ resp.matiere}</td>
+                                    <td style="text-align:center">
+                                        <button type="button"
+                                        class="btn btn-light btn-sm radius-30 px-4">View Details</button>
+                                    </td>
+
+                                <td>
+                                    <div class="d-flex order-actions" style="margin:2%">
+                                        <a href="" class=""><i
+                                            class='bx bxs-edit' style="text-align:center" disabled></i></a>
+                                        <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'
+                                                style="text-align:center"></i></a>
+                                    </div>
+                                </td>
+                            </tr>`
+
+                        }
+
+                        if (response.professeursEcole.length > 0) {
+
+                            $('#proff').html(professeur);
+                            // console.log('tt',$('#ins').val())
+
+                        } else {
+                            $('#ins').html('');
+
+                        }
+
+                    },
+
+                })
+            })
+        });
+    </script>
+@endpush

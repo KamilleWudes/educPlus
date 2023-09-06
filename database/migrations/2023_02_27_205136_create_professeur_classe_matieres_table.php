@@ -17,6 +17,10 @@ return new class extends Migration
             $table->foreignId("classe_id")->constrained("classes");
             $table->foreignId("matier_id")->constrained("matiers");
             $table->foreignId("professeur_id")->constrained("professeurs");
+            $table->foreignId("ecole_id")->constrained("ecoles");
+            $table->foreignId("annee_scolaire_id")->constrained("annee_scolaires");
+
+
             $table->timestamps();
 
           // $table->unique(["classe_id","matier_id","professeur_id"]);
@@ -37,7 +41,7 @@ return new class extends Migration
     {
         Schema::table('professeur_classe_matieres', function (Blueprint $table) {
 
-            $table->dropForeign(["classe_id","matier_id","professeur_id"]);
+            $table->dropForeign(["classe_id","matier_id","professeur_id","ecole_id","annee_scolaire_id"]);
 
         });
          Schema::dropIfExists('professeur_classe_matieres');

@@ -39,26 +39,6 @@
                         @csrf
                         <div class="card-body">
                             <div class="border p-3 rounded">
-
-                                {{--  <div class="mb-3">
-                                    <label class="form-label">Selectionnez l''ecole</label>
-                                    <div class="input-group">
-                                        <button class="btn btn-outline-secondary" type="button"><i
-                                                class='bx bx-search'></i>
-                                        </button>
-                                        <select class="form-select @error('ecole_id') is-invalid  @enderror single-select"
-                                            id="inputGroupSelect03" name="ecole_id"
-                                            aria-label="Example select with button addon">
-                                            <option value="">Selectionnez l''ecole</option>
-
-                                                <option value="{{ EcolesId() }}">{{ Ecoles()}} </option>
-
-                                        </select>
-                                    </div>
-                                    @error('ecole_id')
-                                        <span class="error" style="color:red">{{ $message }}</span>
-                                    @enderror
-                                </div>  --}}
                                 <input type="hidden" value="{{ EcolesId() }}" name="ecole_id"/>
 
                                 <div class="mb-3">

@@ -29,8 +29,13 @@ class Professeur extends Model
         return $this->belongsToMany(Matier::class,"professeur_classe_matieres","professeur_id","matier_id");
      }
 
-     public function ecoles(){
-        return $this->belongsTo(Ecole::class,"ecole_id","id");
+   //   public function ecoles(){
+   //      return $this->belongsTo(Ecole::class,"ecole_id","id");
+   //  }
+
+   public function ecoles()
+    {
+        return $this->belongsToMany(Ecole::class, 'professeur_classe_matieres', 'professeur_id', 'ecole_id');
     }
 
      protected $fillable = ["nom","prenom","sexe","adresse","email","telephone1","image"];

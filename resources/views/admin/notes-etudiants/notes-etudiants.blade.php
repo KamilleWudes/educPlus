@@ -31,7 +31,7 @@
                             id="type-trimestre" name="annee_scolaire_id">
                             <option value="">Type trimestre </option>
 
-                            @foreach ($typesTrimestres as $typeTrimestre)
+                            @foreach ($typesTrimestreInfos as $typeTrimestre)
                                 <option value="{{ $typeTrimestre->id }}">{{ $typeTrimestre->nom }}</option>
                             @endforeach
                         </select>
@@ -47,13 +47,21 @@
                             @endforeach
                         </select>
                     </div>
+                    
+                    <div class="btn-group">
+                        <select class="form-select single-select @error('classe_id') is-invalid  @enderror" id="professeur"
+                            name="prof_id">
+                            <option value="">Professeur</option>
+                            @foreach ($professeurs as $professeur)
+                                <option value="{{ $professeur->id }}">{{ $professeur->nom }}</option>
+                            @endforeach
+
+                        </select>
+                    </div>
                     <div class="btn-group">
                         <select class="form-select single-select @error('classe_id') is-invalid  @enderror" id="classe"
                             name="classe_id">
                             <option value="">Classe</option>
-                            @foreach ($classes as $classe)
-                                <option value="{{ $classe->id }}">{{ $classe->nom }}</option>
-                            @endforeach
 
                         </select>
                     </div>
@@ -118,46 +126,58 @@
         $('select#type-composition').change(function() {
             // Réactivez le sélecteur de classe et désactivez les autres
             $('select').not('#annee-scolaire, #type-trimestre, #type-composition, #classe').prop('disabled', true);
-            $('select#classe').prop('disabled', false);
+            $('select#professeur').prop('disabled', false);
         });
+         // Gestionnaire d'événements pour le changement de la classe
+        $('select#professeur').change(function() {
+            // Réactivez le sélecteur de classe et désactivez les autres
+            $('select').not('#annee-scolaire, #type-trimestre, #type-composition, #professeur').prop(
+                'disabled', true);
+            $('select#classe').prop('disabled', false);
+        }); 
 
         // Gestionnaire d'événements pour le changement de la classe
         $('select#classe').change(function() {
             // Réactivez le sélecteur de classe et désactivez les autres
-            $('select').not('#annee-scolaire, #type-trimestre, #type-composition, #classe, #matiere').prop(
+            $('select').not('#annee-scolaire, #type-trimestre, #type-composition,#professeur, #classe, #matiere').prop(
                 'disabled', true);
             $('select#matiere').prop('disabled', false);
-        });
+        }); 
 
         $(document).ready(function() {
             console.log("hello note");
-            $('#anneeScolaire, #typeTrimestre, #typeComposition, #classe, #matiere').on("change", function() {
+            $('#anneeScolaire, #typeTrimestre, #typeComposition,#professeur, #classe, #matiere').on("change", function() {
                 var anneeScolaire = $('#annee-scolaire').val();
                 var typeTrimestre = $('#type-trimestre').val();
-                var typeComposition = $('#type-composition').val();
+                var typeComposition = $('#type-composition').val(); 
+                var professeur = $('#professeur').val();
                 var classe = $('#classe').val();
                 var matiere = $('#matiere').val();
 
                 console.log('anneeScolaire', anneeScolaire);
                 console.log('typeTrimestre', typeTrimestre);
                 console.log('typeComposition', typeComposition);
+                console.log('professeur', professeur);
                 console.log('classe', classe);
                 console.log('matiere', matiere);
 
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ route('GetNotesEtude') }}',
+                    url: '{{ route('GetClassprof') }}',
                     datatype: 'JSON',
                     data: {
                         annee_scolaire: anneeScolaire,
                         type_trimestre: typeTrimestre,
                         type_composition: typeComposition,
+                        professeur: professeur,
                         classe: classe,
                         matiere: matiere,
                     },
                     success: (response) => {
+                        console.log("classes", response.classes)
                         console.log("matieres", response.matieres)
+
                         inscri = response.Notes
                         console.log('avec filtre', inscri);
                         //inscri = inscri.filter(d => d.annee == classe_id)
@@ -178,8 +198,17 @@
 
                         }
 
+                        var classe = '';
                         var matiere = '';
 
+                        // select classes
+                        for (var i = 0; i < response.classes.length; i++) {
+                            classe += '<option  value=""></option>';
+
+                            classe += '<option  value="' + response.classes[i].id + '">' +
+                                response.classes[i].nom + '</option>';
+                        }
+                           // select matieres
                         for (var i = 0; i < response.matieres.length; i++) {
                             matiere += '<option  value=""></option>';
 
@@ -187,12 +216,16 @@
                                 response.matieres[i].nom + '</option>';
                         }
 
-                        if (response.matieres.length > 0) {
+                        if (response.classes.length > 0) {
+                            $('#classe').html(classe);
                             $('#matiere').html(matiere);
                             $('#etudNote').html(NoteEtude);
+
+                            //$('#etudNote').html(NoteEtude);
                             // console.log('tt',$('#ins').val())
 
                         } else {
+                            $('#classe').html('');
                             $('#matiere').html('');
                             $('#etudNote').html('');
 

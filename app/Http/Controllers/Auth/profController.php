@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session as FacadesSession;
+use App\Models\Ecole;
+
 
 
 
@@ -26,7 +28,7 @@ class profController extends Controller
      */
     public function index()
     {
-        //
+       //
     }
 
     /**
@@ -98,70 +100,50 @@ class profController extends Controller
 
     public function loginProf(Request $request)
     {
-        if ($request->na == 'admin') {
+        {
             $request->validate([
                 'email' => 'required|email',
-                'password' => 'required'
-
+                'password' => 'required',
             ]);
-            $user = User::where("email", "=", $request->email)->first();
-            if ($user) {
-
-                if (Hash::check($request->password, $user->password)) {
+    
+            if ($request->na == 'admin') {
+                $user = User::where("email", $request->email)->first();
+                if ($user && Hash::check($request->password, $user->password)) {
                     $request->session()->put('user', $user->id);
-                     return redirect('dashbord');
-
-
-                } else {
-                    return redirect()->back()->with("error", "Authentification incorrect");
-
-                }
-            } else {
-
-                return redirect()->back()->with("error", "Authentification incorrect");
-            }
-
-  
-        } else {
-
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required'
-
-            ]);
-
-            $prof = Professeur::where("email", "=", $request->email)->first();
-            if ($prof) {
-
-                if (Hash::check($request->password, $prof->password)) {
-                    $request->session()->put('Professeur', $prof->id);
-
                     return redirect('dashbord');
-
-                } else {
-                    return redirect()->back()->with("error", "Authentification incorrect");
                 }
             } else {
+                $request->validate([
+                    'ecole_id' => 'required',
+                ]);
+    
+                $prof = Professeur::where("email", $request->email)->first();
 
-                return redirect()->back()->with("error", "Authentification incorrect");
-
+                if ($prof && Hash::check($request->password, $prof->password)) {
+                    // Vérification de l'école du professeur ici
+                    $chosen_ecole_id = $request->input('ecole_id');
+                        $chosen_ecole = Ecole::find($chosen_ecole_id);
+                        if ($chosen_ecole) {
+                            $prof = Professeur::with(['ecoles' => function ($query) use ($chosen_ecole_id) {
+                                $query->where('ecole_id', $chosen_ecole_id);
+                            }])->where("email", $request->email)->first();
+                        
+                            if ($prof && Hash::check($request->password, $prof->password) && $prof->ecoles->count() > 0) {
+                                $request->session()->put('ecole_id', $chosen_ecole_id);
+                                $request->session()->put('ecole_nom', $chosen_ecole->nom);
+                                $request->session()->put('Professeur', $prof->id);
+                                return redirect('dashbord');
+                            }}
+                }
+            }
+    
+            return redirect()->back()->with("error", "Authentification incorrecte");
         }
-    }
 }
 
 public function dashbord()
     {
-        // $data = array();
-        // if(Session::has('user')){
-        //     $data = User::where('id','=', Session::get('user'))->first();
-        // }
-
-        // $data = array();
-        // if(Session::has('Professeur')){
-        //     $data = Professeur::where('id','=', Session::get('Professeur'))->first();
-        // }
         return view('dashbord');
-
     }
 
 }

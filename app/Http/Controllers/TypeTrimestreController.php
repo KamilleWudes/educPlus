@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Validation\Rule;
 use App\Models\typeTrimestre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class TypeTrimestreController extends Controller
 {
@@ -19,7 +21,17 @@ class TypeTrimestreController extends Controller
      */
     public function index()
     {
-        $typeTrimestres = typeTrimestre::all();
+        // $typeTrimestres = typeTrimestre::all();
+        // return view ('admin.type-trimestres.liste',compact('typeTrimestres'));
+
+        $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+        $typeTrimestres = DB::table('users')
+        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+        ->join('type_trimestres', 'ecoles.id', '=', 'type_trimestres.ecole_id')
+        ->where('users.id', '=', $user_id)
+        ->select('ecoles.nom as ecole_nom', 'type_trimestres.id as id', 'type_trimestres.nom as nom')
+        ->orderby('id','desc')
+        ->get();
         return view ('admin.type-trimestres.liste',compact('typeTrimestres'));
     }
 
@@ -43,7 +55,9 @@ class TypeTrimestreController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nom' => 'required|unique:type_trimestres,nom',
+            // 'nom' => 'required|unique:type_trimestres,nom',
+            'nom' => 'required|unique:type_trimestres,nom,NULL,id,ecole_id,'.$request->ecole_id,
+
        ]);
        typeTrimestre::create($request->all());
        return back()->with("success","Type Trimestre ajouté avec succè!");
@@ -83,8 +97,10 @@ class TypeTrimestreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'nom' => 'required',
+        $this->validate($request, [ 
+            // 'nom' => 'required',
+            'nom' => 'required|' . Rule::unique('type_trimestres')->ignore($id),
+
        ]);
         $TypeTrimestres = typeTrimestre::find($id);
          $TypeTrimestres->nom = $request->nom;

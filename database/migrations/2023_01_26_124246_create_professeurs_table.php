@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string("image");
             $table->string('email')->unique();
             $table->string('password');
-            $table->foreignId("ecole_id")->constrained("ecoles");
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
             $table->string('role');
@@ -43,9 +42,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('professeurs', function (Blueprint $table) {
-            $table->dropForeign(["ecole_id"]);
-        });
         Schema::dropIfExists('professeurs');
     }
 };

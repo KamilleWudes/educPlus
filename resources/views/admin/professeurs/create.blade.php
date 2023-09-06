@@ -17,18 +17,16 @@
                     </nav>
                 </div>
                 <div class="ms-auto">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light">Settings</button>
-                        <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                                href="javascript:;">Action</a>
-                            <a class="dropdown-item" href="javascript:;">Another action</a>
-                            <a class="dropdown-item" href="javascript:;">Something else here</a>
-                            <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated
-                                link</a>
-                        </div>
+                    <div class="ms-auto">
+                        <label for="validationCustom04" class="form-label">Année scolaire</label>
+                        <select class="form-select @error('annee_scolaire_id') is-invalid  @enderror"
+                            id="validationCustom04" name="annee_scolaire_id">
+                            <option value="{{ AnneScolairesId() }}">{{ AnneScolaires() }}
+                            </option>
+                        </select>
+                        @error('annee_scolaire_id')
+                            <span class="error" style="color:red">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -96,8 +94,8 @@
                                         <select class="form-select mb-0 @error('sexe') is-invalid  @enderror" name="sexe"
                                             id="sexe" aria-label="Default select example">
                                             <option value=""> Sexe </option>
-                                            <option value="1">homme</option>
-                                            <option value="0">Femme</option>
+                                            <option value="H">homme</option>
+                                            <option value="F">Femme</option>
                                         </select>
                                     </div>
                                     @error('sexe')
@@ -169,7 +167,7 @@
 
                 </div>
                 <div class="col-md-6">
-                    <br> <br> <br> <br> <br> <br> <br><br> <br>
+                    <br> <br> <br> <br> <br>
                     <div class="card border-top border-0 border-4 border-white">
                         <div class="card-body p-5">
                             <div class="card-title d-flex align-items-center">
@@ -186,7 +184,8 @@
                                         {{--  <button class="btn btn-outline-secondary" type="button"><i
                                                 class='bx bx-search'></i>
                                         </button>  --}}
-                                        <select class="multiple-select @error('classe_id') is-invalid  @enderror single-select"
+                                        <select
+                                            class="multiple-select @error('classe_id') is-invalid  @enderror single-select"
                                             id="inputGroupSelect04" name="classe_id[]"
                                             aria-label="Example select with button addon" multiple="multiple">
                                             <option value="">Selectionnez la classe</option>
@@ -215,113 +214,114 @@
                                         </select>
 
                                     </div>  --}}
-                                    {{--  @error('matier_id')
+                                {{--  @error('matier_id')
                                     <span class="error" style="color:red">{{ $message }}</span>
                                 @enderror  --}}
 
                                 <div class="col-12">
-                                <label class="form-label">Selectionnez la Matière</label>
-                                <div class="input-group">
+                                    <label class="form-label">Selectionnez la Matière</label>
+                                    <div class="input-group">
 
-                                <select class="multiple-select  @error('matier_id') is-invalid  @enderror" data-placeholder="Choose anything" name="matier_id[]" multiple="multiple">
-                                    @foreach ($matieres as $matiere)
-                                    <option value="{{ $matiere->id }}"> {{ $matiere->nom }}
-                                     </option>
-                                 @endforeach
+                                        <select class="multiple-select  @error('matier_id') is-invalid  @enderror"
+                                            data-placeholder="Choose anything" name="matier_id[]" multiple="multiple">
+                                            @foreach ($matieres as $matiere)
+                                                <option value="{{ $matiere->id }}"> {{ $matiere->nom }}
+                                                </option>
+                                            @endforeach
 
-                                </select>
-                                </div>
-                                @error('matier_id')
-                                <span class="error" style="color:red">{{ $message }}</span>
-                            @enderror
+                                        </select>
+                                    </div>
+                                    @error('matier_id')
+                                        <span class="error" style="color:red">{{ $message }}</span>
+                                    @enderror
 
 
                                     <input type="hidden" id="na" name="na">
                                     <input type="hidden" id="inputhidden" name="professeur_id">
-                                    <input type="hidden" value="{{ EcolesId() }}" name="ecole_id"/>
+                                    <input type="hidden" value="{{ EcolesId() }}" name="ecole_id" />
 
-                            </div>
-                        </div> <br> <br><br>
-                        <button type="submit" class="btn btn-primary px-5" id="flash"
-                            data-flash="{!! session()->get('success') !!}"><i
-                                class="bx bx-check-circle mr-1"></i>Enregistrer</button>
-                        <a href="{{ route('professeur') }}"> <button type="button" class="btn btn-danger px-5"
-                                onclick="error_noti()"><i class="bx bx-x-circle mr-1"></i> Annuler</button> </a>
+                                </div>
+                            </div> <br> <br><br>
+                            <button type="submit" class="btn btn-primary px-5" id="flash"
+                                data-flash="{!! session()->get('success') !!}"><i
+                                    class="bx bx-check-circle mr-1"></i>Enregistrer</button>
+                            <a href="{{ route('professeur') }}"> <button type="button" class="btn btn-danger px-5"
+                                    onclick="error_noti()"><i class="bx bx-x-circle mr-1"></i> Annuler</button> </a>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <script>
-                t(0)
-                //Remplissage des inputs
-                function sends() {
+                <script>
+                    t(0)
+                    //Remplissage des inputs
+                    function sends() {
 
-                    var n = document.getElementById("inputGroupSelect03").value
-                    var r = JSON.parse(n)
-                    document.getElementById('inputhidden').value = r.id
-                    document.getElementById('nom').value = r.nom
-                    document.getElementById('inputEnterYourName').value = r.prenom
-                    document.getElementById('sexe').value = r.sexe
-                    document.getElementById('inputPhoneNo').value = r.telephone1
-                    document.getElementById('inputEmailAddress').value = r.email
-                    document.getElementById('inputAddress3').value = r.adresse
-                    document.getElementById('image').value = r.image
-                    document.getElementById('password').value = r.password
-                    document.getElementById('roles').value = r.role
+                        var n = document.getElementById("inputGroupSelect03").value
+                        var r = JSON.parse(n)
+                        document.getElementById('inputhidden').value = r.id
+                        document.getElementById('nom').value = r.nom
+                        document.getElementById('inputEnterYourName').value = r.prenom
+                        document.getElementById('sexe').value = r.sexe
+                        document.getElementById('inputPhoneNo').value = r.telephone1
+                        document.getElementById('inputEmailAddress').value = r.email
+                        document.getElementById('inputAddress3').value = r.adresse
+                        document.getElementById('image').value = r.image
+                        document.getElementById('password').value = r.password
+                        document.getElementById('roles').value = r.role
 
-
-                }
-
-                function t(r) {
-                    if (r == 0) {
-
-                        let o = document.getElementById("inteligen")
-                        o.setAttribute("hidden", "hidden")
-                        document.getElementById('na').value = 'nouveau'
-                        document.getElementById('nom').value = ''
-                        document.getElementById('inputEnterYourName').value = ''
-                        document.getElementById('sexe').value = ''
-                        document.getElementById('inputPhoneNo').value = ''
-                        document.getElementById('inputEmailAddress').value = ''
-                        document.getElementById('inputAddress3').value = ''
-                        document.getElementById("nom").readOnly = false;
-                        document.getElementById("inputEnterYourName").readOnly = false;
-
-                        document.getElementById("sexe").readOnly = false;
-                        document.getElementById("inputPhoneNo").readOnly = false;
-                        document.getElementById("inputEmailAddress").readOnly = false;
-                        document.getElementById("inputAddress3").readOnly = false;
-                        document.getElementById("image").readOnly = false;
-                        document.getElementById("password").readOnly = false;
-
-
-                        document.getElementById("label").hidden = true;
-                        document.getElementById("label2").hidden = false;
-                        document.getElementById("inputhidden").hidden = true;
-                        document.getElementById("inputhidden2").hidden = false;
-
-
-                    } else {
-
-                        let o = document.getElementById("inteligen")
-                        o.removeAttribute("hidden")
-                        document.getElementById('na').value = 'ancien'
-
-                        document.getElementById("nom").readOnly = true;
-                        document.getElementById("inputEnterYourName").readOnly = true;
-                        document.getElementById("sexe").readOnly = true;
-                        document.getElementById("inputPhoneNo").readOnly = true;
-                        document.getElementById("inputEmailAddress").readOnly = true;
-                        document.getElementById("inputAddress3").readOnly = true;
-                        document.getElementById("image").readOnly = true;
-                        document.getElementById("password").readOnly = true;
-
-                        document.getElementById("label").hidden = false;
-                        document.getElementById("label2").hidden = true;
-                        document.getElementById("inputhidden").hidden = false;
-                        document.getElementById("inputhidden2").hidden = true;
 
                     }
-                }
-            </script>
-        @endsection
+
+                    function t(r) {
+                        if (r == 0) {
+
+                            let o = document.getElementById("inteligen")
+                            o.setAttribute("hidden", "hidden")
+                            document.getElementById('na').value = 'nouveau'
+                            document.getElementById('nom').value = ''
+                            document.getElementById('inputEnterYourName').value = ''
+                            document.getElementById('sexe').value = ''
+                            document.getElementById('inputPhoneNo').value = ''
+                            document.getElementById('inputEmailAddress').value = ''
+                            document.getElementById('inputAddress3').value = ''
+                            document.getElementById("nom").readOnly = false;
+                            document.getElementById("inputEnterYourName").readOnly = false;
+
+                            document.getElementById("sexe").readOnly = false;
+                            document.getElementById("inputPhoneNo").readOnly = false;
+                            document.getElementById("inputEmailAddress").readOnly = false;
+                            document.getElementById("inputAddress3").readOnly = false;
+                            document.getElementById("image").readOnly = false;
+                            document.getElementById("password").readOnly = false;
+
+
+                            document.getElementById("label").hidden = true;
+                            document.getElementById("label2").hidden = false;
+                            document.getElementById("inputhidden").hidden = true;
+                            document.getElementById("inputhidden2").hidden = false;
+
+
+                        } else {
+
+                            let o = document.getElementById("inteligen")
+                            o.removeAttribute("hidden")
+                            document.getElementById('na').value = 'ancien'
+
+                            document.getElementById("nom").readOnly = true;
+                            document.getElementById("inputEnterYourName").readOnly = true;
+                            document.getElementById("sexe").readOnly = true;
+                            document.getElementById("inputPhoneNo").readOnly = true;
+                            document.getElementById("inputEmailAddress").readOnly = true;
+                            document.getElementById("inputAddress3").readOnly = true;
+                            document.getElementById("image").readOnly = true;
+                            document.getElementById("password").readOnly = true;
+
+                            document.getElementById("label").hidden = false;
+                            document.getElementById("label2").hidden = true;
+                            document.getElementById("inputhidden").hidden = false;
+                            document.getElementById("inputhidden2").hidden = true;
+
+                        }
+                    }
+                </script>
+            @endsection

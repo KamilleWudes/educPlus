@@ -103,11 +103,11 @@
                                     <button class="btn btn-outline-secondary" type="button"><i class='bx bx-search'></i>
                                     </button>
                                     <select class="form-select single-select @error('ecole_id') is-invalid  @enderror" id="inputGroupSelect03" aria-label="Example select with button addon" name="ecole_id">
-                                        <option value="">Selectionnez l''ecole</option>
+                                        <option value="">Selectionnez l'ecole</option>
                                         @foreach ($ecoles as $ecole)
                                             <option value="{{ $ecole->id }}">{{ $ecole->nom }}</option>
                                         @endforeach
-                                    </select>
+                                    </select> 
                                 </div>
                                 @error('ecole_id')
                                 <span class="error" style="color:red">{{ $message }}</span>

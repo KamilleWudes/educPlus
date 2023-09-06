@@ -21,6 +21,8 @@
                                 @enderror
 
                             </div>
+                          <input type="hidden" value="{{ EcolesId() }}" name="ecole_id"/>
+
                         </div>
                     </div>
                     <div class="modal-footer">

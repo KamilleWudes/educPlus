@@ -69,3 +69,38 @@ fallen sun
                               <td style="text-align:center">${ resp.classe_nom}</td>
                               <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
                               <td style="text-align:center">${ resp.etudiant_adresse}</td>
+
+
+                              use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+
+public function filterInscriptions(Request $request)
+{
+    $anneeScolaire = $request->input('anneeScolaire');
+    $typeTrimestre = $request->input('typeTrimestre');
+    $typeComposition = $request->input('typeComposition');
+    $classeId = $request->input('classeId');
+    $matiereId = $request->input('matiereId');
+    $ecoleId = session('ecole_id'); // Assurez-vous de récupérer l'ID de l'école connectée depuis la session
+
+    $inscriptions = DB::table('inscriptions')
+        ->join('an_ttri_prof_mat_tcomp_ins', 'inscriptions.id', '=', 'an_ttri_prof_mat_tcomp_ins.inscription_id')
+        ->join('type_trimestres', 'an_ttri_prof_mat_tcomp_ins.type_trimestre_id', '=', 'type_trimestres.id')
+        ->join('annee_scolaires', 'an_ttri_prof_mat_tcomp_ins.annee_scolaire_id', '=', 'annee_scolaires.id')
+        ->join('professeurs', 'an_ttri_prof_mat_tcomp_ins.professeur_id', '=', 'professeurs.id')
+        ->join('matieres', 'an_ttri_prof_mat_tcomp_ins.matiere_id', '=', 'matieres.id')
+        ->join('type_compositions', 'an_ttri_prof_mat_tcomp_ins.type_composition_id', '=', 'type_compositions.id')
+        ->where('annee_scolaires.nom', $anneeScolaire)
+        ->where('type_trimestres.nom', $typeTrimestre)
+        ->where('type_compositions.nom', $typeComposition)
+        ->where('inscriptions.classe_id', $classeId)
+        ->where('inscriptions.matiere_id', $matiereId)
+        ->where('professeurs.ecole_id', $ecoleId)
+        ->select('inscriptions.*') // Sélectionnez les colonnes d'inscription dont vous avez besoin
+        ->distinct()
+        ->get();
+
+    // Retournez les inscriptions sous forme de vue ou de données JSON selon vos besoins
+    return response()->json($inscriptions);
+}
+

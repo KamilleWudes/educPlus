@@ -39,7 +39,7 @@
     <link href="assets/sweetalert2/animate.min.css" rel="stylesheet" />
 
     <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
-	<link href="assets/plugins/select2/css/select2-bootstrap4.css" rel="stylesheet" />
+    <link href="assets/plugins/select2/css/select2-bootstrap4.css" rel="stylesheet" />
 
     <style>
         .swal2-popup {
@@ -104,26 +104,26 @@
 
 
     <script src="assets/plugins/select2/js/select2.min.js"></script>
-	<script>
+    <script>
         $.ajaxSetup({
-			headers:{
-				'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-			}
-		})
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
 
-		$('.single-select').select2({
-			theme: 'bootstrap4',
-			width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-			placeholder: $(this).data('placeholder'),
-			allowClear: Boolean($(this).data('allow-clear')),
-		});
-		$('.multiple-select').select2({
-			theme: 'bootstrap4',
-			width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-			placeholder: $(this).data('placeholder'),
-			allowClear: Boolean($(this).data('allow-clear')),
-		});
-	</script>
+        $('.single-select').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+        $('.multiple-select').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+    </script>
 
     <script src="assets/plugins/peity/jquery.peity.min.js"></script>
 
@@ -148,12 +148,11 @@
 
 
     <script>
-
-        var flash = $('#flash').data('flash')
+     var flash = $('[name="flashe"]').data('flash')
         if (flash) {
             Swal.fire({
-                icon: 'success',
-                title: 'success',
+                icon: 'error',
+                title: 'Failure',
                 text: flash,
                 showClass: {
                     popup: 'animate__animated animate__jackInTheBox'
@@ -163,6 +162,7 @@
                 }
             })
         }
+        
         var flash = $('#flash').data('flash')
         if (flash) {
             Swal.fire({
@@ -187,7 +187,7 @@
             Swal.fire({
                 title: 'Etes-vous sûr de continuer?',
                 text: "Vous êtes sur le point de supprimer " + prenom +
-                    "  " + nom +". Voulez-vous continuer?",
+                    "  " + nom + ". Voulez-vous continuer?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -227,7 +227,7 @@
                 lengthChange: false,
                 //ordering:false,
                 buttons: ['copy', 'excel', 'pdf', 'print'],
-            });
+            }); 
 
             table.buttons().container()
                 .appendTo('#example2_wrapper .col-md-6:eq(0)');
@@ -280,40 +280,44 @@
     </script>
 
     <script>
-		$(document).ready(function () {
-			$("#show_hide_password a").on('click', function (event) {
-				event.preventDefault();
-				if ($('#show_hide_password input').attr("type") == "text") {
-					$('#show_hide_password input').attr('type', 'password');
-					$('#show_hide_password i').addClass("bx-hide");
-					$('#show_hide_password i').removeClass("bx-show");
-				} else if ($('#show_hide_password input').attr("type") == "password") {
-					$('#show_hide_password input').attr('type', 'text');
-					$('#show_hide_password i').removeClass("bx-hide");
-					$('#show_hide_password i').addClass("bx-show");
-				}
-			});
-		});
-	</script>
+        $(document).ready(function() {
+            $("#show_hide_password a").on('click', function(event) {
+                event.preventDefault();
+                if ($('#show_hide_password input').attr("type") == "text") {
+                    $('#show_hide_password input').attr('type', 'password');
+                    $('#show_hide_password i').addClass("bx-hide");
+                    $('#show_hide_password i').removeClass("bx-show");
+                } else if ($('#show_hide_password input').attr("type") == "password") {
+                    $('#show_hide_password input').attr('type', 'text');
+                    $('#show_hide_password i').removeClass("bx-hide");
+                    $('#show_hide_password i').addClass("bx-show");
+                }
+            });
+        });
+    </script>
     {{--  <script>
     Swal.fire('Any fool can use a computer')
     </script>  --}}
 
-  @stack('select_matiere')
+    @stack('select_matiere')
 
-  @stack('classeMatieres')
+    @stack('classeMatieres')
 
-  @stack('ins')
+    @stack('ins')
 
-  @stack('etude')
+    @stack('etude')
 
-  @stack('tuteur')
-  
-  @stack('bloquer')
+    @stack('tuteur')
 
+    @stack('bloquer')
 
-  @stack('detail')
+    @stack('detail')
 
+    @stack('professeur')
+
+    @stack('professeurEcole')
+
+    @stack('saisieNote')
 
 
 </body>

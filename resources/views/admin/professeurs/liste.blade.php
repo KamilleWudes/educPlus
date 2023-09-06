@@ -15,18 +15,19 @@
                     </nav>
                 </div>
                 <div class="ms-auto">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light">Settings</button>
-                        <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                                href="javascript:;">Action</a>
-                            <a class="dropdown-item" href="javascript:;">Another action</a>
-                            <a class="dropdown-item" href="javascript:;">Something else here</a>
-                            <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated
-                                link</a>
-                        </div>
+                    <div class="ms-auto">
+                        <label for="validationCustom04" class="form-label">Année scolaire</label>
+                        <select class="form-select @error('annee_scolaire_id') is-invalid  @enderror" id="idProf"
+                            name="annee_scolaire_id">
+                            <option value="">Annee Scolaires </option>
+                            @foreach ($anneesScolairesEcole as $AnneeScolaire)
+                                <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} -
+                                    {{ $AnneeScolaire->annee2 }}</option>
+                            @endforeach
+                        </select>
+                        @error('annee_scolaire_id')
+                            <span class="error" style="color:red">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -48,25 +49,14 @@
                                     <th style="text-align:center">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="proff">
                                 @foreach ($professeurs as $professeur)
                                     <tr>
                                         <td style="text-align:center">{{ $professeur->matricule }}</td>
-                                        {{--  <td> <img src="/storage/images/{{$professeur->image}}" style="width:60px;height:60px;">
-                                            </td>  --}}
-                                        {{--  <td>
-                                                @if ($professeur->image != '' || $professeur->image != null)
-                                                <img src="{{ asset('storage/'.$professeur->image)}}" style="width:60px;height:60px;">
-
-                                                @else
-                                                <img src="{{ asset('images/placeholderImage.png') }}" style="width:60px;height:60px;">
-
-                                                @endif
-                                            </td>  --}}
 
                                         <td style="text-align:center">{{ $professeur->prenom }} {{ $professeur->nom }}</td>
                                         <td style="text-align:center">
-                                            @if ($professeur->sexe == "1")
+                                            @if ($professeur->sexe == '1')
                                                 H
                                             @else
                                                 F
@@ -75,36 +65,31 @@
                                         {{--  <input type="hidden" class="serdelete_val_id" value={{ $professeur->id }}>  --}}
                                         <td style="text-align:center">{{ $professeur->telephone1 }}</td>
 
-                                        <td style="text-align:center"><a href="{{ url('detail=' . $professeur->id) }}"><button type="button"
-                                                class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
+                                        <td style="text-align:center"><a
+                                                href="{{ url('detail=' . $professeur->id) }}"><button type="button"
+                                                    class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
+                                        </td>
 
                                         <td>
                                             {{--  @if (count($professeur->bulletin) == 0)  --}}
-                                                <div class="d-flex order-actions">
+                                            <div class="d-flex order-actions">
 
-                                                    <a href="{{ url('professeur=' . $professeur->id) }}" class=""><i
-                                                            class='bx bxs-edit' style="text-align:center"></i></a>
+                                                <a href="{{ url('professeur=' . $professeur->id) }}" class=""><i
+                                                        class='bx bxs-edit' style="text-align:center"></i></a>
 
-                                                    <a href="{{ route('delete_professeur', $professeur->id) }}" id="btn-hapus" data-id="{{ $professeur->id }}" nom-id="{{ $professeur->nom }}" prenom-id="{{ $professeur->prenom }}" class="ms-4"><i class='bx bxs-trash'
-                                                            style="text-align:center"></i></a>
-                                                            {{--  <form id="form-{{ $professeur->id }}" method="POST"
-                                                                action="{{ route('delete_professeur', ['professeur' => $professeur->id]) }}">
-                                                                @csrf
-                                                                <input type="hidden" name="_method" value="delete">
+                                                <a href="{{ route('delete_professeur', $professeur->id) }}" id="btn-hapus"
+                                                    data-id="{{ $professeur->id }}" nom-id="{{ $professeur->nom }}"
+                                                    prenom-id="{{ $professeur->prenom }}" class="ms-4"><i
+                                                        class='bx bxs-trash' style="text-align:center"></i></a>
 
-                                                            </form>  --}}
-                                                             {{--  <a href="javascript:;" id="btn-hapus" class="ms-4"><i class='bx bxs-trash'
-                                                            style="text-align:center"></i></a>  --}}
+                                                <form id="btn-hapus-{{ $professeur->id }}" method="POST"
+                                                    action="{{ route('delete_professeur', ['professeur' => $professeur->id]) }}">
+                                                    @csrf
+                                                    <input type="hidden" name="_method" value="delete">
 
+                                                </form>
 
-                                                            <form id="btn-hapus-{{ $professeur->id }}" method="POST"
-                                                                action="{{ route('delete_professeur', ['professeur' => $professeur->id]) }}">
-                                                                @csrf
-                                                                <input type="hidden" name="_method" value="delete">
-
-                                                            </form>
-
-                                                              {{--  <button type="" class="btn btn-danger"
+                                                {{--  <button type="" class="btn btn-danger"
                                             onclick="if(confirm('Voulez vous vraiment supprimer cet professeur?')){document.getElementById('form-{{ $professeur->id }}').submit()}">Suprimer</button>
                                         <form id="form-{{ $professeur->id }}" method="POST"
                                             action="{{ route('delete_professeur', ['professeur' => $professeur->id]) }}">
@@ -112,10 +97,10 @@
                                             <input type="hidden" name="_method" value="delete">
 
                                         </form>  --}}
-                                        {{--  https://youtu.be/xQIEQfYWbT0  <button type="" class="btn btn-danger"
+                                                {{--  https://youtu.be/xQIEQfYWbT0  <button type="" class="btn btn-danger"
                                         id="btn-hapus">Suprimer</button>  --}}
 
-                                                </div>
+                                            </div>
                                             {{--  @endif  --}}
 
                                         </td>
@@ -130,3 +115,67 @@
         </div>
     </div>
 @endsection
+
+@push('professeur')
+    <script>
+        $(document).ready(function() {
+            console.log("hello judde");
+            $('#idProf').on("change", function() {
+                var classe_id = $('#idProf').val();
+                console.log('val', classe_id);
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('GetProf') }}',
+                    datatype: 'JSON',
+                    data: {
+                        professeur: classe_id
+                    },
+                    success: (response) => {
+                        console.log("matiere", response.professeurs)
+                        inscri = response.professeurs
+                        console.log('avec filtre', inscri);
+                        //inscri = inscri.filter(d => d.annee == classe_id)
+
+                        var professeur = ''
+
+                        for (let resp of inscri) {
+
+                            professeur += `<tr>
+                              <td style="text-align:center">${ resp.matricule} </td>
+                              <td style="text-align:center">${ resp.prenom} ${ resp.nom}</td>
+                              <td style="text-align:center">${ resp.sexe} </td>
+                              <td style="text-align:center">${ resp.telephone1}</td>
+                                   <td style="text-align:center"><a
+                                                href="{{ url('detail=' . $professeur->id) }}"><button type="button"
+                                                    class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
+                                        </td>
+
+                                <td>
+                                    <div class="d-flex order-actions" style="margin:2%">
+                                        <a href="" class=""><i
+                                            class='bx bxs-edit' style="text-align:center" disabled></i></a>
+                                        <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'
+                                                style="text-align:center"></i></a>
+                                    </div>
+                                </td>
+                            </tr>`
+
+                        }
+
+                        if (response.professeurs.length > 0) {
+
+                            $('#proff').html(professeur);
+                            // console.log('tt',$('#ins').val())
+
+                        } else {
+                            $('#proff').html('');
+
+                        }
+
+                    },
+
+                })
+            })
+        });
+    </script>
+@endpush

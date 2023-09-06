@@ -82,7 +82,7 @@ class AnneeScolaireController extends Controller
 
         $anneeScolaires->save();
 
-         return back()->with("success","Année scolaire ajouté avec succè!");
+        return back()->with("success","Année scolaire ajouté avec succè!");
 
     }
 

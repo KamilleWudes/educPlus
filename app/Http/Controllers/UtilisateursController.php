@@ -40,7 +40,6 @@ class UtilisateursController extends Controller
     public function create()
     {
         $ecoles = Ecole::orderBy("id","Desc")->get();
-       // $roles = role::orderBy("id","Desc")->get();
 
         return view('admin.utilisateurs.create',compact('ecoles'));
 

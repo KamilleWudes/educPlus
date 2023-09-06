@@ -55,15 +55,15 @@ function UserfullRole(){
 
      //Ecole professeur
      function fullEcoleProf(){
-        $data = array();
-        if(Session::has('Professeur')){
-            $data = Professeur::where('id','=', Session::get('Professeur'))->first()->ecole_id;
+        // $data = array();
+        // if(Session::has('Professeur')){
+        //     $data = Professeur::where('id','=', Session::get('Professeur'))->first()->ecole_id;
 
-            $ecoles = DB::table('ecoles')->where('id','=', $data)->first()->nom;
+        //     $ecoles = DB::table('ecoles')->where('id','=', $data)->first()->nom;
 
-            return 'Ecole : ' .$ecoles;
+        //     return 'Ecole : ' .$ecoles;
 
-        }
+        // }
      }
 
       //superadmin
@@ -134,6 +134,15 @@ function UserfullRole(){
         return $AnneeScolaire1;
      }
 
+
+     function lastAneeScolaire(){
+        $AnneeScolaire1 = anneeScolaire::offset(0)->limit(1)->orderBy("id","Desc")->get()->first()->annee1;
+
+        $lastAnees = $AnneeScolaire1;
+
+        return $lastAnees;
+     }
+
      function UserEcoles(){
        // $eco = array();
         if(Session::has('user')){
@@ -141,7 +150,7 @@ function UserfullRole(){
 
          $ecoles = DB::table('ecoles')->where('id','=', $data)->first()->nom;
 
-        return 'Ecole : ' .$ecoles;
+        return $ecoles;
     }}
 
     function disposer(){
@@ -175,5 +184,20 @@ function EcolesId(){
      return $data;
  }}
 
+
+if (!function_exists('getConnectedEcoleId')) {
+    function getConnectedEcoleId() {
+        return session('ecole_id');
+
+        // {{ getConnectedEcoleId() }}
+        
+    }
+}
+
+if (!function_exists('getConnectedEcoleName')) {
+    function getConnectedEcoleName() {
+        return session('ecole_nom'); 
+    }
+}
  
 ?>
