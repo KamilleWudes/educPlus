@@ -516,7 +516,7 @@ return response()->json([
             ->take(1); // Prenez seulement le premier devoir
 
     })
-    
+       
     ->leftJoin('an_ttri_prof_mat_tcomp_ins as devoir2', function ($join) use ($entry,$deuxiemeCompositionId) {
         $join->on('matiers.id', '=', 'devoir2.matier_id')
             ->where('devoir2.inscription_id', $entry->inscription_id)
