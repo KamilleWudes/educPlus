@@ -148,7 +148,7 @@
 
 
     <script>
-     var flash = $('[name="flashe"]').data('flash')
+        var flash = $('[name="flashe"]').data('flash')
         if (flash) {
             Swal.fire({
                 icon: 'error',
@@ -162,7 +162,7 @@
                 }
             })
         }
-        
+
         var flash = $('#flash').data('flash')
         if (flash) {
             Swal.fire({
@@ -227,7 +227,7 @@
                 lengthChange: false,
                 //ordering:false,
                 buttons: ['copy', 'excel', 'pdf', 'print'],
-            }); 
+            });
 
             table.buttons().container()
                 .appendTo('#example2_wrapper .col-md-6:eq(0)');
@@ -319,7 +319,15 @@
 
     @stack('saisieNote')
 
+    @stack('releveNote')
 
+    @stack('validate')
+    
+    @stack('Unique-prof')
+    
+    @stack('NoteEtudiant')
+
+    @stack('bulletin-client')
 </body>
 
 

@@ -8,7 +8,7 @@
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Etudiants</li>
                         </ol>
@@ -57,12 +57,8 @@
                                         <td style="text-align:center">{{ $etudiant->matricule }}</td>
                                         <td style="text-align:center">{{ $etudiant->etudiant_prenom }}
                                             {{ $etudiant->etudiant_nom }}</td>
-                                        <td style="text-align:center">
-                                            @if ($etudiant->sexe == 'F')
-                                                F
-                                            @else
-                                                M
-                                            @endif
+                                        <td style="text-align:center">{{ $etudiant->sexe }}
+                                            
                                         </td>
                                         <td style="text-align:center">{{ $etudiant->classe_nom }}</td>
                                         <td style="text-align:center">{{ $etudiant->tuteur_prenoms }}
@@ -119,10 +115,11 @@
                             <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
                             <td style="text-align:center">${ resp.etudiant_adresse}</td>
 
-                                <td style="text-align:center"><a
-                                                href="{{ url('detail-etudiant=' . $etudiant->id) }}"><button type="button"
+                                     <td style="text-align:center"><a
+                                                href="{{ url('detail-etudiant=') }}${resp.id}"><button type="button"
                                                     class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
                                         </td>
+                                    
 
                         </tr>`
 

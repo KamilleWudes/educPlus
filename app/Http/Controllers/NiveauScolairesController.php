@@ -5,6 +5,7 @@ use App\Models\Ecole;
 use App\Models\niveauScolaires;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 
 class NiveauScolairesController extends Controller
@@ -46,9 +47,15 @@ class NiveauScolairesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'nom' => 'required',
-       ]);
+
+       $validator = Validator::make($request->all(), [
+        'nom' => 'required|unique:niveau_scolaires,nom,NULL,id',
+    
+    ]);
+    
+    if ($validator->fails()) {
+        return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
+    }
        niveauScolaires::create($request->all());
        return back()->with("success","Niveau Scolaire ajouté avec succè!");
     }

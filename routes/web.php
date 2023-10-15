@@ -33,8 +33,9 @@ Route::get('/addutilisateur', [App\Http\Controllers\superAdminController::class,
 Route::post('/createutilisateur', [App\Http\Controllers\superAdminController::class, 'store'])->name ('createSuperAdmin')->middleware("auth.superAdmin");
 Route::put('/update_utilisateur/{id}', [App\Http\Controllers\superAdminController::class, 'update'])->name ('update_superAdmin')->middleware("auth.superAdmin");
 Route::get('/utilisateur={id}', [App\Http\Controllers\superAdminController::class, 'edit'])->name ('editsuperAdmin')->middleware("auth.superAdmin");
+Route::get('/detail-utilisateur={id}', [App\Http\Controllers\superAdminController::class, 'detail'])->name ('detailsuperAdmin')->middleware("auth.superAdmin");
 
-// Route Etudiant
+// Route Etudiant  
 
 Route::get('/etudiant', [App\Http\Controllers\EtudiantController::class, 'index'])->name ('etudiant')->middleware("auth.admin");
 Route::get('/addEtudiant', [App\Http\Controllers\EtudiantController::class, 'create'])->name ('addEtudiant')->middleware("auth.admin");
@@ -46,6 +47,12 @@ Route::get('/detail-etudiant={id}', [App\Http\Controllers\EtudiantController::cl
 Route::get('/etudiant-delete/{id}', [App\Http\Controllers\EtudiantController::class, 'destroy'])->name ('delete_etudiant')->middleware("auth.admin");
 Route::get('/etudiant-delete-list', [App\Http\Controllers\EtudiantController::class, 'onlyTrashed'])->name ('etudiant-delete-list')->middleware("auth.admin");
 Route::get('/etudiant-restore/{id}', [App\Http\Controllers\EtudiantController::class, 'restore'])->name ('etudiant-restore')->middleware("auth.admin");
+
+Route::get('/Releve-de-notes', [App\Http\Controllers\EtudiantController::class, 'GetReleve'])->name ('Releve')->middleware("auth.admin");
+
+//Route bulletin niveau admin
+Route::get('/Releve-pdf={id}', [App\Http\Controllers\EtudiantController::class,'exportPdf'])->name('Releve-pdf')->middleware("auth.admin");
+
 
 
 // Route Annee scolaire
@@ -62,6 +69,7 @@ Route::get('/addresponsable', [App\Http\Controllers\UtilisateursController::clas
 Route::post('/createResponsable', [App\Http\Controllers\UtilisateursController::class, 'store'])->name ('createutilisateur')->middleware("auth.superAdmin");
 Route::get('/responsable={id}', [App\Http\Controllers\UtilisateursController::class, 'edit'])->name ('edit_utilisateur')->middleware("auth.superAdmin");
 Route::put('/update_responsable/{id}', [App\Http\Controllers\UtilisateursController::class, 'update'])->name ('update_utilisateur')->middleware("auth.superAdmin");
+Route::get('/detail-responsable={id}', [App\Http\Controllers\UtilisateursController::class, 'detail'])->name ('detail_utilisateur')->middleware("auth.superAdmin");
 
 
 //Route professeurs
@@ -109,6 +117,7 @@ Route::post('/createEcole', [App\Http\Controllers\EcoleController::class, 'store
 Route::get('/ecole={id}', [App\Http\Controllers\EcoleController::class, 'edit'])->name ('edit_ecole')->middleware("auth.superAdmin");
 Route::put('/update_ecole/{id}', [App\Http\Controllers\EcoleController::class, 'update'])->name ('update_ecole')->middleware("auth.superAdmin");
 Route::delete('/ecoles/{ecole}', [App\Http\Controllers\EcoleController::class, 'destroy'])->name ('delete_ecole')->middleware("auth.superAdmin");
+Route::get('/detail-ecole={id}', [App\Http\Controllers\EcoleController::class, 'detail'])->name ('detail_ecole')->middleware("auth.superAdmin");
 
 
 
@@ -163,12 +172,18 @@ Route::get('/detail-tuteur={id}', [App\Http\Controllers\TuteurController::class,
 Route::get('/matiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'index'])->name('matiere_coefficient')->middleware("auth.admin");
 Route::get('/addmatiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'create'])->name ('addMatiere_coefficient')->middleware("auth.admin");
 Route::post('/creatematiere_coefficient', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'store'])->name ('createMatiere_coefficient')->middleware("auth.admin");
+Route::get('/matiere_coefficient={id}', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'edit'])->name('edit-matiere-coefficient')->middleware("auth.admin");
+Route::put('/matiere_coefficient/{id}', [App\Http\Controllers\ClasseAnneescolaireMatiere::class,'update'])->name('update-matiere-coefficient')->middleware("auth.admin");
 
 
 //Route professeur-classe-matieres
 Route::get('/professeur-classe-matieres', [App\Http\Controllers\ProfesseurClasseMatiere::class,'index'])->name('disposer')->middleware("auth.admin");
 Route::get('/adddisposer', [App\Http\Controllers\ProfesseurClasseMatiere::class,'create'])->name('adddisposer')->middleware("auth.admin");
 Route::post('/createdisposer', [App\Http\Controllers\ProfesseurClasseMatiere::class,'store'])->name ('createdisposer')->middleware("auth.admin");
+Route::get('/edition={id}', [App\Http\Controllers\ProfesseurClasseMatiere::class,'edit'])->name ('edition')->middleware("auth.admin");
+Route::put('/edition-professeur/{id}', [App\Http\Controllers\ProfesseurClasseMatiere::class,'update'])->name ('update')->middleware("auth.admin");
+Route::get('/detail-professeur-classe-matier={id}', [App\Http\Controllers\ProfesseurClasseMatiere::class, 'detail'])->name('getdetail')->middleware("auth.admin");
+
 
 Route::get('/notes-etudiants', [App\Http\Controllers\ProfesseurClasseMatiere::class, 'notesEtudiants'])->name ('notes-etudiants')->middleware("auth.admin");
 
@@ -181,25 +196,41 @@ Auth::routes();
 
 // Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware("auth.admin");
 
-Route::post('/admin', [App\Http\Controllers\Auth\profController::class,'loginProf'])->name('verification');
+Route::post('/', [App\Http\Controllers\Auth\profController::class,'loginProf'])->name('verification');
 
-Route::get('/dashbord', [App\Http\Controllers\Auth\profController::class,'dashbord']);
+// Route::get('/dashbord', [App\Http\Controllers\Auth\profController::class,'dashbord'])->name('dashboard')->middleware(["auth.admin", "auth.superAdmin"]);
+
+Route::get('/dashbord', [App\Http\Controllers\Auth\profController::class, 'dashbord'])
+    ->name('dashboard')
+    ->middleware(["auth.admin"]);
+    
+Route::get('/home', [App\Http\Controllers\UserPrincipalController::class, 'dashbord'])
+->name('getHome')
+->middleware(["auth.superAdmin"]);
 
 Route::get('/', [App\Http\Controllers\HomeController::class,'index'])->name('home');
 
 Route::post('/superadmin', [App\Http\Controllers\UserPrincipalController::class,'loginSuperAdmin'])->name('superadmin');
 
-Route::get('/acceuil', [App\Http\Controllers\UserPrincipalController::class,'index'])->name('users');
+Route::get('/acceuil', [App\Http\Controllers\UserPrincipalController::class,'index'])->name('users'); 
 
 
 //Route saisi de note
-Route::get('/saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'index'])->name('saisi-note')->middleware("auth.professeur");
+Route::get('/liste-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'index'])->name('saisi-note')->middleware("auth.professeur");
 
 Route::get('/add-saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'create'])->name('add-saisi-note')->middleware("auth.professeur");
 
 Route::post('/create-saisi-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'store'])->name('create-saisi-note')->middleware("auth.professeur");
 
-//Route Recuperation dans le select
+Route::get('/Releve-de-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'GetprofReleve'])->name ('Releves')->middleware("auth.professeur");
+
+Route::get('/bulletin-pdf={id}', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'exportPdf'])->name('bulletin-pdf')->middleware("auth.professeur");
+
+Route::put('/update_bulletin/{id}', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'update'])->name ('update_bulletin')->middleware("auth.professeur");
+
+
+
+//Route Recuperation dans le select  
 
  Route::get('/GetClasseMatiere', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'GetClasseMatiere'])->name('GetClasseMatiere');
 
@@ -220,3 +251,39 @@ Route::get('/GetProfesseurClasse', [App\Http\Controllers\ProfesseurClasseMatiere
 Route::get('/GetNotesEtude', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'GetNotesEtudes'])->name('GetNotesEtude'); 
 
 Route::get('/GetClassprof', [App\Http\Controllers\ProfesseurClasseMatiere::class, 'GetClassprofs'])->name ('GetClassprof');
+
+Route::get('/GetReleve', [App\Http\Controllers\EtudiantController::class, 'GetReleves'])->name ('GetReleve');
+
+Route::get('/GetProfReleve', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'GetProfReleves'])->name ('GetProfReleve');
+
+
+//Route Zone Etudiant
+Route::get('/space-etudiant', [App\Http\Controllers\UserPrincipalController::class,'zoneEtude'])->name('zoneEtude');
+
+Route::post('/NoteLogin', [App\Http\Controllers\UserPrincipalController::class,'NoteLogins'])->name('NoteLogin');
+
+Route::get('/Note-etudiant', [App\Http\Controllers\EtudiantReleveController::class,'NoteEtudiants'])->name('Note-etudiant');
+
+Route::get('/bulettin-etudiant', [App\Http\Controllers\EtudiantReleveController::class,'bulettinEtudiants'])->name('bulettin-etudiant');
+
+Route::get('/GetNotesEtudiant', [App\Http\Controllers\EtudiantReleveController::class, 'GetNotesEtudiants'])->name('GetNotesEtudiant');
+
+Route::get('/GetBulettin', [App\Http\Controllers\EtudiantReleveController::class, 'GetBulettins'])->name ('GetBulettin');
+
+//Route bulletin niveau Etudiant ->middleware("auth.Etudiant");
+Route::get('/bulettin-pdf={id}', [App\Http\Controllers\EtudiantReleveController::class,'bulettinPdf'])->name('bulettin-pdf');
+
+
+//Mise à jour des mot de passe
+
+//Reset password SuperAdmin
+Route::get('/reset-password-utilisateur={id}', [App\Http\Controllers\superAdminController::class, 'reset'])->name('reset')->middleware("auth.superAdmin");
+Route::put('/update-password-utilisateur/{id}', [App\Http\Controllers\superAdminController::class, 'modifierMotDePasse'])->name('update_password')->middleware("auth.superAdmin");
+
+//Reset password Admin
+Route::get('/reset-password={id}', [App\Http\Controllers\EtudiantController::class, 'reset'])->name('reset')->middleware("auth.admin");
+Route::put('/update_password/{id}', [App\Http\Controllers\EtudiantController::class, 'modifierMotDePasse'])->name ('update_password')->middleware("auth.admin");
+
+//Reset password professeur
+Route::get('/reset-password-professeur={id}', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'reset'])->name('reset')->middleware("auth.professeur");
+Route::put('/update-password-professeur/{id}', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'modifierMotDePasse'])->name('update_password')->middleware("auth.professeur");

@@ -88,7 +88,7 @@
         if (flash) {
             Swal.fire({
                 icon: 'error',
-                title: 'Failure',
+                title: 'Erreur',
                 text: flash,
                 showClass: {
                     popup: 'animate__animated animate__jackInTheBox'

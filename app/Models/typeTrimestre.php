@@ -12,6 +12,12 @@ class typeTrimestre extends Model
     public function bulletin(){
         return $this->hasMany(bulletin::class);
     }
+
+    public function ecole()
+    {
+        return $this->belongsTo(Ecole::class);
+    }
+
     protected $fillable = ["nom","ecole_id"];
 
 }

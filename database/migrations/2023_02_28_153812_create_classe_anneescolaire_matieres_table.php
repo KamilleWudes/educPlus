@@ -14,10 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('classe_anneescolaire_matieres', function (Blueprint $table) {
+            $table->id();
             $table->foreignId("classe_id")->constrained("classes");
             $table->foreignId("matier_id")->constrained("matiers");
             $table->foreignId("annee_scolaire_id")->constrained("annee_scolaires");
             $table->integer('coefficient');
+            $table->foreignId("ecole_id")->constrained("ecoles");
+
 
             $table->timestamps();
         });
@@ -34,7 +37,7 @@ return new class extends Migration
     {
         Schema::table('classe_anneescolaire_matieres', function (Blueprint $table) {
 
-            $table->dropForeign(["classe_id","matier_id","annee_scolaire_id"]);
+            $table->dropForeign(["classe_id","matier_id","annee_scolaire_id","ecole_id"]);
 
         });
         Schema::dropIfExists('classe_anneescolaire_matieres');

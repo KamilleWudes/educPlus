@@ -59,6 +59,8 @@ class Kernel extends HttpKernel
         
         'isLoggedSuperadmin' => \App\Http\Middleware\AuthSuperadmin::class,
 
+        'isLoggedEtudiant' => \App\Http\Middleware\AuthEtudiant::class,
+
 
 
         'auth' => \App\Http\Middleware\Authenticate::class,
@@ -68,6 +70,8 @@ class Kernel extends HttpKernel
         'auth.admin' => \App\Http\Middleware\adminMiddleware::class,
 
         'auth.superAdmin' => \App\Http\Middleware\superAdminMiddleware::class,
+
+        'auth.Etudiant' => \App\Http\Middleware\EtudiantMiddleware::class,
 
 
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

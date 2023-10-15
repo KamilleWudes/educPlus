@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Matier;
+use Illuminate\Notifications\Notifiable;
 
 
 class Ecole extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     public function niveauScolaires(){
         return $this->hasMany(niveauScolaires::class);

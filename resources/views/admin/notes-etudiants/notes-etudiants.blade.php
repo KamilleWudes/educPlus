@@ -8,9 +8,9 @@
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Saisie de notes</li>
+                            <li class="breadcrumb-item active" aria-current="page">Notes Etudiants</li>
                         </ol>
                     </nav>
                 </div>
@@ -47,22 +47,17 @@
                             @endforeach
                         </select>
                     </div>
-                    
-                    <div class="btn-group">
-                        <select class="form-select single-select @error('classe_id') is-invalid  @enderror" id="professeur"
-                            name="prof_id">
-                            <option value="">Professeur</option>
-                            @foreach ($professeurs as $professeur)
-                                <option value="{{ $professeur->id }}">{{ $professeur->nom }}</option>
-                            @endforeach
 
-                        </select>
-                    </div>
+
                     <div class="btn-group">
                         <select class="form-select single-select @error('classe_id') is-invalid  @enderror" id="classe"
                             name="classe_id">
-                            <option value="">Classe</option>
+                            <option value="">Classe </option>
 
+                            @foreach ($classes as $classe)
+                                <option value="{{ $classe->classe_id }}">{{ $classe->classe_nom }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="btn-group">
@@ -76,22 +71,26 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <h6 class="mb-0 text-uppercase">Listes des Notes</h6>
+            <h6 id="matiereChoisie" class="mb-0 text-uppercase">Listes des Notes</h6>
+
             <hr />
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="example2" class="table table-striped table-bordered" style="width:100%">
+                        <table id="example1" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
                                     <th style="text-align:center">Matricule</th>
                                     <th style="text-align:center">Etudiant</th>
                                     <th style="text-align:center">Note</th>
-                                    <th style="text-align:center">Détail</th>
+                                    <th style="text-align:center">Note définitives</th>
+                                    <th style="text-align:center">Appreciations</th>
                                 </tr>
                             </thead>
                             <tbody id="etudNote">
-                          
+                                <p id="coef"></p>
+
+
 
                                 </tfoot>
                         </table>
@@ -126,38 +125,29 @@
         $('select#type-composition').change(function() {
             // Réactivez le sélecteur de classe et désactivez les autres
             $('select').not('#annee-scolaire, #type-trimestre, #type-composition, #classe').prop('disabled', true);
-            $('select#professeur').prop('disabled', false);
-        });
-         // Gestionnaire d'événements pour le changement de la classe
-        $('select#professeur').change(function() {
-            // Réactivez le sélecteur de classe et désactivez les autres
-            $('select').not('#annee-scolaire, #type-trimestre, #type-composition, #professeur').prop(
-                'disabled', true);
             $('select#classe').prop('disabled', false);
-        }); 
+        });
 
         // Gestionnaire d'événements pour le changement de la classe
         $('select#classe').change(function() {
             // Réactivez le sélecteur de classe et désactivez les autres
-            $('select').not('#annee-scolaire, #type-trimestre, #type-composition,#professeur, #classe, #matiere').prop(
+            $('select').not('#annee-scolaire, #type-trimestre, #type-composition, #classe, #matiere').prop(
                 'disabled', true);
             $('select#matiere').prop('disabled', false);
-        }); 
+        });
 
         $(document).ready(function() {
             console.log("hello note");
-            $('#anneeScolaire, #typeTrimestre, #typeComposition,#professeur, #classe, #matiere').on("change", function() {
+            $('#anneeScolaire, #type-trimestre, #type-composition, #classe, #matiere').on("change", function() {
                 var anneeScolaire = $('#annee-scolaire').val();
                 var typeTrimestre = $('#type-trimestre').val();
-                var typeComposition = $('#type-composition').val(); 
-                var professeur = $('#professeur').val();
+                var typeComposition = $('#type-composition').val();
                 var classe = $('#classe').val();
                 var matiere = $('#matiere').val();
 
                 console.log('anneeScolaire', anneeScolaire);
                 console.log('typeTrimestre', typeTrimestre);
                 console.log('typeComposition', typeComposition);
-                console.log('professeur', professeur);
                 console.log('classe', classe);
                 console.log('matiere', matiere);
 
@@ -170,12 +160,10 @@
                         annee_scolaire: anneeScolaire,
                         type_trimestre: typeTrimestre,
                         type_composition: typeComposition,
-                        professeur: professeur,
                         classe: classe,
                         matiere: matiere,
                     },
                     success: (response) => {
-                        console.log("classes", response.classes)
                         console.log("matieres", response.matieres)
 
                         inscri = response.Notes
@@ -184,31 +172,23 @@
 
                         var NoteEtude = ''
 
-                        for (let resp of inscri) {
+                        for (let resp of inscri) { 
 
                             NoteEtude += `<tr>
                               <td style="text-align:center">${ resp.matricule} </td>
                               <td style="text-align:center">${ resp.prenom_etudiant} ${ resp.nom_etudiant}</td>
                               <td style="text-align:center">${ resp.note} </td>
-                                   <td style="text-align:center"><a
-                                                href=""><button type="button"
-                                                    class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
-                                        </td>
+                              <td style="text-align:center">${ resp.note_coefficient}</td>
+                              <td style="text-align:center">${ resp.appreciation} </td>
+                                  
                             </tr>`
 
                         }
 
-                        var classe = '';
                         var matiere = '';
 
-                        // select classes
-                        for (var i = 0; i < response.classes.length; i++) {
-                            classe += '<option  value=""></option>';
 
-                            classe += '<option  value="' + response.classes[i].id + '">' +
-                                response.classes[i].nom + '</option>';
-                        }
-                           // select matieres
+                        // select matieres
                         for (var i = 0; i < response.matieres.length; i++) {
                             matiere += '<option  value=""></option>';
 
@@ -216,16 +196,18 @@
                                 response.matieres[i].nom + '</option>';
                         }
 
-                        if (response.classes.length > 0) {
-                            $('#classe').html(classe);
+                        if (response.matieres.length > 0) {
                             $('#matiere').html(matiere);
                             $('#etudNote').html(NoteEtude);
+                            $('#coef').html(
+                                `<h5 class="mb-0">coefficient : ${response.coefficientMatiere}</h5>`
+                            );
+                            $('#matiereChoisie').html(
+                                `<h6 class="mb-0">Listes des Notes : ${response.matiereChoisie}</h6>`
+                            );
 
-                            //$('#etudNote').html(NoteEtude);
-                            // console.log('tt',$('#ins').val())
 
                         } else {
-                            $('#classe').html('');
                             $('#matiere').html('');
                             $('#etudNote').html('');
 

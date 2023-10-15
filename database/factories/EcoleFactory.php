@@ -22,6 +22,7 @@ class EcoleFactory extends Factory
             "telephone1" =>$this->faker->phoneNumber,
             "telephone2" =>$this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail(),
+            "image" =>"",
         ];
     }
 }

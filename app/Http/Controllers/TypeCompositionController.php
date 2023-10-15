@@ -5,6 +5,7 @@ use Illuminate\Validation\Rule;
 use App\Models\typeComposition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 
 class TypeCompositionController extends Controller
@@ -55,11 +56,25 @@ class TypeCompositionController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            // 'nom' => 'required|unique:type_compositions,nom',
-            'nom' => 'required|unique:type_compositions,nom,NULL,id,ecole_id,'.$request->ecole_id,
+    //     $this->validate($request, [
+    //         // 'nom' => 'required|unique:type_compositions,nom',
+    //         'nom' => 'required|unique:type_compositions,nom,NULL,id,ecole_id,'.$request->ecole_id,
 
-       ]); 
+    //    ]); 
+    $validator = Validator::make($request->all(), [
+        'ecole_id' => 'required|exists:ecoles,id',
+        'nom' => [
+            'required',
+            Rule::unique('type_compositions')->where(function ($query) use ($request) {
+                 $query->where('ecole_id', $request->ecole_id);
+            })
+        ]
+    ]);
+    
+    if ($validator->fails()) {
+        return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
+    }
+    
        typeComposition::create($request->all());
        return back()->with("success","Type composition ajouté avec succè!");
     }

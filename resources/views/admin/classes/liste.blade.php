@@ -8,27 +8,14 @@
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Classes</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="ms-auto">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light">Settings</button>
-                        <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                                href="javascript:;">Action</a>
-                            <a class="dropdown-item" href="javascript:;">Another action</a>
-                            <a class="dropdown-item" href="javascript:;">Something else here</a>
-                            <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated
-                                link</a>
-                        </div>
-                    </div>
-
+                  
                 </div>
             </div>
             <!--end breadcrumb-->
@@ -46,7 +33,7 @@
                     <table id="example2" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                             <tr>
-                                <th style="text-align:center">Numero</th>
+                                {{-- <th style="text-align:center">Numero</th> --}}
                                 {{--  <th style="text-align:center">Ecoles</th>  --}}
                                 <th style="text-align:center">Niveau Scolaires</th>
                                 <th style="text-align:center">Classe</th>
@@ -57,7 +44,7 @@
                         <tbody>
                             @foreach ($classes as $classe)
                                 <tr>
-                                    <td style="text-align:center">{{ $classe->classe_id }}</td>
+                                    {{-- <td style="text-align:center">{{ $classe->classe_id }}</td> --}}
                                     {{--  <td style="text-align:center">{{ $classe->ecole_nom }}  --}}
                                         <td style="text-align:center">{{ $classe->niveau_scolaire}}
 
@@ -67,7 +54,7 @@
                                                     class="btn btn-warning px-5 radius-30">Détail</button></a>  --}}
 
                                     <td>
-                                        <div class="d-flex order-actions">
+                                        <div class="d-flex order-actions d-flex justify-content-center">
                                             <a href="{{ url('classes=' . $classe->classe_id) }}" class=""><i
                                                 class='bx bxs-edit' style="text-align:center"></i></a>
 

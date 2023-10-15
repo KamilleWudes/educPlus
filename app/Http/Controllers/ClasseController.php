@@ -60,9 +60,7 @@ class ClasseController extends Controller
         $this->validate($request, [
             'nom' => 'required|unique:classes,nom,NULL,id,ecole_id,'.$request->ecole_id.',niveau_scolaires_id,'.$request->niveau_scolaires_id,
             'niveau_scolaires_id' => 'required',
-        //     'nom' => 'required|unique:classes,nom',
-        //    'nom' => 'required',
-        //    'ecole_id' => 'required',
+       
 
 
        ]);

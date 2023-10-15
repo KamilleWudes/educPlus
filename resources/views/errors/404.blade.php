@@ -52,9 +52,9 @@
 							<div class="card-body p-4">
 								<h1 class="display-1"><span class="text-white">4</span><span class="text-white">0</span><span class="text-white">4</span></h1>
 								<h2 class="font-weight-bold display-4">Lost in Space</h2>
-								<p>You have reached the edge of the universe.
-									<br>The page you requested could not be found.
-									<br>Dont'worry and return to the previous page.</p>
+								<p>Vous avez atteint le bord de l'univers.
+									<br>La page que vous avez demandée n'a pas pu être trouvée.
+									<br>Ne vous inquiétez pas et retournez à la page précédente..</p>
 								<div class="mt-5"> <a href="javascript:;" class="btn btn-light btn-lg px-md-5 radius-30">Go Home</a>
 									<a href="javascript:;" class="btn btn-light btn-lg ms-3 px-md-5 radius-30">Back</a>
 								</div>

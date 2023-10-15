@@ -6,6 +6,8 @@ use App\Models\Matier;
 use Illuminate\Http\Request;
 use App\Models\ClasseAnneescolaireMatiere as ModelsClasseAnneescolaireMatiere;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
 
 
 
@@ -54,24 +56,21 @@ class MatiereController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     "nom" =>'required|unique:matiers,nom',
-        //  ]);
-        $request->validate([
+       
+        $validator = Validator::make($request->all(), [
             'ecole_id' => 'required|exists:ecoles,id',
             'nom' => [
                 'required',
                 Rule::unique('matiers')->where(function ($query) use ($request) {
-                    return $query->where('ecole_id', $request->ecole_id)
-                                 ->where('nom_ecole', Ecoles());
+                     $query->where('ecole_id', $request->ecole_id);
                 })
-                
             ]
-            
-    
         ]);
-    
-
+        
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
+        }
+        
         $mat = new Matier();
         $mat->nom = $request->nom;
         $mat->ecole_id = $request->ecole_id;

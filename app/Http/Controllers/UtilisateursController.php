@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\SendUserRegistrationNotification;
 
 
 class UtilisateursController extends Controller
@@ -76,6 +77,12 @@ class UtilisateursController extends Controller
         $users->password = hash::make($request->password);
 
         $users->save();
+        
+        if($users){
+                  
+            $users->notify(new SendUserRegistrationNotification($users->name,$users->prenom));
+        }
+
         return back()->with("success","Responsable ajouté avec succè!");
     }
 
@@ -103,6 +110,13 @@ class UtilisateursController extends Controller
         $users = User::find($id);
         return view('admin.utilisateurs.edite',compact('users','ecoles','roles'));
     }
+    public function detail($id)
+    {
+        $responsables = User::find($id);
+        $ecoles = Ecole::orderBy("id","Desc")->get();
+
+        return view('admin.utilisateurs.detail', compact('responsables','ecoles'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -122,7 +136,7 @@ class UtilisateursController extends Controller
            'email' => 'required|email|' . Rule::unique('users')->ignore($id),
            //'role' => 'required',
            'ecole_id' => 'required',
-           'password' => ['required', 'string', 'min:8']
+          // 'password' => ['required', 'string', 'min:8']
          ]);
 
          $users = User::find($id);
@@ -134,7 +148,7 @@ class UtilisateursController extends Controller
        //  $users->role = $request->role;
          $users->ecole_id = $request->ecole_id;
          $users->email = $request->email;
-         $users->password = $request->password;
+       //  $users->password = $request->password;
 
          $users->update();
 
@@ -148,6 +162,7 @@ class UtilisateursController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+   
     public function destroy($id)
     {
         //

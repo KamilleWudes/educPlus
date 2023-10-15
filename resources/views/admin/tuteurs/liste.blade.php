@@ -8,7 +8,7 @@
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Tuteurs</li>
                         </ol>
@@ -49,12 +49,8 @@
                                     <tr>
                                         {{-- <td style="text-align:center">{{ $tuteur->tuteurs_id }}</td> --}}
                                         <td style="text-align:center">{{ $tuteur->prenoms }} {{ $tuteur->noms }}</td>
-                                        <td style="text-align:center">
-                                            @if ($tuteur->sex == 'F')
-                                                F
-                                            @else
-                                                M
-                                            @endif
+                                        <td style="text-align:center"> {{ $tuteur->sex }}
+                                            
                                         </td>
                                         <td style="text-align:center">{{ $tuteur->adresses }}</td>
 
@@ -104,12 +100,15 @@
                             tuteur += `<tr>
                               {{-- <td style="text-align:center">${ resp.id} </td> --}}
                               <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
-                              <td style="text-align:center">${ resp.etudiant_sexe} </td>
+                              <td style="text-align:center">${ resp.sex} </td>
                               <td style="text-align:center">${ resp.tuteur_adresse}</td>
                               <td style="text-align:center">${ resp.etudiant_prenom} ${ resp.etudiant_nom}</td>
 
-                                    <td style="text-align:center"><a href="{{ url('detail-tuteur=' . $tuteur->id) }}"><button type="button"
-                                            class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
+                                    <td style="text-align:center"><a
+                                                href="{{ url('detail-tuteur=') }}${resp.id}"><button type="button"
+                                                    class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
+                                        </td>
+                                    
 
                             </tr>`
 

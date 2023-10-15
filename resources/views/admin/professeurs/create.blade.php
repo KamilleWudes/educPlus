@@ -9,7 +9,7 @@
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
                                 Nouvel Professeur</li>
@@ -181,14 +181,11 @@
                                 <div class="col-12">
                                     <label for="inputEmailAddress" class="form-label"> Selectionnez la classe</label>
                                     <div class="input-group">
-                                        {{--  <button class="btn btn-outline-secondary" type="button"><i
-                                                class='bx bx-search'></i>
-                                        </button>  --}}
+                                       
                                         <select
                                             class="multiple-select @error('classe_id') is-invalid  @enderror single-select"
                                             id="inputGroupSelect04" name="classe_id[]"
                                             aria-label="Example select with button addon" multiple="multiple">
-                                            <option value="">Selectionnez la classe</option>
                                             @foreach ($classes as $classe)
                                                 <option value="{{ $classe->id }}"> {{ $classe->nom }}
                                                 </option>
@@ -242,8 +239,7 @@
 
                                 </div>
                             </div> <br> <br><br>
-                            <button type="submit" class="btn btn-primary px-5" id="flash"
-                                data-flash="{!! session()->get('success') !!}"><i
+                            <button type="submit" class="btn btn-primary px-5"><i
                                     class="bx bx-check-circle mr-1"></i>Enregistrer</button>
                             <a href="{{ route('professeur') }}"> <button type="button" class="btn btn-danger px-5"
                                     onclick="error_noti()"><i class="bx bx-x-circle mr-1"></i> Annuler</button> </a>
@@ -323,5 +319,47 @@
 
                         }
                     }
+                   
                 </script>
             @endsection
+
+   @push("Unique-prof")
+     <script>
+        var successFlash = '{{ session('success') }}';
+        var errorFlash = '{{ session('error') }}';
+
+        if (successFlash) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: successFlash,
+                showClass: {
+                    popup: 'animate__animated animate__jackInTheBox'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                },
+                timer: 500000, // Temps en millisecondes (3 secondes dans cet exemple)
+                timerProgressBar: true, // Affiche une barre de progression
+                toast: false, // Style de popup de notification
+                position: 'center' // Position de la notification
+            });
+        } else if (errorFlash) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: errorFlash,
+                showClass: {
+                    popup: 'animate__animated animate__shakeX'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                },
+                //timer: 50000, // Temps en millisecondes (3 secondes dans cet exemple)
+                //timerProgressBar: true, // Affiche une barre de progression
+                //toast: false, // Style de popup de notification
+                //position: 'top-end' // Position de la notification
+            });
+        }
+    </script>
+@endpush

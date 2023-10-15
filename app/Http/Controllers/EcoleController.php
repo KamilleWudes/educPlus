@@ -5,6 +5,7 @@ use Illuminate\Validation\Rule;
 use App\Models\Ecole;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Notifications\SendEcoleRegistrationNotification;
 
 
 class EcoleController extends Controller
@@ -50,8 +51,41 @@ class EcoleController extends Controller
             'telephone2' => 'nullable|numeric|unique:ecoles,telephone2',
             'adresse' => 'required',
             'email' => 'required|email|unique:ecoles,email',
+            'image' => 'image|nullable|max:1999'
+
         ]);
-        Ecole::create($request->all());
+        if ($request->hasFile('image')) {
+            //1 : get File with ext
+            $fileNameWithExt = $request->file('image')->getClientOriginalName();
+            //2 : get just file name
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+                // 3 : GET JUSTE FILE EXTENSION
+                $extension = $request->file('image')->getClientOriginalExtension();
+            //4 : file name to store
+            $fileNameTotore = $fileName.'_'.time().'.'.$extension;
+ 
+            //uploader l'image
+            $path = $request->file('image')->storeAs('public/images', $fileNameTotore);
+        } else {
+            $fileNameTotore = 'user.png';
+        }
+        // Ecole::create($request->all());
+        // return back()->with("success","Ecole ajouté avec succè!");
+        $ecoles = new Ecole();
+        $ecoles->nom = $request->nom;
+        $ecoles->telephone1 = $request->telephone1;
+        $ecoles->telephone2 = $request->telephone2;
+        $ecoles->adresse = $request->adresse;
+        $ecoles->email = $request->email;
+        $ecoles->image = $fileNameTotore;
+
+        $ecoles->save();
+
+        if($ecoles){
+
+            // Notifiez l'école nouvellement créée
+            $ecoles->notify(new SendEcoleRegistrationNotification($ecoles->nom));
+        }
         return back()->with("success","Ecole ajouté avec succè!");
     }
 
@@ -79,6 +113,13 @@ class EcoleController extends Controller
          return view ('admin.ecoles.edite',compact('ecoles'));
     }
 
+    public function detail($id)
+    {
+        $ecoles = Ecole::find($id);
+
+        return view('admin.ecoles.detail', compact('ecoles'));
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -102,8 +143,24 @@ class EcoleController extends Controller
          $ecoles->telephone2 = $request->telephone2;
          $ecoles->adresse = $request->adresse;
          $ecoles->email = $request->email;
+         if ($request->hasFile('image'))
+         {
+           $destination = 'public/images/'.$ecoles->image;
+           if(File::exists($destination))
+           {
+               File::delete($destination);
+           }
+           $file = $request->file('image');
 
-         $ecoles->update($request->all());
+            $extension = $file->getClientOriginalExtension();
+
+           $fileName = time().'.'.$extension;
+
+           $file =  $request->file('image')->storeAs('public/images/',$fileName);
+           $ecoles->image = $fileName;
+         }
+         $ecoles->update();
+
          return back()->with("success","Ecole modifié avec succè!");
     }
 

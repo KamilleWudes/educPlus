@@ -21,6 +21,7 @@ class ClasseAnneescolaireMatiereFactory extends Factory
             "matier_id"=>rand(1,10),
             "annee_scolaire_id" =>rand(1,2),
             "coefficient"=>$this->faker->ean8,
+            "ecole_id"=>rand(1,10),
         ];
     }
 }

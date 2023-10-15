@@ -8,7 +8,7 @@
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Liste Classes - Professeurs - Matières
                             </li>
@@ -46,7 +46,7 @@
                                     <th style="text-align:center">Professeurs</th>
                                     <th style="text-align:center">Classes</th>
                                     <th style="text-align:center">Matières</th>
-                                    <th style="text-align:center">Détail</th>
+                                    {{-- <th style="text-align:center">Détail</th> --}}
                                     <th style="text-align:center">Action</th>
                                 </tr>
                             </thead>
@@ -61,14 +61,14 @@
 
                                         <td style="text-align:center">{{ $dat->matiere }}</td>
 
-                                        <td style="text-align:center"><a href=""><button type="button"
+                                        {{-- <td style="text-align:center"><a href=""><button type="button"
                                                     class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
-                                        </td>
+                                        </td> --}}
 
                                         <td>
-                                            <div class="d-flex order-actions">
+                                            <div class="d-flex order-actions d-flex justify-content-center">
 
-                                                <a href="" class=""><i class='bx bxs-edit'
+                                                <a href="{{ url('edition=' . $dat->id) }}" class="ms-4"><i class='bx bxs-edit'
                                                         style="text-align:center"></i></a>
 
                                                 <a href="" id="btn-hapus" prenom-id="" class="ms-4"><i
@@ -115,20 +115,15 @@
                               <td style="text-align:center">${ resp.classe} </td>
                               <td style="text-align:center">${ resp.matiere}</td>
                                     <td style="text-align:center">
-                                        <button type="button"
-                                        class="btn btn-light btn-sm radius-30 px-4">View Details</button>
-                                    </td>
+                                                <button type="button"
+                                                    class="btn btn-light btn-sm radius-30 px-4" disabled="true">Action</button>
+                                        </td>
+                                    
 
                                 <td>
-                                    <div class="d-flex order-actions" style="margin:2%">
-                                        <a href="" class=""><i
-                                            class='bx bxs-edit' style="text-align:center" disabled></i></a>
-                                        <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'
-                                                style="text-align:center"></i></a>
-                                    </div>
-                                </td>
-                            </tr>`
-
+                               
+                            </td>
+                        </tr>`
                         }
 
                         if (response.professeursEcole.length > 0) {

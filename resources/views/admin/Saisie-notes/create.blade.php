@@ -1,8 +1,3 @@
- {{-- @if (session()->has('error'))
-<div class="alert alert-danger">
-    <p style="text-align:center">{{ session()->get('error') }}</p>
-</div>
-@endif  --}}
  @extends('layouts/master')
  @section('contenu')
      <form class="row g-3" method="POST" action="{{ route('create-saisi-note') }}">
@@ -15,7 +10,7 @@
                  <div class="ps-3">
                      <nav aria-label="breadcrumb">
                          <ol class="breadcrumb mb-0 p-0">
-                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                             <li class="breadcrumb-item"><a href="{{ route('saisi-note') }}"><i class="bx bx-home-alt"></i></a>
                              </li>
                              <li class="breadcrumb-item active" aria-current="page">Saisi de notes</li>
                          </ol>

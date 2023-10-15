@@ -8,7 +8,7 @@
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Inscriptions</li>
                         </ol>
@@ -41,8 +41,8 @@
                                 <tr>
                                     {{--  <th style="text-align:center">Numero</th>  --}}
                                     <th style="text-align:center">Matricule</th>
-                                    <th style="text-align:center">Année Scolaire</th>
-                                    <th style="text-align:center">Date d''inscription</th>
+                                    {{-- <th style="text-align:center">Année Scolaire</th> --}}
+                                    <th style="text-align:center">Date d'inscription</th>
                                     <th style="text-align:center">Etudiant</th>
                                     <th style="text-align:center">classes</th>
                                     <th style="text-align:center">Tuteurs</th>
@@ -58,8 +58,8 @@
                                     <tr>
                                         {{--  <td style="text-align:center">{{ $inscription->id }}</td>  --}}
                                         <td style="text-align:center">{{ $inscription->matricule }}</td>
-                                        <td style="text-align:center">{{ $inscription->annee1 }} -
-                                            {{ $inscription->annee2 }}</td>
+                                        {{-- <td style="text-align:center">{{ $inscription->annee1 }} -
+                                            {{ $inscription->annee2 }}</td> --}}
                                         <td style="text-align:center">{{ $inscription->date_insription }}</td>
                                         <td style="text-align:center">{{ $inscription->etudiant_prenom }}
                                             {{ $inscription->etudiant_nom }}</td>
@@ -74,7 +74,7 @@
                                                     Détail</button></a></td>
 
                                         <td>
-                                            <div class="d-flex order-actions">
+                                            <div class="d-flex order-actions d-flex justify-content-center">
                                                 <a href="{{ url('inscription=' . $inscription->id) }}"><i
                                                         class='bx bxs-edit @disabled(true)'></i></a>
 
@@ -122,24 +122,23 @@
 
                             is += `<tr>
                           <td style="text-align:center">${ resp.matricule} </td>
-                            <td style="text-align:center">${ resp.annee1} - ${ resp.annee2}</td>
+                            {{-- <td style="text-align:center">${ resp.annee1} - ${ resp.annee2}</td> --}}
                             <td style="text-align:center">${ resp.date_insription} </td>
                             <td style="text-align:center">${ resp.etudiant_prenom} ${ resp.etudiant_nom}</td>
                             <td style="text-align:center">${ resp.classe_nom}</td>
                             <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
                             <td style="text-align:center">${ resp.tuteur_telephone1}</td>
 
-                                <td style="text-align:center"><a href="{{ url('inscription-detail=' . $inscription->id) }}"><button type="button"
-                                  class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a></td>
+                                  <td style="text-align:center"><a
+                                                href="{{ url('inscription-detail=') }}${resp.id}"><button type="button"
+                                                    class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
+                                        </td>
+                                    <td style="text-align:center">
+                                                <button type="button"
+                                                    class="btn btn-light btn-sm radius-30 px-4" disabled="true">Action</button>
+                                        </td>
                                 
-                            <td>
-                                <div class="d-flex order-actions" style="margin:2%">
-                                    <a href="" class=""><i
-                                        class='bx bxs-edit' style="text-align:center" disabled></i></a>
-                                    <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'
-                                            style="text-align:center"></i></a>
-                                </div>
-                            </td>
+                            
                         </tr>`
 
                         }

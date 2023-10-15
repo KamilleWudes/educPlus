@@ -8,7 +8,7 @@
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Liste Professeur</li>
                         </ol>
@@ -49,6 +49,7 @@
                                     <th style="text-align:center">Action</th>
                                 </tr>
                             </thead>
+
                             <tbody id="proff">
                                 @foreach ($professeurs as $professeur)
                                     <tr>
@@ -56,7 +57,7 @@
 
                                         <td style="text-align:center">{{ $professeur->prenom }} {{ $professeur->nom }}</td>
                                         <td style="text-align:center">
-                                            @if ($professeur->sexe == '1')
+                                            @if ($professeur->sexe == 'H')
                                                 H
                                             @else
                                                 F
@@ -69,41 +70,15 @@
                                                 href="{{ url('detail=' . $professeur->id) }}"><button type="button"
                                                     class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
                                         </td>
-
                                         <td>
-                                            {{--  @if (count($professeur->bulletin) == 0)  --}}
-                                            <div class="d-flex order-actions">
+                                        <div class="d-flex order-actions d-flex justify-content-center">
+                                            <a href="{{ url('professeur='.$professeur->id) }}" class=""><i class='bx bxs-edit'
+                                                    style="text-align:center"></i></a>
+                                            <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'
+                                                    style="text-align:center"></i></a>
+                                        </div>
 
-                                                <a href="{{ url('professeur=' . $professeur->id) }}" class=""><i
-                                                        class='bx bxs-edit' style="text-align:center"></i></a>
-
-                                                <a href="{{ route('delete_professeur', $professeur->id) }}" id="btn-hapus"
-                                                    data-id="{{ $professeur->id }}" nom-id="{{ $professeur->nom }}"
-                                                    prenom-id="{{ $professeur->prenom }}" class="ms-4"><i
-                                                        class='bx bxs-trash' style="text-align:center"></i></a>
-
-                                                <form id="btn-hapus-{{ $professeur->id }}" method="POST"
-                                                    action="{{ route('delete_professeur', ['professeur' => $professeur->id]) }}">
-                                                    @csrf
-                                                    <input type="hidden" name="_method" value="delete">
-
-                                                </form>
-
-                                                {{--  <button type="" class="btn btn-danger"
-                                            onclick="if(confirm('Voulez vous vraiment supprimer cet professeur?')){document.getElementById('form-{{ $professeur->id }}').submit()}">Suprimer</button>
-                                        <form id="form-{{ $professeur->id }}" method="POST"
-                                            action="{{ route('delete_professeur', ['professeur' => $professeur->id]) }}">
-                                            @csrf
-                                            <input type="hidden" name="_method" value="delete">
-
-                                        </form>  --}}
-                                                {{--  https://youtu.be/xQIEQfYWbT0  <button type="" class="btn btn-danger"
-                                        id="btn-hapus">Suprimer</button>  --}}
-
-                                            </div>
-                                            {{--  @endif  --}}
-
-                                        </td>
+                                    </td>
                                     </tr>
                                 @endforeach
 
@@ -146,18 +121,14 @@
                               <td style="text-align:center">${ resp.sexe} </td>
                               <td style="text-align:center">${ resp.telephone1}</td>
                                    <td style="text-align:center"><a
-                                                href="{{ url('detail=' . $professeur->id) }}"><button type="button"
+                                                href="{{ url('detail=') }}${resp.id}"><button type="button"
                                                     class="btn btn-light btn-sm radius-30 px-4"> Voir Détail</button></a>
                                         </td>
+                                    <td style="text-align:center">
+                                                <button type="button"
+                                                    class="btn btn-light btn-sm radius-30 px-4" disabled="true">Action</button>
+                                        </td>
 
-                                <td>
-                                    <div class="d-flex order-actions" style="margin:2%">
-                                        <a href="" class=""><i
-                                            class='bx bxs-edit' style="text-align:center" disabled></i></a>
-                                        <a href="javascript:;" class="ms-3"><i class='bx bxs-trash'
-                                                style="text-align:center"></i></a>
-                                    </div>
-                                </td>
                             </tr>`
 
                         }

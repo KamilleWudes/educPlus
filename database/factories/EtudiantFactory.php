@@ -27,8 +27,7 @@ class EtudiantFactory extends Factory
             "image" =>"",
             'email' => $this->faker->unique()->safeEmail(),
             "matricule" =>$this->faker->name(),
-
-
+            'role' => 'etudiant', // etudiant
 
         ];
 

@@ -11,16 +11,18 @@ use Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session as FacadesSession;
 use App\Models\Ecole;
+use Illuminate\Support\Facades\DB;
 
 
 
 
 class profController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('isLoggedIn');
-    // }
+    public function __construct()
+    {
+        //$this->middleware('isLoggedIn');
+    
+    }
     /**
      * Display a listing of the resource.
      *
@@ -132,7 +134,7 @@ class profController extends Controller
                                 $request->session()->put('ecole_id', $chosen_ecole_id);
                                 $request->session()->put('ecole_nom', $chosen_ecole->nom);
                                 $request->session()->put('Professeur', $prof->id);
-                                return redirect('dashbord');
+                                return redirect('liste-note');
                             }}
                 }
             }
@@ -143,7 +145,38 @@ class profController extends Controller
 
 public function dashbord()
     {
-        return view('dashbord');
-    }
+        $user_id = Userid(); // l'id de l'utilisateur connecté
+
+    $inscriptions = DB::table('users')
+    ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+    ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+    ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+    ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+    ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+    ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+    ->select('inscriptions.id', 'inscriptions.date_insription', 'ecoles.nom as ecole_nom','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2', 'etudiants.nom as etudiant_nom','etudiants.prenom as etudiant_prenom','etudiants.matricule as matricule')
+    ->where('users.id', '=', $user_id)
+   // ->where('annee_scolaires.annee1',lastAneeScolaire())
+    ->orderBy('inscriptions.id', 'desc') // Trie par ID d'inscription décroissante
+    ->take(7) // Limiter à 7 résultats
+    ->get();
+
+    $data = DB::table('professeur_classe_matieres')
+    ->join('classes', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
+    ->join('matiers', 'professeur_classe_matieres.matier_id', '=', 'matiers.id')
+    ->join('professeurs', 'professeur_classe_matieres.professeur_id', '=', 'professeurs.id')
+    ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
+    ->join('ecoles', 'ecoles.id', '=', 'classes.ecole_id')
+    ->join('users', 'users.ecole_id', '=', 'ecoles.id')
+    ->where('users.id', '=', $user_id)
+   // ->where('annee_scolaires.annee1',lastAneeScolaire())
+    ->select('classes.nom as classe', 'matiers.nom as matiere', 'professeurs.nom as nom','professeurs.prenom as prenom','professeurs.matricule as matricule','professeurs.created_at as created_at','professeurs.image as image','professeur_classe_matieres.id as id')
+    ->orderBy('professeur_classe_matieres.created_at', 'desc')
+    ->take(7) // Limiter à 7 résultats
+    ->orderBy('professeur_classe_matieres.id', 'desc') // Trie par ID d'inscription décroissante
+    ->get();
+    
+        return view('dashbord',compact('inscriptions','data'));
+    }    
 
 }

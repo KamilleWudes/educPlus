@@ -6,7 +6,7 @@
             <div class="search-bar flex-grow-1">
                 <div class="position-relative search-bar-box">
                     <br>
-                    <p class="user-name mb-0" style="font-size:20px;">École: {{ UserEcoles() }} {{ getConnectedEcoleName() }} </p><br>
+                    <p class="user-name mb-0" style="font-size:20px;"> {{ getEcoleDeLEtudiantConnecte() }}  {{ UserEcoles() }} {{ getConnectedEcoleName() }} </p><br>
                     {{-- @if (session('Professeur'))
                         
                       <p class="user-name mb-0" style="font-size:20px;"> {{ session('ecole_nom') }} </p><br>
@@ -18,8 +18,8 @@
     <p>ID de l'école du professeur connecté : {{ session('ecole_id') }}</p>
 @endif --}}
 
-            {{-- <p id="wudes" class="user-name mb-0" style="font-size:20px;">AnneScolaire() </p> --}}
-           <p class="user-name mb-0" style="font-size:20px;">{{ AnneScolaire() }} </p>
+            <p id="wudes" class="user-name mb-0" style="font-size:20px;">AnneScolaire() </p>
+           {{-- <p class="user-name mb-0" style="font-size:20px;">{{ AnneScolaire() }} </p> --}}
 
 
             <div class="top-menu ms-auto">
@@ -28,45 +28,7 @@
                         <a class="nav-link" href="#"> <i class='bx bx-search'></i>
                         </a>
                     </li>
-                    <li class="nav-item dropdown dropdown-large">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false"> <i class='bx bx-category'></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <div class="row row-cols-3 g-3 p-3">
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto"><i class='bx bx-group'></i>
-                                    </div>
-                                    <div class="app-title">Teams</div>
-                                </div>
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto"><i class='bx bx-atom'></i>
-                                    </div>
-                                    <div class="app-title">Projects</div>
-                                </div>
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto"><i class='bx bx-shield'></i>
-                                    </div>
-                                    <div class="app-title">Tasks</div>
-                                </div>
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto"><i class='bx bx-notification'></i>
-                                    </div>
-                                    <div class="app-title">Feeds</div>
-                                </div>
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto"><i class='bx bx-file'></i>
-                                    </div>
-                                    <div class="app-title">Files</div>
-                                </div>
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto"><i class='bx bx-filter-alt'></i>
-                                    </div>
-                                    <div class="app-title">Alerts</div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+                    
                     <li class="nav-item dropdown dropdown-large">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span
@@ -360,29 +322,15 @@
                     <img src="assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
                     <div class="user-info ps-3"> <br>
                         {{--  <p class="user-name mb-0"> {{ $data->prenom }} {{ $data->name }} {{ $data->nom }}</p>  --}}
-                        <p class="user-name mb-0"> {{ UserfullName() }} {{ UserfullNameProf() }}
+                        <p class="user-name mb-0"> {{ fullNameEtudiant() }} {{ UserfullNameProf() }} {{ UserfullName() }}
                             {{ FullNameSuperAdmin() }}<br>{{ UserfullRoleProf() }} {{ fullRoleSuperAdmin() }}</p>
 
-                        <p>{{ UserFullRole() }} </p>
+                        <p class="text-capitalize">{{ RoleEtudiant() }} {{ UserFullRole() }}  </p>
 
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="javascript:;"><i
-                                class="bx bx-user"></i><span>Profile</span></a>
-                    </li>
-                    <li><a class="dropdown-item" href="javascript:;"><i
-                                class="bx bx-cog"></i><span>Settings</span></a>
-                    </li>
-                    <li><a class="dropdown-item" href="javascript:;"><i
-                                class='bx bx-home-circle'></i><span>Dashboard</span></a>
-                    </li>
-                    <li><a class="dropdown-item" href="javascript:;"><i
-                                class='bx bx-dollar-circle'></i><span>Earnings</span></a>
-                    </li>
-                    <li><a class="dropdown-item" href="javascript:;"><i
-                                class='bx bx-download'></i><span>Downloads</span></a>
-                    </li>
+                    
                     <li>
                         <div class="dropdown-divider mb-0"></div>
                     </li>
@@ -399,11 +347,11 @@
         </nav>
     </div>
 </header>
-{{-- <script>
+<script>
     var d = new Date();
     old = d.getFullYear();
 
     news = d.getFullYear() + 1;
 
     document.getElementById('wudes').innerText = " Annee scolaire :  " + old + " - " + news
-</script> --}}
+</script>

@@ -7,7 +7,7 @@
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
-                        <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                        <li class="breadcrumb-item"><a href="{{ route('getHome') }}"><i class="bx bx-home-alt"></i></a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
                             Edition utilisateur</li>
@@ -15,18 +15,7 @@
                 </nav>
             </div>
             <div class="ms-auto">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-light">Settings</button>
-                    <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split"
-                        data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                            href="javascript:;">Action</a>
-                        <a class="dropdown-item" href="javascript:;">Another action</a>
-                        <a class="dropdown-item" href="javascript:;">Something else here</a>
-                        <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
-                    </div>
-                </div>
+    
             </div>
         </div>
         <!--end breadcrumb-->
@@ -93,28 +82,7 @@
                                     <span class="error" style="color:red">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{--  <div class="col-md-6">
-                                <label for="inputAddress3" class="form-label">Role</label>
-                                <div class="input-group"> <span class="input-group-text"><i class='bx bxs-user'></i></span>
-                                    <select class="form-select mb-0 @error('role_id') is-invalid  @enderror" name="role_id"
-                                        aria-label="Default select example">
-                                        <option value="">Selectionnez le role</option>
-                                        @foreach ($roles as $role)
-                                        @if($role->id == $users->role_id)
-                                            <option value="{{ $role->id }}" selected>{{ $role->nom }}
-                                                @else
-                                                <option value="{{ $role->id }}">{{ $role->nom }} </option>
-
-                                                @endif
-                                            </option>
-                                        @endforeach
-
-                                    </select>
-                                </div>
-                                @error('role_id')
-                                    <span class="error" style="color:red">{{ $message }}</span>
-                                @enderror
-                            </div>  --}}
+                           
                             <div class="col-12">
                                 <label class="form-label">Ecole</label>
                                 <div class="input-group">
@@ -162,8 +130,8 @@
 
                             <div class="col-md-6">
                                 <label for="inputChoosePassword" class="form-label">Mot de passe</label><br><br>
-                                <div class="input-group" id="show_hide_password">
-                                    <input type="password" class="form-control @error('password') is-invalid  @enderror border-end-0" id="inputChoosePassword" name="password"  value="{{ $users->password }}" placeholder="Enter Password"> <a href="javascript:;" class="input-group-text"><i class='bx bx-hide'></i></a>
+                                <div class="input-group">
+                                    <input type="password" class="form-control @error('password') is-invalid  @enderror border-end-0" id="inputChoosePassword" name="password"  value="{{ $users->password }}" placeholder="Enter Password" disabled="true"> <a href="javascript:;" class="input-group-text"><i class='bx bx-hide'></i></a>
                                 </div>
                                 @error('password')
                                 <span class="error" style="color:red">{{ $message }}</span>
@@ -174,7 +142,7 @@
                                 <br>
                                 <button type="submit" class="btn btn-primary px-5" id="flash"
                                     data-flash="{!! session()->get('success') !!}"><i
-                                        class="bx bx-check-circle mr-1"></i>Valider</button>
+                                        class="bx bx-check-circle mr-1"></i>Valider la modification</button>
                             </div>
 
                             <div class="col-md-6"><br>

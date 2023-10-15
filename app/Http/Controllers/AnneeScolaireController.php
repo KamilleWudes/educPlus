@@ -1,16 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\anneeScolaire;
 use App\Models\User;
 use Illuminate\Contracts\Session\Session as SessionSession;
 use Illuminate\Http\Request;
 use Session;
 use Illuminate\Support\Facades\DB;
-
-
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+
 class AnneeScolaireController extends Controller
 {
 
@@ -58,20 +57,20 @@ class AnneeScolaireController extends Controller
      */
     public function store(Request $request)
     {
-
-       $request->validate([
+        
+    $validator = Validator::make($request->all(), [
         'ecole_id' => 'required|exists:ecoles,id',
         'annee1' => [
             'required',
             Rule::unique('annee_scolaires')->where(function ($query) use ($request) {
-                return $query->where('ecole_id', $request->ecole_id)
-                             ->where('nom_ecole', Ecoles());
+                 $query->where('ecole_id', $request->ecole_id);
             })
-
         ]
-
-
     ]);
+    
+    if ($validator->fails()) {
+        return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
+    }
 
         $anneeScolaires = new anneeScolaire();
         $anneeScolaires->annee1 = $request->annee1;

@@ -36,3 +36,43 @@
             </div>
         </div>
     </form>
+    @push('validate')
+    <script>
+        var successFlash = '{{ session('success') }}';
+        var errorFlash = '{{ session('error') }}';
+
+        if (successFlash) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: successFlash,
+                showClass: {
+                    popup: 'animate__animated animate__jackInTheBox'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                },
+                timer: 500000, // Temps en millisecondes (3 secondes dans cet exemple)
+                timerProgressBar: true, // Affiche une barre de progression
+                toast: false, // Style de popup de notification
+                position: 'center' // Position de la notification
+            });
+        } else if (errorFlash) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: errorFlash,
+                showClass: {
+                    popup: 'animate__animated animate__shakeX'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                },
+                //timer: 50000, // Temps en millisecondes (3 secondes dans cet exemple)
+                //timerProgressBar: true, // Affiche une barre de progression
+                //toast: false, // Style de popup de notification
+                //position: 'top-end' // Position de la notification
+            });
+        }
+    </script>
+@endpush

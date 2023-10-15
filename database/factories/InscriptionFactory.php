@@ -22,6 +22,7 @@ class InscriptionFactory extends Factory
             "tuteur_id" =>rand(1,10),
             "classe_id" =>rand(1,10),
             "annee_scolaire_id" =>rand(1,2),
+            "ecole_id" =>rand(1,10),
 
         ];
     }

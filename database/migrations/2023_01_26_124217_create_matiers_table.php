@@ -20,11 +20,8 @@ return new class extends Migration
 
             $table->string('nom_ecole'); // Champ pour stocker le nom de l'école
 
-
             $table->foreign('ecole_id')->references('id')->on('ecoles')->onDelete('cascade');
             $table->unique(['nom', 'nom_ecole']); // Contrainte d'unicité sur annee et nom_ecole
-
-
             $table->timestamps();
         });
     }

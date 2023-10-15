@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('an_ttri_prof_mat_tcomp_ins', function (Blueprint $table) {
+            $table->id();
             $table->foreignId("type_compo_id")->constrained("type_compositions");
             $table->foreignId("professeur_id")->constrained("professeurs");
             $table->foreignId("classe_id")->constrained("classes");

@@ -18,36 +18,28 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(TypeCompositionTableSeeder::class);
         // $this->call(TypeTrimestreTableSeeder::class);
-        $this->call(RoleTableSeeder::class);
-        $this->call(niveauScolaireTableSeeder::class);   
+        // $this->call(RoleTableSeeder::class);
+        // $this->call(niveauScolaireTableSeeder::class);   
 
-        \App\Models\Ecole::factory(10)->create();
-        \App\Models\TypeTrimestre::factory(3)->create();
-        \App\Models\typeComposition::factory(3)->create();
-         \App\Models\User::factory(10)->create();
-         \App\Models\Etudiant::factory(10)->create();
-         \App\Models\Tuteur::factory(10)->create();
-         \App\Models\Matier::factory(10)->create();
+        // \App\Models\Ecole::factory(10)->create();
+        // \App\Models\TypeTrimestre::factory(3)->create();
+        // \App\Models\typeComposition::factory(3)->create();
+        //  \App\Models\User::factory(10)->create();
+        //  \App\Models\Etudiant::factory(10)->create();
+        //  \App\Models\Tuteur::factory(10)->create();
+        //  \App\Models\Matier::factory(10)->create();
          \App\Models\userprincipal::factory(1)->create();
 
         //  \App\Models\niveauScolaires::factory(3)->create();
-         \App\Models\Professeur::factory(10)->create();
-         \App\Models\anneeScolaire::factory(2)->create();
-         \App\Models\classe::factory(10)->create();
-          \App\Models\inscription::factory(10)->create();
-          \App\Models\bulletin::factory(10)->create();
-          \App\Models\ProfesseurClasseMatiere::factory(10)->create();
-          \App\Models\ClasseAnneescolaireMatiere::factory(10)->create();
-          \App\Models\bulletinProfesseurTypecompositonMatier::factory(10)->create();
-          \App\Models\an_ttri_prof_mat_tcomp_in::factory(10)->create();
-
-
-
-
-
-
-
-
+        //  \App\Models\Professeur::factory(10)->create();
+        //  \App\Models\anneeScolaire::factory(2)->create();
+        //  \App\Models\classe::factory(10)->create();
+        //   \App\Models\inscription::factory(10)->create();
+        //   \App\Models\bulletin::factory(10)->create();
+        //   \App\Models\ProfesseurClasseMatiere::factory(10)->create();
+        //   \App\Models\ClasseAnneescolaireMatiere::factory(10)->create();
+        //   \App\Models\bulletinProfesseurTypecompositonMatier::factory(10)->create();
+        //   \App\Models\an_ttri_prof_mat_tcomp_in::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

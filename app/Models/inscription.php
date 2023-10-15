@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\softDeletes;
+use Illuminate\Notifications\Notifiable;
 
 
 class inscription extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
     use softDeletes;
 
     public function bulletin(){
@@ -30,6 +31,10 @@ class inscription extends Model
 
     public function tuteur(){
         return $this->belongsTo(Tuteur::class,"tuteur_id","id");
+    }
+
+    public function ecoles(){
+        return $this->belongsTo(Ecole::class,"ecole_id","id");
     }
 
 

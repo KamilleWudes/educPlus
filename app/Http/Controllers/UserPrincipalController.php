@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use App\Models\userprincipal;
 use Illuminate\Support\Facades\Hash;
-
+use App\Models\Etudiant;
+use Illuminate\Support\Facades\DB;
+use App\Models\Ecole;
 class UserPrincipalController extends Controller
 {
     /**
@@ -24,9 +27,10 @@ class UserPrincipalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function zoneEtude()
+    { 
+        return view('space-etudiant');
+
     }
 
     /**
@@ -35,9 +39,23 @@ class UserPrincipalController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function NoteLogins(Request $request)
     {
-        //
+        $request->validate([
+            'matricule' => 'required',
+        ]);
+    
+        $matricule = $request->matricule;
+    
+        $etudiant = Etudiant::where('matricule', $matricule)->first();
+    
+        if ($etudiant) {
+            $request->session()->put('Etudiant', $etudiant->id);
+            return redirect('Note-etudiant');
+        } else {
+            // Matricule invalide, renvoyez un message d'erreur
+            return redirect()->back()->with("error", "Authentification incorrect");
+        }
     }
 
     /**
@@ -63,7 +81,7 @@ class UserPrincipalController extends Controller
 
                 if (Hash::check($request->password, $users->password)) {
                     $request->session()->put('userprincipal', $users->id);
-                    return redirect('dashbord');
+                    return redirect('home');
 
 
                 } else {
@@ -75,7 +93,17 @@ class UserPrincipalController extends Controller
                 return redirect()->back()->with("error", "Authentification incorrect");
             }
 
-}
+}          
+public function dashbord()
+    {
+        
+    $ecoles= Ecole::orderBy('id', 'desc')->take(4)->get();
+    $users= User::orderBy('id', 'desc')->take(4)->get();
+
+        return view('home',compact('ecoles','users'));
+    }    
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -83,10 +111,9 @@ class UserPrincipalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+    
+
+
 
     /**
      * Update the specified resource in storage.

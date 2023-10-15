@@ -9,7 +9,7 @@
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
                                 Gestions inscriptions</li>
@@ -189,6 +189,7 @@
                                         name="image" accept=".jpg, .png, image/jpeg, image/png" multiple
                                         style="text-align: center;">
                                 </div>
+                                <input type="hidden" id="roles" name="role" value="etudiant">
 
                             </div>
 
@@ -334,6 +335,8 @@
 
                                     <input type="hidden" id="nw" name="nw">
                                     {{--  <input type="text" name="code" id="code" value="{{ $code }}" required>  --}}
+                      
+                                  <input type="hidden" value="{{ EcolesId() }}" name="ecole_id"/>
 
 
 
@@ -368,6 +371,8 @@
             document.getElementById('inputEmailAddress').value = r.email
             document.getElementById('inputAddress3').value = r.adresse
             document.getElementById('image').value = r.image
+            document.getElementById('roles').value = r.role
+
 
         }
 
@@ -519,3 +524,45 @@
     <script> t(0) </script>
 
 @endsection
+
+@push("validate")
+    <script>
+
+        var successFlash = '{{ session('success') }}';
+        var errorFlash = '{{ session('error') }}';
+
+        if (successFlash) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: successFlash,
+                showClass: {
+                    popup: 'animate__animated animate__jackInTheBox'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                },
+                timer: 500000, // Temps en millisecondes (3 secondes dans cet exemple)
+                timerProgressBar: true, // Affiche une barre de progression
+                toast: false, // Style de popup de notification
+                position: 'center' // Position de la notification
+            });
+        } else if (errorFlash) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: errorFlash,
+                showClass: {
+                    popup: 'animate__animated animate__shakeX'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                },
+                //timer: 50000, // Temps en millisecondes (3 secondes dans cet exemple)
+                //timerProgressBar: true, // Affiche une barre de progression
+                //toast: false, // Style de popup de notification
+                //position: 'top-end' // Position de la notification
+            });
+        }
+    </script>
+@endpush

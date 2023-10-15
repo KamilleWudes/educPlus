@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('telephone2')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string("image")->nullable();
+
             // $table->foreignId("niveau_scolaires_id")->constrained("niveau_scolaires");
 
             $table->timestamps();

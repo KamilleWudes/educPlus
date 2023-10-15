@@ -28,7 +28,7 @@ class TuteurController extends Controller
        ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
        ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
        ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
-       ->select('inscriptions.id', 'inscriptions.date_insription','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','tuteurs.adresses as tuteur_adresse','etudiants.id as etudiant_id','etudiants.nom as etudiant_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2','etudiants.prenom as etudiant_prenom','etudiants.sexe as etudiant_sexe','etudiants.matricule as matricule','annee_scolaires.annee1', 'annee_scolaires.annee2', 'ecoles.nom as ecole_nom','etudiants.adresse as etudiant_adresse')
+       ->select('inscriptions.id','tuteurs.sex as sex','inscriptions.date_insription','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','tuteurs.adresses as tuteur_adresse','etudiants.id as etudiant_id','etudiants.nom as etudiant_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2','etudiants.prenom as etudiant_prenom','etudiants.sexe as etudiant_sexe','etudiants.matricule as matricule','annee_scolaires.annee1', 'annee_scolaires.annee2', 'ecoles.nom as ecole_nom','etudiants.adresse as etudiant_adresse')
        ->where('users.id', '=', $user_id)
        ->where('inscriptions.annee_scolaire_id','=', $request->tuteur)
        ->orderBy('id','desc')
@@ -63,7 +63,7 @@ class TuteurController extends Controller
           ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
           ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
           ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
-          ->select('inscriptions.id', 'inscriptions.date_insription','tuteurs.noms as noms','tuteurs.prenoms as prenoms','tuteurs.telephone1 as telephone1','tuteurs.telephone2 as telephone2', 'etudiants.nom as etudiant_nom', 'etudiants.prenom as etudiant_prenom','tuteurs.sex as sex','tuteurs.id as id','tuteurs.adresses as adresses','tuteurs.id as tuteurs_id','tuteurs.created_at as created_at')
+          ->select('inscriptions.id', 'inscriptions.date_insription','tuteurs.noms as noms','tuteurs.prenoms as prenoms','tuteurs.telephone1 as telephone1','tuteurs.telephone2 as telephone2','tuteurs.sex as sex','etudiants.nom as etudiant_nom', 'etudiants.prenom as etudiant_prenom','tuteurs.id as id','tuteurs.adresses as adresses','tuteurs.id as tuteurs_id','tuteurs.created_at as created_at')
           ->where('users.id', '=', $user_id)
           ->orderBy("tuteurs_id","Desc")
           ->get();

@@ -3,13 +3,13 @@
     <div class="page-content">
         <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Profile</div>
+            <div class="breadcrumb-title pe-3">Detail</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Profile Etudiant</li>
+                        <li class="breadcrumb-item active" aria-current="page">Detail Etudiant</li>
                     </ol>
                 </nav>
             </div>
@@ -28,30 +28,39 @@
                 </div>
             </div>
         </div>
-        <!--end breadcrumb-->
-        <form class="row g-3" method="POST" action="{{ url('update_etudiant/' . $etudiants->id) }}",  enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+    <form class="row g-3" method="POST" action="{{ url('update_inscription/' . $inscriptions->id) }}",
+        enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
         <div class="container"><br><br>
             <div class="main-body">
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body"> 
                                 <div class="d-flex flex-column align-items-center text-center">
-                                    <img src="/storage/images/{{$etudiants->image}}" alt="Admin"
+                                    <img src="/storage/images/{{$inscriptions->etudiant->image}}" alt="Admin"
                                         class="rounded-circle p-1 bg-primary" width="300">
                                     <div class="mt-3">
-                                          <h6> Matricule: {{ $etudiants->matricule }}</h6>
+                                         <h6> Matricule: {{ $inscriptions->etudiant->matricule }}</h6>
 
-                                        <h6>Nom: {{ $etudiants->nom }} {{ $etudiants->prenom }}</h6>
+                                        <h6>Nom: {{ $inscriptions->etudiant->nom }} {{ $inscriptions->etudiant->prenom }}</h6>
+                                         @foreach ($classes as $classe)
+                                           @if ($classe->id == $inscriptions->classe_id)
+
+                                         <p class="font-size-sm">Classe: {{ $classe->nom }}</p> 
+                                             @endif
+
+                                              @endforeach
+                                        {{-- <p class="font-size-sm">Email: {{ $inscriptions->etudiant->email }}</p> --}}
+                                         {{-- <h5> Matricule: {{ $inscriptions->etudiant->matricule }}</h5> --}}
 
                                         {{-- <button class="btn btn-light">Follow</button>
                                         <button class="btn btn-light">Message</button> --}}
                                     </div>
 
                                 </div>
-                                <hr class="my-4" />
+                                 <hr class="my-4" />
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                         <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -64,7 +73,7 @@
                                                     d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
                                                 </path>
                                             </svg>Email</h6>
-                                        <span class="text-white">{{ $etudiants->email }}</span>
+                                        <span class="text-white">{{ $inscriptions->etudiant->email }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                         <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -75,9 +84,9 @@
                                                     d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
                                                 </path>
                                             </svg>Contact</h6>
-                                        <span class="text-white">{{ $etudiants->telephone }}</span>
+                                        <span class="text-white">{{ $inscriptions->etudiant->telephone }}</span>
                                     </li>
-                                     <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                         <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                 height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -85,10 +94,10 @@
                                                 <path
                                                     d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
                                                 </path>
-                                            </svg>Date de Naissance</h6>
-                                        <span class="text-white">{{ $etudiants->dateNaissance }}</span>
+                                            </svg>Date d'inscription</h6>
+                                        <span class="text-white">{{ $inscriptions->date_insription }}</span>
                                     </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                     <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                         <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                 height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -98,10 +107,10 @@
                                                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                                                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5">
                                                 </line>
-                                            </svg>Lieu de naissance</h6>
-                                        <span class="text-white">{{ $etudiants->LieuNaissance }}</span>
+                                            </svg>Date de Naissance</h6>
+                                        <span class="text-white">{{ $inscriptions->etudiant->dateNaissance }}</span>
                                     </li>
-                                    {{-- <li
+                                    <li
                                         class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                         <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                 height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -110,22 +119,24 @@
                                                 <path
                                                     d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z">
                                                 </path>
-                                            </svg>Facebook</h6>
-                                        <span class="text-white">codervent</span>
-                                    </li>
-                                </ul>  --}}
+                                            </svg>Lieu de naissance</h6>
+                                        <span class="text-white">{{ $inscriptions->etudiant->LieuNaissance }}</span>
+                                    </li> 
+                                </ul>  
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-8">
                             <div class="card">
+                            
                                 <div class="card-body">
+                               <p class="font-size-sm" style="text-align:center">INFORMATIONS DE L'ETUDIANT</p> 
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
                                             <h6 class="mb-0">Nom et prenom</h6>
                                         </div>
                                         <div class="col-sm-9">
-                                            <input type="text" id="n" class="form-control" value="{{ $etudiants->nom }} {{ $etudiants->prenom }}" />
+                                            <input type="text" id="n" class="form-control" value="{{ $inscriptions->etudiant->nom }} {{ $inscriptions->etudiant->prenom }}" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -133,7 +144,7 @@
                                             <h6 class="mb-0">Sexe</h6>
                                         </div>
                                         <div class="col-sm-9">
-                                            @if ($etudiants->sexe == "H")
+                                            @if ($inscriptions->etudiant->sexe == "H")
                                             <input type="text" id="s" class="form-control" placeholder="Homme" />
                                             @else
                                             <input type="text" id="s" class="form-control" placeholder="Femme" />
@@ -146,7 +157,7 @@
                                             <h6 class="mb-0">Télephone</h6>
                                         </div>
                                         <div class="col-sm-9">
-                                            <input type="text" id="t" class="form-control" value="{{ $etudiants->telephone }}" />
+                                            <input type="text" id="t" class="form-control" value="{{ $inscriptions->etudiant->telephone }}" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -154,7 +165,7 @@
                                             <h6 class="mb-0">Email</h6>
                                         </div>
                                         <div class="col-sm-9">
-                                            <input type="text" id="e" class="form-control" value="{{ $etudiants->email }}" />
+                                            <input type="text" id="e" class="form-control" value="{{ $inscriptions->etudiant->email }}" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -162,7 +173,65 @@
                                             <h6 class="mb-0">Address</h6>
                                         </div>
                                         <div class="col-sm-9">
-                                            <input type="text" id="a" class="form-control" value="{{ $etudiants->adresse }}" />
+                                            <input type="text" id="a" class="form-control" value="{{ $inscriptions->etudiant->adresse }}" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3"></div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                         
+
+                         <div class="col-lg-12">
+                            <div class="card">
+                            
+                                <div class="card-body">
+                               <p class="font-size-sm" style="text-align:center">INFORMATIONS DU TUTEUR</p> 
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Nom et prenom</h6>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="x" class="form-control" value="{{ $inscriptions->tuteur->noms }} {{ $inscriptions->tuteur->prenoms }}" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Sexe</h6>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            @if ($inscriptions->tuteur->sex == "H")
+                                            <input type="text" id="y" class="form-control" placeholder="Homme" />
+                                            @else
+                                            <input type="text" id="y" class="form-control" placeholder="Femme" />
+
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Télephone</h6>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="z" class="form-control" value="{{ $inscriptions->tuteur->telephone1 }} / {{ $inscriptions->tuteur->telephone2 }}" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Email</h6>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="b" class="form-control" value="{{ $inscriptions->tuteur->emails }}" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Address</h6>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="c" class="form-control" value="{{ $inscriptions->tuteur->adresses }}" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -173,9 +242,12 @@
                                     </div>
                                 </div>
                             </div>
-                 
+                      
                     </div>
 
+                    
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -183,13 +255,20 @@
     </div>
 @endsection
 
-@push('bloquer')
+@push('detail')
 <script>
         document.getElementById("n").readOnly = true;
         document.getElementById("s").readOnly = true;
         document.getElementById("t").readOnly = true;
         document.getElementById("e").readOnly = true;
         document.getElementById("a").readOnly = true;
+
+        document.getElementById("x").readOnly = true;
+        document.getElementById("y").readOnly = true;
+        document.getElementById("z").readOnly = true;
+        document.getElementById("b").readOnly = true;
+        document.getElementById("c").readOnly = true;
+
 </script>
     
 @endpush

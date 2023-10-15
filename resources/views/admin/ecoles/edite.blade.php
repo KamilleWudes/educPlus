@@ -7,7 +7,7 @@
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
-                        <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                        <li class="breadcrumb-item"><a href="{{ route('getHome') }}"><i class="bx bx-home-alt"></i></a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
                             Edition Ecole</li>
@@ -15,18 +15,7 @@
                 </nav>
             </div>
             <div class="ms-auto">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-light">Settings</button>
-                    <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split"
-                        data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                            href="javascript:;">Action</a>
-                        <a class="dropdown-item" href="javascript:;">Another action</a>
-                        <a class="dropdown-item" href="javascript:;">Something else here</a>
-                        <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
-                    </div>
-                </div>
+              
             </div>
         </div>
         <!--end breadcrumb-->
@@ -41,7 +30,7 @@
                             <h5 class="mb-0 text-white">Edition Ecole</h5>
                         </div>
                         <hr>
-                        <form class="row g-3" method="POST" action="{{ url('update_ecole/'. $ecoles->id) }}">
+                        <form class="row g-3" method="POST" action="{{ url('update_ecole/'. $ecoles->id) }}",enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="col-md-6">
@@ -91,7 +80,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-md-6">
                                 <label for="inputEmailAddress" class="form-label"> Address Email</label>
                                 <div class="input-group"> <span class="input-group-text"><i
                                             class='bx bxs-message'></i></span>
@@ -104,11 +93,16 @@
                                     <span class="error" style="color:red">{{ $message }}</span>
                                 @enderror
                             </div>
+                             <div class="col-md-6">
+                                <label for="inputAddress3" class="form-label">Photo</label><br><br>
+                                <input type="file" class="form-control" aria-label="file example" name="image" accept=".jpg, .png, image/jpeg, image/png" multiple
+                                    style="text-align: center;">
+                            </div>
                             <div class="col-md-6">
                                 <br>
                                 <button type="submit" class="btn btn-primary px-5" id="flash"
                                     data-flash="{!! session()->get('success') !!}"><i
-                                        class="bx bx-check-circle mr-1"></i>Appliquer la modification</button>
+                                        class="bx bx-check-circle mr-1"></i>Valider la modification</button>
                             </div>
 
                             <div class="col-md-6"><br>

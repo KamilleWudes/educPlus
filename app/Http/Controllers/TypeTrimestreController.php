@@ -5,6 +5,7 @@ use Illuminate\Validation\Rule;
 use App\Models\typeTrimestre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 
 class TypeTrimestreController extends Controller
@@ -54,12 +55,34 @@ class TypeTrimestreController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            // 'nom' => 'required|unique:type_trimestres,nom',
-            'nom' => 'required|unique:type_trimestres,nom,NULL,id,ecole_id,'.$request->ecole_id,
+    //     $this->validate($request, [
+    //         // 'nom' => 'required|unique:type_trimestres,nom',
+    //         'nom' => 'required|unique:type_trimestres,nom,NULL,id,ecole_id,'.$request->ecole_id,
 
-       ]);
-       typeTrimestre::create($request->all());
+    //    ]);
+
+       $validator = Validator::make($request->all(), [
+        'ecole_id' => 'required|exists:ecoles,id',
+        'nom' => [
+            'required',
+            Rule::unique('type_trimestres')->where(function ($query) use ($request) {
+                 $query->where('ecole_id', $request->ecole_id);
+            })
+        ]
+    ]);
+    
+    if ($validator->fails()) {
+        return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
+    }
+    
+       //typeTrimestre::create($request->all());
+       $typeTrimestres = new typeTrimestre();
+        $typeTrimestres->nom = $request->nom;
+        $typeTrimestres->ecole_id = $request->ecole_id;
+
+        $typeTrimestres->save();
+
+
        return back()->with("success","Type Trimestre ajouté avec succè!");
     }
 

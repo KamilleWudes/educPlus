@@ -14,12 +14,22 @@ return new class extends Migration
     public function up()
     {
         Schema::create('type_compositions', function (Blueprint $table) {
+            // $table->id();
+            // $table->string('nom')->unique();
+            // $table->foreignId("ecole_id")->constrained("ecoles");
+            // $table->timestamps();
+            // $table->unique(["nom","ecole_id"]);
             $table->id();
-            $table->string('nom')->unique();
-            $table->foreignId("ecole_id")->constrained("ecoles");
+            $table->string('nom');
+            $table->unsignedBigInteger('ecole_id');
 
+           // $table->string('nom_ecole'); // Champ pour stocker le nom de l'école
+
+            $table->foreign('ecole_id')->references('id')->on('ecoles')->onDelete('cascade');
+            $table->unique(['nom', 'ecole_id']); // Contrainte d'unicité sur annee et nom_ecole
             $table->timestamps();
-            $table->unique(["nom","ecole_id"]);
+
+
 
         });
         schema::enableForeignKeyConstraints();

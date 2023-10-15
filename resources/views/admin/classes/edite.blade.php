@@ -7,25 +7,14 @@
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
-                        <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">Classe</li>
                     </ol>
                 </nav>
             </div>
             <div class="ms-auto">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-light">Settings</button>
-                    <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split"
-                        data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                            href="javascript:;">Action</a>
-                        <a class="dropdown-item" href="javascript:;">Another action</a>
-                        <a class="dropdown-item" href="javascript:;">Something else here</a>
-                        <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
-                    </div>
-                </div>
+              
             </div>
         </div>
         <!--end breadcrumb-->
@@ -40,33 +29,6 @@
                         @method('PUT')
                         <div class="card-body">
                             <div class="border p-3 rounded">
-
-                                {{--  <div class="mb-3">
-                                    <label class="form-label">Selectionnez l''ecole</label>
-                                    <div class="input-group">
-                                        <button class="btn btn-outline-secondary" type="button"><i
-                                                class='bx bx-search'></i>
-                                        </button>
-                                        <select class="form-select @error('ecole_id') is-invalid  @enderror single-select"
-                                            id="inputGroupSelect03" name="ecole_id"
-                                            aria-label="Example select with button addon">
-                                            <option value="">Selectionnez l''ecole</option>
-                                            @foreach ($ecoles as $ecole)
-                                            @if($ecole->id == $classes->ecole_id)
-                                                <option value="{{ $ecole->id }}" selected>{{ $ecole->nom }} </option>
-                                                @else
-                                                <option value="{{ $ecole->id }}">{{ $ecole->nom }} </option>
-
-                                                @endif
-                                            @endforeach
-
-                                        </select>
-                                    </div>
-                                    @error('ecole_id')
-                                        <span class="error" style="color:red">{{ $message }}</span>
-                                    @enderror
-                                </div>  --}}
-
                                 <div class="mb-3">
                                     <label class="form-label">Selectionnez le niveau scolaire</label>
                                     <div class="input-group">

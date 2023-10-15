@@ -12,7 +12,7 @@ use App\Models\User;
 // use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Validator;
 use Session;
 
 use Illuminate\Support\Facades\File;
@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Commands\MoveCommand;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\SendProfesseurRegistrationNotification;
 
 
 class ProfesseurController extends Controller
@@ -140,7 +141,8 @@ class ProfesseurController extends Controller
     {
         if ($request->na == 'nouveau') {
 
-            $this->validate($request, [
+            
+                $this->validate($request, [
                 'nom' => 'required',
                 'prenom' => 'required',
                 'sexe' => 'required',
@@ -153,10 +155,25 @@ class ProfesseurController extends Controller
                 'matier_id' => 'required|array',
                 'matier_id.*' => 'integer',
                 'role' => 'required',
-                'image' => 'image|nullable|max:1999'
+                'image' => 'image|nullable|max:1999',  ]);
 
+                $validator = Validator::make($request->all(), [
+                'matier_id' => [
+                    'required',
+                    'array',
+                    Rule::unique('professeur_classe_matieres', 'matier_id')->where(function ($query) use ($request) {
+                         $query->where('ecole_id', $request->ecole_id)
+                            ->whereIn('classe_id', $request->classe_id)
+                            ->where('professeur_id', $request->professeur_id)
+                            ->where('annee_scolaire_id', $request->annee_scolaire_id);
 
-            ]);
+                    }),], ]);
+
+          
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
+            }
+
             if ($request->hasFile('image')) {
                 //1 : get File with ext
                 $fileNameWithExt = $request->file('image')->getClientOriginalName();
@@ -173,6 +190,7 @@ class ProfesseurController extends Controller
                 $fileNameTotore = 'user.png';
             }
 
+           
             $professeurs = new Professeur();
             $professeurs->nom = $request->nom;
             $professeurs->prenom = $request->prenom;
@@ -210,18 +228,35 @@ class ProfesseurController extends Controller
                 $professeurs->matricule = $matricule;
 
                 $professeurs->save();
+                $professeurs = Professeur::with(['classe', 'matieres', 'ecoles', 'anneesScolaires'])->find($professeurs->id);
+
+                if($professeurs){
+                    $professeurs->notify(new SendProfesseurRegistrationNotification($professeurs));
+                }
            return back()->with("success", "Professeur ajouté avec succè!");
 
            } else {
-            $this->validate($request, [
+$validator = Validator::make($request->all(), [
                 'matier_id' => 'required|array',
                 'professeur_id' => 'required',
                 'matier_id.*' => 'integer',
                 'classe_id' => 'required|array',
                 'classe_id.*' => 'integer',
-
+                'matier_id' => [
+                    'required',
+                    'array',
+                    Rule::unique('professeur_classe_matieres', 'matier_id')->where(function ($query) use ($request) {
+                         $query->where('ecole_id', $request->ecole_id)
+                            ->whereIn('classe_id', $request->classe_id)
+                            ->where('professeur_id', $request->professeur_id)
+                            ->where('annee_scolaire_id', $request->annee_scolaire_id);
+                            
+                    }),],
 
             ]);
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
+            }
 
             // $ProfesseurClasseMatieres = new ProfesseurClasseMatiere();
             // $ProfesseurClasseMatieres->professeur_id = $request->professeur_id;
@@ -246,6 +281,10 @@ class ProfesseurController extends Controller
 
                     }
 
+                }
+                $ProfesseurClasseMatiere = Professeur::with(['classe', 'matieres', 'ecoles', 'anneesScolaires'])->find($request->professeur_id);
+                if($ProfesseurClasseMatiere){
+                    $ProfesseurClasseMatiere->notify(new SendProfesseurRegistrationNotification($ProfesseurClasseMatiere));
                 }
             return back()->with("success", "Professeur ajouté avec succè!");
         }
@@ -326,6 +365,11 @@ class ProfesseurController extends Controller
             $professeurs->image = $fileName;
         }
         $professeurs->update();
+        $annes = substr(AnneScolaires(), 7, 2);
+        $matricule = substr($professeurs->nom, 0, 3) . substr($professeurs->prenom, 0, 1).$annes;
+        $professeurs->matricule = $matricule;
+
+        $professeurs->save();
 
         return back()->with("success", "professeurs mise à jour avec succè!");
     }

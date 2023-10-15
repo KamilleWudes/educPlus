@@ -26,8 +26,6 @@ return new class extends Migration
             $table->foreign('ecole_id')->references('id')->on('ecoles')->onDelete('cascade');
             $table->unique(['annee1', 'nom_ecole']); // Contrainte d'unicité sur annee et nom_ecole
 
-
-
             $table->timestamps();
         });
 
