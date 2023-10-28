@@ -454,13 +454,13 @@ return response()->json([
 
         // Exemple : Récupérez le type de composition associé
         $typeComposition = $entry->typeComposition;
+        // dd($entry->type_compo_id);
 
         // Exemple : Récupérez le professeur associé
         $professeur = $entry->professeur;
 
         // Exemple : Récupérez la classe associée
         $classe = $entry->classe;
-        //dd($classe);
 
         // Exemple : Récupérez la matière associée
         $matiere = $entry->matiere;
@@ -469,6 +469,9 @@ return response()->json([
         $anneeScolaire = $entry->anneeScolaire;
 
         $typeTrimestre = $entry->typeTrimestre;
+
+       // dd($entry->type_trimestre_id);
+
 
         $inscription =  $entry->inscription;
 
@@ -479,21 +482,26 @@ return response()->json([
         // Récupérez les ID des compositions
         $compositions = DB::table('an_ttri_prof_mat_tcomp_ins')
             ->where('type_trimestre_id', $entry->type_trimestre_id)
-            ->whereIn('type_compo_id', [1, 2, 3]) // Assurez-vous que ces valeurs correspondent aux types de composition souhaités
+            ->where('inscription_id', $entry->inscription_id)
+            //->whereIn('type_compo_id', [1, 2, 3]) // Assurez-vous que ces valeurs correspondent aux types de composition souhaités
             ->orderBy('type_compo_id') // Triez par type_compo_id pour obtenir les compositions dans l'ordre 1, 2, 3
-            ->pluck('id');
-        
-        // Assurez-vous que vous avez les ID des compositions dans le bon ordre
+            ->distinct()
+            ->pluck('type_compo_id');
+            //dd($compositions);
+
+            // Assurez-vous que vous avez les ID des compositions dans le bon ordre
         if (count($compositions) >= 3) {
             $premiereCompositionId = $compositions[0]; // ID de la première composition
             $deuxiemeCompositionId = $compositions[1]; // ID de la deuxième composition
             $troisiemeCompositionId = $compositions[2]; // ID de la troisième composition
         } else {
             // Gérez la situation où vous n'avez pas suffisamment de compositions
-            // par exemple, en affectant des valeurs par défaut ou en lançant une exception
             $deuxiemeCompositionId = null;
             $troisiemeCompositionId = null;
         }
+       // dd($troisiemeCompositionId);
+
+
         // Utilisez le Query Builder pour compter le nombre d'étudiants dans la classe
         $effectifTotal = DB::table('etudiants')
             ->join('inscriptions', 'etudiants.id', '=', 'inscriptions.etudiant_id')
@@ -520,7 +528,7 @@ return response()->json([
     ->leftJoin('an_ttri_prof_mat_tcomp_ins as devoir2', function ($join) use ($entry,$deuxiemeCompositionId) {
         $join->on('matiers.id', '=', 'devoir2.matier_id')
             ->where('devoir2.inscription_id', $entry->inscription_id)
-            ->where('devoir2.type_trimestre_id', $entry->type_trimestre_id)
+           ->where('devoir2.type_trimestre_id', $entry->type_trimestre_id)
             ->where('devoir2.type_compo_id', $deuxiemeCompositionId) // Utilisez l'ID de la deuxième composition
             ->orderBy('devoir2.created_at', 'desc') // Triez pour obtenir le deuxième devoir
             ->take(1); // Prenez seulement le deuxième devoir
@@ -729,13 +737,13 @@ $dompdf = new Dompdf();
 
 
         
-$pdfContent = view ('admin.pdf-Releve-notes-professeur.export-pdf',compact('moyenneMaxClasseArrondie','moyenneMinClasseArrondie','moyenneGlobaleArrondie','NewmoyenneDeLaClasse','moyenneMinClasse','moyenneMaxClasse','rangEtudiant','moyenneDeLaClasse','plusFaibleMoyenne','maxMoyenneDeLaClasse','maxMoyenneClasse','appreciation','moyenneGlobale','sommeProduits','sommeCoefficients','responsables','entry','effectifTotal','matieres','typeComposition','professeur','classe','matiere','anneeScolaire','typeTrimestre','inscription'))->render();;
+$pdfContent = view  ('admin.pdf-Releve-notes-professeur.export-pdf',compact('moyenneMaxClasseArrondie','moyenneMinClasseArrondie','moyenneGlobaleArrondie','NewmoyenneDeLaClasse','moyenneMinClasse','moyenneMaxClasse','rangEtudiant','moyenneDeLaClasse','plusFaibleMoyenne','maxMoyenneDeLaClasse','maxMoyenneClasse','appreciation','moyenneGlobale','sommeProduits','sommeCoefficients','responsables','entry','effectifTotal','matieres','typeComposition','professeur','classe','matiere','anneeScolaire','typeTrimestre','inscription'))->render();;
 
      // Chargez le contenu PDF dans Dompdf
 $dompdf->loadHtml($pdfContent);
 
 // (Optionnel) Configurez des options de mise en page si nécessaire
-$dompdf->setPaper('A3', 'portrait');
+$dompdf->setPaper('A3', 'paysage');
 
 // Rendu du PDF
 $dompdf->render();

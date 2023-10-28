@@ -68,7 +68,7 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <h6  id="matiereChoisie" class="mb-0 text-uppercase"></h6>
+            <h6 id="matiereChoisie" class="mb-0 text-uppercase">Listes des Notes</h6>
             <hr />
             <div class="card">
                 <div class="card-body">
@@ -80,15 +80,15 @@
                                     <th style="text-align:center">Etudiant</th>
                                     <th style="text-align:center">Note</th>
                                     <th style="text-align:center">Note définitive</th>
-                                     <th style="text-align:center">Appreciations</th>
+                                    <th style="text-align:center">Appreciations</th>
 
 
                                 </tr>
                             </thead>
                             <tbody id="etudNote">
-                             <p id="coef"></p>
+                                <p id="coef"></p>
 
-                          
+
 
                                 </tfoot>
                         </table>
@@ -163,10 +163,10 @@
                     },
                     success: (response) => {
                         console.log("matieres", response.matieres)
-                        console.log("coefficientMatiere",response.coefficientMatiere)
-                        console.log("matiereChoisie",response.matiereChoisie)
+                        console.log("coefficientMatiere", response.coefficientMatiere)
+                        console.log("matiereChoisie", response.matiereChoisie)
                         inscri = response.Notes
-                        console.log('avec filtre', inscri); 
+                        console.log('avec filtre', inscri);
                         //inscri = inscri.filter(d => d.annee == classe_id)
 
                         var NoteEtude = ''
@@ -197,13 +197,13 @@
 
                         if (response.matieres.length > 0) {
                             $('#matiere').html(matiere);
-                            $('#etudNote').html(NoteEtude); 
-                             $('#coef').html(
-                                 `<h5 class="mb-0">coefficient : ${response.coefficientMatiere}</h5>`
-                             );
-                              $('#matiereChoisie').html(
-                                 `<h6 class="mb-0">Listes des Notes : ${response.matiereChoisie}</h6>`
-                             );
+                            $('#etudNote').html(NoteEtude);
+                            $('#coef').html(
+                                `<h5 class="mb-0">coefficient : ${response.coefficientMatiere}</h5>`
+                            );
+                            $('#matiereChoisie').html(
+                                `<h6 class="mb-0">Listes des Notes : ${response.matiereChoisie ? response.matiereChoisie : ''}</h6>`
+                            );
 
                         } else {
                             $('#matiere').html('');

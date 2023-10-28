@@ -37,7 +37,7 @@
                         </select>
                     </div>
 
-                  <div class="btn-group">
+                    <div class="btn-group">
                         <select class="form-select single-select @error('annee_scolaire_id') is-invalid  @enderror"
                             id="type-composition" name="annee_scolaire_id">
                             <option value="">Type Composition </option>
@@ -52,7 +52,7 @@
                         <select class="form-select single-select @error('classe_id') is-invalid  @enderror" id="classe"
                             name="classe_id">
                             <option value="">Classe</option>
-                           
+
 
                         </select>
                     </div>
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <h6  id="typeCompositionChoisie" class="mb-0 text-uppercase">Listes des Notes Etudiants </h6>
+            <h6 id="typeCompositionChoisie" class="mb-0 text-uppercase">Listes des Notes Etudiants </h6>
             <hr />
             <div class="card">
                 <div class="card-body">
@@ -124,7 +124,7 @@
         });
 
 
-     $(document).ready(function() {
+        $(document).ready(function() {
             console.log("hello note");
             $('#anneeScolaire, #typeTrimestre, #type-composition, #classe').on("change", function() {
                 var anneeScolaire = $('#annee-scolaire').val();
@@ -152,9 +152,9 @@
                     },
                     success: (response) => {
                         console.log("classesEtudiant", response.classesEtudiant)
-                        console.log("typeCompositionChoisie",response.typeCompositionChoisie) 
+                        console.log("typeCompositionChoisie", response.typeCompositionChoisie)
                         inscri = response.matieresEtudiant
-                        console.log('avec filtre', inscri); 
+                        console.log('avec filtre', inscri);
                         //inscri = inscri.filter(d => d.annee == classe_id)
 
                         var NoteEtude = ''
@@ -179,17 +179,18 @@
                         for (var i = 0; i < response.classesEtudiant.length; i++) {
                             classe += '<option  value=""></option>';
 
-                            classe += '<option  value="' + response.classesEtudiant[i].id + '">' +
+                            classe += '<option  value="' + response.classesEtudiant[i].id +
+                                '">' +
                                 response.classesEtudiant[i].nom + '</option>';
                         }
 
                         if (response.classesEtudiant.length > 0) {
                             $('#classe').html(classe);
-                            $('#etudNote').html(NoteEtude); 
-                            
-                              $('#typeCompositionChoisie').html(
-                                 `<h6  class="mb-0 text-upercase">Listes des Notes Etudiants du ${response.typeCompositionChoisie}</h6>`
-                             );
+                            $('#etudNote').html(NoteEtude);
+
+                            $('#typeCompositionChoisie').html(
+                                `<h6 class="mb-0 text-uppercase">Listes des Notes Etudiants : ${response.typeCompositionChoisie ? response.typeCompositionChoisie : ''}</h6>`
+                            );
 
                         } else {
                             $('#classe').html('');

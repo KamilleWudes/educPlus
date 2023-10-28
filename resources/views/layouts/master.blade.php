@@ -72,13 +72,21 @@
 
         </div>
         <!--end page wrapper -->
-        <!--start footer-->
+    </div>
+    <!--start footer-->
+    <div class="fixed-bottom">
+
         <x-footer />
     </div>
+
+    <!--end footer-->
+
+    <!--start switcher-->
     <!--end footer-->
     <!--start switcher-->
     <x-color />
     <!--end switcher-->
+    </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <!--plugins-->
@@ -322,9 +330,9 @@
     @stack('releveNote')
 
     @stack('validate')
-    
+
     @stack('Unique-prof')
-    
+
     @stack('NoteEtudiant')
 
     @stack('bulletin-client')

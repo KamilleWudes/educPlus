@@ -153,7 +153,17 @@ class EtudiantReleveController extends Controller
         ->where('annee_scolaires.ecole_id', '=', $ecoleId)
         ->distinct()
         ->get();
-        return view ('clients.Releve-de-notes.bulettin-etudiant',compact('typeCompositions','typesTrimestreInfos','anneeScolaires'));
+
+        $classesEtudiants = DB::table('inscriptions')
+        ->join('classes', 'inscriptions.classe_id', '=', 'classes.id')
+        ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+        ->where('inscriptions.etudiant_id', $userId)
+        ->where('annee_scolaires.annee1', lastAneeScolaire())
+        ->where('inscriptions.ecole_id', $ecoleId)
+        ->select('classes.nom as nom','classes.id as id')
+        ->distinct()
+        ->get();
+        return view ('clients.Releve-de-notes.bulettin-etudiant',compact('classesEtudiants','typeCompositions','typesTrimestreInfos','anneeScolaires'));
 
     }
 
@@ -238,7 +248,7 @@ class EtudiantReleveController extends Controller
         ->distinct()
         ->get();
         
-        $entry = an_ttri_prof_mat_tcomp_in::find($id);
+        $entry = an_ttri_prof_mat_tcomp_in::where('inscription_id',$id)->first();
 
         // dd($entry->inscription_id);
 
@@ -263,14 +273,17 @@ class EtudiantReleveController extends Controller
         $inscription =  $entry->inscription;
 
         $classeId =  $classe->id; // l'ID de la classe connecté
+
       // Récupérez les ID des compositions
-      $compositions = DB::table('an_ttri_prof_mat_tcomp_ins')
-      ->where('inscription_id', $entry->inscription_id)
-      ->where('type_trimestre_id', $entry->type_trimestre_id)
-      ->whereIn('type_compo_id', [1, 2, 3]) // Assurez-vous que ces valeurs correspondent aux types de composition souhaités
-      ->orderBy('type_compo_id') // Triez par type_compo_id pour obtenir les compositions dans l'ordre 1, 2, 3
-      ->pluck('id');
-  
+        $compositions = DB::table('an_ttri_prof_mat_tcomp_ins')
+            ->where('type_trimestre_id', $entry->type_trimestre_id)
+            ->where('inscription_id', $entry->inscription_id)
+            //->whereIn('type_compo_id', [1, 2, 3]) // Assurez-vous que ces valeurs correspondent aux types de composition souhaités
+            ->orderBy('type_compo_id') // Triez par type_compo_id pour obtenir les compositions dans l'ordre 1, 2, 3
+            ->distinct()
+            ->pluck('type_compo_id');
+            //dd($compositions);
+            
   // Assurez-vous que vous avez les ID des compositions dans le bon ordre
   if (count($compositions) >= 3) {
       $premiereCompositionId = $compositions[0]; // ID de la première composition

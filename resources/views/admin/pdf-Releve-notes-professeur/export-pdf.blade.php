@@ -9,7 +9,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
         }
 
         .container {
@@ -86,7 +85,7 @@
 <body>
 
     <div class="container">
-      
+
         <div class="row">
             <div class="col-md-6">
                 <h2 class="h3">Complexe Scolaire {{ $entry->classe->ecole->nom }}</h2>
@@ -166,7 +165,7 @@
                         <th>Professeur</th>
                     </tr>
                 </thead>
-             <tbody>
+                <tbody>
                     @foreach ($matieres as $matiere)
                         <tr>
 
@@ -181,14 +180,14 @@
 
                             <td>{{ $matiere->note_composition }}</td>
                             <td>{{ $matiere->moyenne_compo_classe }}</td>
-                            <td>{{$matiere->coef }}</td>
-                            <td>{{ $matiere->produit }}</td> 
-                           
+                            <td>{{ $matiere->coef }}</td>
+                            <td>{{ $matiere->produit }}</td>
+
 
 
 
                             <td>{{ $matiere->appreciation }}</td>
-                            <td>{{ $matiere->nom_professeur}} {{ $matiere->prenom_professeur }}</td> 
+                            <td>{{ $matiere->nom_professeur }} {{ $matiere->prenom_professeur }}</td>
                         </tr>
                     @endforeach
 
@@ -200,7 +199,7 @@
                         <td>-</td>
                         <td>-</td>
                         <td>-</td>
-                        <td style=" background-color: #f0f0f0;"><strong>{{ $sommeCoefficients }}</strong></td> 
+                        <td style=" background-color: #f0f0f0;"><strong>{{ $sommeCoefficients }}</strong></td>
                         <td style=" background-color: #f0f0f0;"><strong>{{ $sommeProduits }}</strong></td>
                         <td>-</td>
                         <td>-</td>
@@ -212,7 +211,7 @@
 
                 </div>
                 <div class="col-md-6 text-md-right">
-                 
+
                     <table border="1">
                         <tr>
                             <th colspan="2">
@@ -220,7 +219,7 @@
                                         style="font-weight: bold;">{{ $moyenneGlobaleArrondie }}</span>
                                     SUR <span style="font-weight: bold;">20</span></p>
                                 <p><u>RANG:</u> <span style="font-weight: bold;">{{ $rangEtudiant }}è</span> SUR <span
-                                        style="font-weight: bold;">966</span></p>
+                                        style="font-weight: bold;">{{ $effectifTotal }}</span></p>
                             </th>
                         </tr>
                         {{-- <tr>
@@ -247,7 +246,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2"><p id="dateAffichee"></p>
+                            <td colspan="2">
+                                <p id="dateAffichee"></p>
                                 <p><span style="font-weight: bold;"> LE DIRECTEUR,</span></p>
                                 @foreach ($responsables as $rep)
                                     <p><span style="font-weight: bold;">{{ $rep->name }} {{ $rep->prenom }}</span>
@@ -255,7 +255,7 @@
                                 @endforeach
                             </td>
                         </tr>
-                        <table>
+                    </table>
                 </div>
             </div>
         </div>
@@ -264,18 +264,24 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-    // Créez une instance de l'objet Date pour obtenir la date actuelle
-const dateActuelle = new Date();
+        // Créez une instance de l'objet Date pour obtenir la date actuelle
+        const dateActuelle = new Date();
 
-// Options pour formater la date
-const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        // Options pour formater la date
+        const options = {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        };
 
-// Utilisez Intl.DateTimeFormat pour formater la date selon les options
-const dateFormatee = new Intl.DateTimeFormat('fr-FR', options).format(dateActuelle);
-// Ajoutez "Fait le " devant la date formatée
-const dateAffichee = `Fait le ${dateFormatee}`;
-// Affichez la date affichée dans votre élément HTML (par exemple, avec un identifiant "dateAffichee")
-document.getElementById('dateAffichee').textContent = dateAffichee;</script>
+        // Utilisez Intl.DateTimeFormat pour formater la date selon les options
+        const dateFormatee = new Intl.DateTimeFormat('fr-FR', options).format(dateActuelle);
+        // Ajoutez "Fait le " devant la date formatée
+        const dateAffichee = `Fait le ${dateFormatee}`;
+        // Affichez la date affichée dans votre élément HTML (par exemple, avec un identifiant "dateAffichee")
+        document.getElementById('dateAffichee').textContent = dateAffichee;
+    </script>
 </body>
 
 </html>

@@ -251,7 +251,7 @@ class EtudiantController extends Controller
 
         // Téléchargez le PDF ou affichez-le dans le navigateur
         //return $pdf->download('jude.pdf');
-        $entry = an_ttri_prof_mat_tcomp_in::find($id);
+        $entry = an_ttri_prof_mat_tcomp_in::where('inscription_id',$id)->first();
 
         // dd($entry->inscription_id);
 
@@ -277,13 +277,15 @@ class EtudiantController extends Controller
 
         $classeId =  $classe->id; // l'ID de la classe connecté
 
-            // Récupérez les ID des compositions
-            $compositions = DB::table('an_ttri_prof_mat_tcomp_ins')
-            ->where('inscription_id', $entry->inscription_id)
-            ->where('type_trimestre_id', $entry->type_trimestre_id)
-            ->whereIn('type_compo_id', [1, 2, 3]) // Assurez-vous que ces valeurs correspondent aux types de composition souhaités
-            ->orderBy('type_compo_id') // Triez par type_compo_id pour obtenir les compositions dans l'ordre 1, 2, 3
-            ->pluck('id');
+           // Récupérez les ID des compositions
+        $compositions = DB::table('an_ttri_prof_mat_tcomp_ins')
+        ->where('type_trimestre_id', $entry->type_trimestre_id)
+        ->where('inscription_id', $entry->inscription_id)
+        //->whereIn('type_compo_id', [1, 2, 3]) // Assurez-vous que ces valeurs correspondent aux types de composition souhaités
+        ->orderBy('type_compo_id') // Triez par type_compo_id pour obtenir les compositions dans l'ordre 1, 2, 3
+        ->distinct()
+        ->pluck('type_compo_id');
+        //dd($compositions);
         
         // Assurez-vous que vous avez les ID des compositions dans le bon ordre
         if (count($compositions) >= 3) {

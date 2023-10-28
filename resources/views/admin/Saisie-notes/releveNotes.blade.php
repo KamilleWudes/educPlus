@@ -111,6 +111,7 @@
         });
         $(document).ready(function() {
             console.log("hello note");
+
             $('#anneeScolaire,#type-trimestre,#classe').on("change", function() {
                 var anneeScolaire = $('#annee-scolaire').val();
                 var typeTrimestre = $('#type-trimestre').val();
@@ -130,7 +131,7 @@
                         classe: classe,
                     },
                     success: (response) => {
-                        typeTrimestreChoisie=response.typeTrimestreChoisie
+                        typeTrimestreChoisie = response.typeTrimestreChoisie
                         classes = response.classes
                         inscri = response.Notes
                         console.log('avec filtre', inscri);
@@ -155,7 +156,7 @@
 
                         }
 
-                     var classe = '';
+                        var classe = '';
 
                         for (var i = 0; i < response.classes.length; i++) {
                             classe += '<option  value=""></option>';
@@ -170,7 +171,7 @@
                             $('#etudNote').html(NoteEtude);
 
                             $('#typeTrimestreChoisie').html(
-                                `<h6  class="mb-0 text-upercase">Relevées de Notes du ${response.typeTrimestreChoisie}</h6>`
+                                `<h6 class="mb-0 text-upercase">Relevées de Notes : ${response.typeTrimestreChoisie ? response.typeTrimestreChoisie : ''}</h6>`
                             );
 
                         } else {

@@ -250,7 +250,7 @@ if (!function_exists('getConnectedEcoleName')) {
  function getEcoleDeLEtudiantConnecte()
 {
     // Récupérez l'ID de l'étudiant connecté à partir de la session
-    $etudiantId = EtudiantId();
+    $etudiantId = EtudiantId(); 
 
     if ($etudiantId) {
         // Utilisez une requête pour récupérer l'école de l'étudiant connecté

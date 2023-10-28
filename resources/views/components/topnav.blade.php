@@ -22,7 +22,7 @@
            {{-- <p class="user-name mb-0" style="font-size:20px;">{{ AnneScolaire() }} </p> --}}
 
 
-            <div class="top-menu ms-auto">
+            <div class="top-menu ms-auto" style="display:none">
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item mobile-search-icon">
                         <a class="nav-link" href="#"> <i class='bx bx-search'></i>

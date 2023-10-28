@@ -202,8 +202,8 @@
                             $('#coef').html(
                                 `<h5 class="mb-0">coefficient : ${response.coefficientMatiere}</h5>`
                             );
-                            $('#matiereChoisie').html(
-                                `<h6 class="mb-0">Listes des Notes : ${response.matiereChoisie}</h6>`
+                             $('#matiereChoisie').html(
+                                `<h6 class="mb-0">Listes des Notes : ${response.matiereChoisie ? response.matiereChoisie : ''}</h6>`
                             );
 
 

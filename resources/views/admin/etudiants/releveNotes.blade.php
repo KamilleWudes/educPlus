@@ -160,7 +160,7 @@
                             $('#etudNote').html(NoteEtude);
 
                             $('#typeTrimestreChoisie').html(
-                                `<h6  class="mb-0 text-upercase">Relevées de Notes du  ${response.typeTrimestreChoisie}</h6>`
+                                `<h6 class="mb-0 text-upercase">Relevées de Notes : ${response.typeTrimestreChoisie ? response.typeTrimestreChoisie : ''}</h6>`
                             );
 
                         } else {

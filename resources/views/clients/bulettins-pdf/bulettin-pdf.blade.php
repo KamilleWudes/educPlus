@@ -9,7 +9,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
         }
 
         .container {
@@ -220,7 +219,7 @@
                                         style="font-weight: bold;">{{ $moyenneGlobaleArrondie }}</span>
                                     SUR <span style="font-weight: bold;">20</span></p>
                                 <p><u>RANG:</u> <span style="font-weight: bold;">{{ $rangEtudiant }}è</span> SUR <span
-                                        style="font-weight: bold;">966</span></p>
+                                        style="font-weight: bold;">{{ $effectifTotal }}</span></p>
                             </th>
                         </tr>
                         {{-- <tr>
@@ -257,7 +256,7 @@
                                 @endforeach
                             </td>
                         </tr>
-                        <table>
+                        </table>
                 </div>
             </div>
         </div>

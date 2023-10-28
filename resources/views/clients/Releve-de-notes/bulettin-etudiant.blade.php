@@ -50,7 +50,7 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <h6 id="typeTrimestreChoisie" class="mb-0 text-uppercase">Listes des Notes Etudiants </h6>
+            <h6 id="typeTrimestreChoisie" class="mb-0 text-uppercase">Relevées de Notes</h6>
             <hr />
             <div class="card">
                 <div class="card-body">
@@ -158,8 +158,8 @@
                             $('#classe').html(classe);
                             $('#etudNote').html(NoteEtude);
 
-                            $('#typeTrimestreChoisie').html(
-                                `<h6  class="mb-0 text-upercase">Listes des Notes Etudiants du ${response.typeTrimestreChoisie}</h6>`
+                           $('#typeTrimestreChoisie').html(
+                                `<h6 class="mb-0 text-upercase">Relevées de Notes : ${response.typeTrimestreChoisie ? response.typeTrimestreChoisie : ''}</h6>`
                             );
 
                         } else {
