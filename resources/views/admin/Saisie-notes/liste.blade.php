@@ -18,7 +18,7 @@
                     <div class="btn-group">
                         <select class="form-select single-select @error('annee_scolaire_id') is-invalid  @enderror"
                             id="annee-scolaire" name="annee_scolaire_id">
-                            <option value="">Annee Scolaires </option>
+                            <option value="">Année Scolaire </option>
 
                             @foreach ($anneeScolaires as $AnneeScolaire)
                                 <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} -
@@ -27,8 +27,8 @@
                         </select>
                     </div>
                     <div class="btn-group">
-                        <select class="form-select single-select @error('annee_scolaire_id') is-invalid  @enderror"
-                            id="type-trimestre" name="annee_scolaire_id">
+                        <select class="form-select single-select @error('type_trimestre_id') is-invalid  @enderror"
+                            id="type-trimestre" name="type_trimestre_id">
                             <option value="">Type trimestre </option>
 
                             @foreach ($typesTrimestres as $typeTrimestre)
@@ -37,8 +37,8 @@
                         </select>
                     </div>
                     <div class="btn-group">
-                        <select class="form-select single-select @error('annee_scolaire_id') is-invalid  @enderror"
-                            id="type-composition" name="annee_scolaire_id">
+                        <select class="form-select single-select @error('type_compo_id') is-invalid  @enderror"
+                            id="type-composition" name="type_compo_id">
                             <option value="">Type Composition </option>
 
                             @foreach ($typeCompositions as $typeComposition)
@@ -81,6 +81,8 @@
                                     <th style="text-align:center">Note</th>
                                     <th style="text-align:center">Note définitive</th>
                                     <th style="text-align:center">Appreciations</th>
+                                    <th style="text-align:center">Edition Note</th>
+
 
 
                                 </tr>
@@ -176,10 +178,14 @@
                             NoteEtude += `<tr>
 
                               <td style="text-align:center">${ resp.matricule} </td> 
-                              <td style="text-align:center">${ resp.prenom_etudiant} ${ resp.nom_etudiant}</td>
+                              <td style="text-align:center">${ resp.nom_etudiant}  ${ resp.prenom_etudiant} </td>
                               <td style="text-align:center">${ resp.note} </td>
                               <td style="text-align:center">${ resp.note_coefficient} </td>
                               <td style="text-align:center">${ resp.appreciation} </td>
+                              <td style="text-align:center"><a
+                                                href="{{ url('edit_note=') }}${resp.id}"><button type="button"
+                                                    class="btn btn-light btn-sm radius-30 px-4">Edition Note</button></a>
+                                        </td>
 
 
                             </tr>`

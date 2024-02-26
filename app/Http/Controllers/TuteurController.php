@@ -78,6 +78,7 @@ class TuteurController extends Controller
           ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
           ->select('annee_scolaires.annee1 as annee1','annee_scolaires.annee2 as annee2','annee_scolaires.id as id')
           ->where('users.id', '=', $user_id)
+          ->orderBy("id","Desc")
           ->distinct()
           ->get();
         return view ('admin.tuteurs.liste',compact('tuteurs','anneeScolaires'));

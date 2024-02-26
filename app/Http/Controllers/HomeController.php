@@ -39,11 +39,12 @@ class HomeController extends Controller
 
     public function index()
     {
-        // $data = array();
-        // if(Session::has('user')){
-        //     $data = User::where('id','=', Session::get('user'))->first();
-        // }
         $ecoles = Ecole::orderBy("id","Desc")->get();
+        if ($ecoles->isEmpty()) {
+
+        return view('accueil');
+
+        }
 
         return view('welcome',compact('ecoles'));
     }

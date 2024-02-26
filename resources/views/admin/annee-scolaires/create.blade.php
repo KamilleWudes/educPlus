@@ -9,7 +9,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-white">
-                        <h5 class="mb-0 text-white">Nouvelle année scolaire</h5><br><br><br><br>
+                        <h5 class="mb-0 text-white">Début d'une nouvelle année scolaire</h5><br><br><br><br>
                         <div class="row mb-3">
                             <label for="inputEnterYourName" class="col-sm-3 col-form-label">Nouvelle Année Scolaire :
                             </label>

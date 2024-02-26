@@ -61,11 +61,12 @@
                                         {{-- <td style="text-align:center">{{ $inscription->annee1 }} -
                                             {{ $inscription->annee2 }}</td> --}}
                                         <td style="text-align:center">{{ $inscription->date_insription }}</td>
-                                        <td style="text-align:center">{{ $inscription->etudiant_prenom }}
-                                            {{ $inscription->etudiant_nom }}</td>
+                                        <td style="text-align:center">{{ $inscription->etudiant_nom }} 
+                                            {{ $inscription->etudiant_prenom }}</td>
                                         <td style="text-align:center">{{ $inscription->classe_nom }}</td>
-                                        <td style="text-align:center">{{ $inscription->tuteur_prenoms }}
-                                            {{ $inscription->tuteur_nom }}</td>
+                                        <td style="text-align:center"> {{ $inscription->tuteur_nom }} 
+                                            {{ $inscription->tuteur_prenoms }}
+                                           </td>
                                         <td style="text-align:center">{{ $inscription->tuteur_telephone1 }}</td>
 
                                         <td style="text-align:center"><a
@@ -124,9 +125,9 @@
                           <td style="text-align:center">${ resp.matricule} </td>
                             {{-- <td style="text-align:center">${ resp.annee1} - ${ resp.annee2}</td> --}}
                             <td style="text-align:center">${ resp.date_insription} </td>
-                            <td style="text-align:center">${ resp.etudiant_prenom} ${ resp.etudiant_nom}</td>
+                            <td style="text-align:center">${ resp.etudiant_nom} ${ resp.etudiant_prenom}</td>
                             <td style="text-align:center">${ resp.classe_nom}</td>
-                            <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
+                            <td style="text-align:center">${ resp.tuteur_nom} ${ resp.tuteur_prenoms} </td>
                             <td style="text-align:center">${ resp.tuteur_telephone1}</td>
 
                                   <td style="text-align:center"><a

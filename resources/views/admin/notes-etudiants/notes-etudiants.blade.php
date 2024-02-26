@@ -176,7 +176,7 @@
 
                             NoteEtude += `<tr>
                               <td style="text-align:center">${ resp.matricule} </td>
-                              <td style="text-align:center">${ resp.prenom_etudiant} ${ resp.nom_etudiant}</td>
+                              <td style="text-align:center">${ resp.nom_etudiant}   ${ resp.prenom_etudiant}</td>
                               <td style="text-align:center">${ resp.note} </td>
                               <td style="text-align:center">${ resp.note_coefficient}</td>
                               <td style="text-align:center">${ resp.appreciation} </td>

@@ -55,14 +55,14 @@
                                     <tr>
                                         {{--  <td style="text-align:center">{{$loop->index+1}}</td>  --}}
                                         <td style="text-align:center">{{ $etudiant->matricule }}</td>
-                                        <td style="text-align:center">{{ $etudiant->etudiant_prenom }}
-                                            {{ $etudiant->etudiant_nom }}</td>
+                                        <td style="text-align:center">
+                                            {{ $etudiant->etudiant_nom }} {{ $etudiant->etudiant_prenom }}</td>
                                         <td style="text-align:center">{{ $etudiant->sexe }}
                                             
                                         </td>
                                         <td style="text-align:center">{{ $etudiant->classe_nom }}</td>
-                                        <td style="text-align:center">{{ $etudiant->tuteur_prenoms }}
-                                            {{ $etudiant->tuteur_nom }}</td>
+                                        <td style="text-align:center">
+                                            {{ $etudiant->tuteur_nom }} {{ $etudiant->tuteur_prenoms }}</td>
 
                                         <td style="text-align:center">{{ $etudiant->etudiant_adresse }}</td>
 
@@ -109,10 +109,10 @@
 
                             etud += `<tr>
                           <td style="text-align:center"> ${ resp.matricule} </td>
-                          <td style="text-align:center">${ resp.etudiant_prenom} ${ resp.etudiant_nom}</td>
+                          <td style="text-align:center">${ resp.etudiant_nom} ${ resp.etudiant_prenom}</td>
                           <td style="text-align:center">${ resp.etudiant_sexe} </td>
                             <td style="text-align:center">${ resp.classe_nom}</td>
-                            <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
+                            <td style="text-align:center">${ resp.tuteur_nom} ${ resp.tuteur_prenoms} </td>
                             <td style="text-align:center">${ resp.etudiant_adresse}</td>
 
                                      <td style="text-align:center"><a

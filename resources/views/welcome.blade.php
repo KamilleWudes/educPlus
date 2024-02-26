@@ -8,7 +8,9 @@
                 <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
                     <div class="col mx-auto">
                         <div class="mb-4 text-center">
-                            <img src="assets/images/logo-img.png" width="180" alt="" /><br><br>
+                            {{-- <h3 class="">EducPlus</h3> --}}
+                            {{-- <img src="assets/images/logo-img.png" width="180" alt="" /> --}}
+                            <br><br>
                             {{--  <h5 class="mb-0 text-white"id="label2">Nouvel Etudiant</h5>
                             <h5 class="mb-0 text-white"id="label"> Ancienne Etudiant</h5>  --}}
                             <input onclick="t(0)" type="radio" name="colors" id="red"><span
@@ -21,7 +23,7 @@
                             <div class="card-body">
                                 <div class="border p-4 rounded">
                                     <div class="text-center">
-                                        <h3 class="">Sign in</h3>
+                                        <h3 class="">Authentification</h3><br>
 
                                     </div>
 

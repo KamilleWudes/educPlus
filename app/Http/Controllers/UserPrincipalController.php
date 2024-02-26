@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\userprincipal;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Etudiant;
+use App\Models\inscription;
 use Illuminate\Support\Facades\DB;
 use App\Models\Ecole;
 class UserPrincipalController extends Controller
@@ -39,24 +40,47 @@ class UserPrincipalController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function NoteLogins(Request $request)
+    // {
+    //     $request->validate([
+    //         'matricule' => 'required',
+    //     ]);
+    
+    //     $matricule = $request->matricule;
+    
+    //     $etudiant = Etudiant::where('matricule', $matricule)->first(); ///rrkrlrklrkllkr
+    
+    //     if ($etudiant) {
+    //         $request->session()->put('Etudiant', $etudiant->id);
+    //         return redirect('Note-etudiant');
+    //     } else {
+    //         // Matricule invalide, renvoyez un message d'erreur
+    //         return redirect()->back()->with("error", "Authentification incorrect");
+    //     }
+    // }
     public function NoteLogins(Request $request)
-    {
-        $request->validate([
-            'matricule' => 'required',
-        ]);
-    
-        $matricule = $request->matricule;
-    
-        $etudiant = Etudiant::where('matricule', $matricule)->first();
-    
-        if ($etudiant) {
-            $request->session()->put('Etudiant', $etudiant->id);
-            return redirect('Note-etudiant');
-        } else {
-            // Matricule invalide, renvoyez un message d'erreur
-            return redirect()->back()->with("error", "Authentification incorrect");
-        }
+{
+    $request->validate([
+        'matricule' => 'required',
+    ]);
+
+    $matricule = $request->matricule;
+
+    // Recherche de l'étudiant dans la table Inscription et sélection de la plus récente
+    $inscription = Inscription::whereHas('etudiant', function ($query) use ($matricule) {
+        $query->where('matricule', $matricule);
+    })->latest('annee_scolaire_id')->first();
+
+    if ($inscription) {
+        // Si l'inscription est trouvée, stockez l'ID de l'étudiant dans la session
+        $request->session()->put('Etudiant', $inscription->etudiant->id);
+        return redirect('Note-etudiant');
+    } else {
+        // Matricule invalide, renvoyez un message d'erreur
+        return redirect()->back()->with("error", "Authentification incorrecte");
     }
+}
+
 
     /**
      * Display the specified resource.

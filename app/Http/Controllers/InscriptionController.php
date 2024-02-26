@@ -29,7 +29,7 @@ class InscriptionController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */       //-where('professeur_classe_matieres.classe_id', $request->classe_id)
+     */     
 
     public function GetAnnees(request $request){
         $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
@@ -105,14 +105,40 @@ class InscriptionController extends Controller
         ->where('users.id', '=', $user_id)
         ->select('ecoles.nom as ecole_nom', 'classes.id as classe_id', 'classes.nom as classe_nom','niveau_scolaires.nom as niveau_scolaire')
         ->orderBy("classe_id","Desc")
+        ->distinct()
         ->get();
-        
+     
         $etudiantss = Etudiant::offset(0)->limit(1)->orderBy("id","Desc")->get();
         $tuteurs = Tuteur::offset(0)->limit(1)->orderBy("id","Desc")->get();
 
         $AnneeScolaires = anneeScolaire::offset(0)->limit(1)->orderBy("id","Desc")->get();
-        $etudiants = Etudiant::orderBy("id","Desc")->get();
-        $Tuteurss = Tuteur::orderBy("id","Desc")->get();
+
+        $etudiants = DB::table('users')
+        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+        ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+        ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+        ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+        ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+        ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+        ->select('etudiants.*')
+        ->where('users.id', '=', $user_id)
+        ->orderBy('inscriptions.id', 'desc')
+        ->distinct()
+        ->get();
+
+        $Tuteurss = DB::table('users')
+        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+        ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+        ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+        ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+        ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+        ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+        ->select('tuteurs.*')
+        ->where('users.id', '=', $user_id)
+        ->distinct()
+        ->orderBy('inscriptions.id', 'desc')
+        ->get();
+        
 
         return view ('admin.inscriptions.create',compact('etudiants','classes','AnneeScolaires','etudiantss','tuteurs','Tuteurss'));
     }
@@ -134,7 +160,7 @@ class InscriptionController extends Controller
             'prenom' => 'required',
             'sexe' => 'required',
             'LieuNaissance'=>'required',
-            'dateNaissance'=>'required',
+            'dateNaissance' => 'required|date',
             'telephone' => 'nullable|numeric|unique:etudiants,telephone',
             'adresse' => 'required',
             'email' => 'nullable|email|unique:etudiants,email',
@@ -150,9 +176,16 @@ class InscriptionController extends Controller
  
             'annee_scolaire_id'=>'required',
             'classe_id' => 'required',
-            'date_insription' => 'required',
+            'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
  
-        ]);
+        ]); 
+
+         // Vérifiez manuellement si la date de naissance est antérieure ou égale à la date actuelle
+    $dateNaissance = \Carbon\Carbon::createFromFormat('Y-m-d', $request->dateNaissance);
+
+    if ($dateNaissance->isAfter(now()) || $dateNaissance->isSameDay(now())) {
+        return redirect()->back()->with('error', 'La date de naissance doit être antérieure à la date actuelle.')->withInput();
+    }
  
     $validator = Validator::make($request->all(), [
         
@@ -228,7 +261,7 @@ if ($validator->fails()) {
 
        $inscriptions->save();
 
-       $annes = substr(AnneScolaires(), 7, 2);
+       $annes = substr(AnneScolaires(), 9, 2);
        $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1).substr($etudiants->dateNaissance, 2, 2).$annes;
        $etudiants->matricule = $matricule;
 
@@ -282,7 +315,7 @@ if ($validator->fails()) {
  
             'annee_scolaire_id'=>'required',
             'classe_id' => 'required',
-            'date_insription' => 'required',
+            'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
             'etudiant_id' => 'required',
  
  
@@ -380,7 +413,7 @@ if ($existingInscription) {
             'prenom' => 'required',
             'sexe' => 'required',
             'LieuNaissance'=>'required',
-            'dateNaissance'=>'required',
+            'dateNaissance'=>'required|date',
             'telephone' => 'nullable|numeric|unique:etudiants,telephone',
             'adresse' => 'required',
             'email' => 'nullable|email|unique:etudiants,email',
@@ -388,11 +421,16 @@ if ($existingInscription) {
  
             'annee_scolaire_id'=>'required',
             'classe_id' => 'required',
-            'date_insription' => 'required',
+            'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
             'tuteur_id' => 'required',
  
- 
         ]);
+           // Vérifiez manuellement si la date de naissance est antérieure ou égale à la date actuelle
+    $dateNaissance = \Carbon\Carbon::createFromFormat('Y-m-d', $request->dateNaissance);
+
+    if ($dateNaissance->isAfter(now()) || $dateNaissance->isSameDay(now())) {
+        return redirect()->back()->with('error', 'La date de naissance doit être antérieure à la date actuelle.')->withInput();
+    }
 
     $validator = Validator::make($request->all(), [
          
@@ -453,11 +491,11 @@ if ($validator->fails()) {
        $inscriptions->classe_id = $request->classe_id;
        $inscriptions->tuteur_id = $request->tuteur_id;
        $inscriptions->etudiant_id = $etudiants->id;
-        $inscriptions->ecole_id = $request->ecole_id;
+       $inscriptions->ecole_id = $request->ecole_id;
 
        $inscriptions->save();
 
-       $annes = substr(AnneScolaires(), 7, 2);
+       $annes = substr(AnneScolaires(), 9, 2);
        $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1).substr($etudiants->dateNaissance, 2, 2).$annes;
        $etudiants->matricule = $matricule;
 
@@ -502,7 +540,7 @@ if ($validator->fails()) {
 
         'annee_scolaire_id'=>'required',
         'classe_id' => 'required',
-        'date_insription' => 'required',
+        'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
         'tuteur_id' => 'required',
         'etudiant_id' => 'required',
 
@@ -517,14 +555,13 @@ if ($validator->fails()) {
                     ->where('annee_scolaire_id', $request->annee_scolaire_id);
             }),
         ],
+    ]);
 
     // Vérifier si l'étudiant est déjà inscrit à une autre classe pour la même année scolaire et la même école
     $existingInscription = Inscription::where('etudiant_id', $request->etudiant_id)
     ->where('annee_scolaire_id', $request->annee_scolaire_id)
     ->where('ecole_id', $request->ecole_id)
-    ->first()
-
-    ]);
+    ->first();
 
 if ($validator->fails()) {
         return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
@@ -634,7 +671,7 @@ if ($validator->fails()) {
             'prenom' => 'required',
             'sexe' => 'required',
             'LieuNaissance'=>'required',
-            'dateNaissance'=>'required',
+            'dateNaissance' => ['required', 'date', 'before:' . now()->format('Y-m-d')],
             'telephone' => 'nullable|numeric|' . Rule::unique('etudiants')->ignore($id),
             'adresse' => 'required',
             'email' => 'nullable|email|' . Rule::unique('etudiants')->ignore($id),
@@ -649,7 +686,7 @@ if ($validator->fails()) {
 
             'annee_scolaire_id'=>'required',
             'classe_id' => 'required',
-            'date_insription' => 'required',
+            'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
             'etudiant_id' => 'required',
             'tuteur_id' => 'required'
 
@@ -704,7 +741,7 @@ if ($validator->fails()) {
        $inscriptions->etudiant_id = $request->etudiant_id;
 
        $inscriptions->update();
-       $annes = substr(AnneScolaires(), 7, 2);
+       $annes = substr(AnneScolaires(), 9, 2);
        $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1).substr($etudiants->dateNaissance, 2, 2).$annes;
        $etudiants->matricule = $matricule;
 

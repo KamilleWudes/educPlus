@@ -10,7 +10,7 @@
                         <li class="breadcrumb-item"><a href="{{ route('getHome') }}"><i class="bx bx-home-alt"></i></a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            Nouvel Ecole</li>
+                            Nouvelle École</li>
                     </ol>
                 </nav>
             </div>
@@ -27,13 +27,13 @@
                         <div class="card-title d-flex align-items-center">
                             <div><i class="bx bxs-user me-1 font-22 text-white"></i>
                             </div>
-                            <h5 class="mb-0 text-white">Nouvel Ecole</h5>
+                            <h5 class="mb-0 text-white">Nouvelle École</h5>
                         </div>
                         <hr>
                         <form class="row g-3" method="POST" action="{{ route('createecole') }}" enctype='multipart/form-data'>
                             @csrf
                             <div class="col-md-6">
-                                <label for="inputLastName1" class="form-label">Nom</label> <br> <br>
+                                <label for="inputLastName1" class="form-label">Nom</label> 
                                 <div class="input-group"> <span class="input-group-text"><i class='bx bxs-user'></i></span>
                                     <input type="text"
                                         class="form-control @error('nom') is-invalid  @enderror border-start-0 "
@@ -46,8 +46,8 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="inputAddress3" class="form-label">Address</label>
-                                <textarea class="form-control @error('adresse') is-invalid  @enderror" name="adresse" value="{{ old('adresse') }}" id="inputAddress3"
-                                    placeholder="Enter Address" rows="2"></textarea>
+                                <input class="form-control @error('adresse') is-invalid  @enderror" name="adresse" value="{{ old('adresse') }}" id="inputAddress3"
+                                    placeholder="Enter Address">
                                 @error('adresse')
                                     <span class="error" style="color:red">{{ $message }}</span>
                                 @enderror

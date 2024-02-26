@@ -18,8 +18,8 @@
     <p>ID de l'école du professeur connecté : {{ session('ecole_id') }}</p>
 @endif --}}
 
-            <p id="wudes" class="user-name mb-0" style="font-size:20px;">AnneScolaire() </p>
-           {{-- <p class="user-name mb-0" style="font-size:20px;">{{ AnneScolaire() }} </p> --}}
+            {{-- <p id="wudes" class="user-name mb-0" style="font-size:20px;">AnneScolaire() </p> --}}
+           <p class="user-name mb-0" style="font-size:20px;"> {{ AnneScolaire() }} {{ ProfesseurAneeScolaire() }}  {{ EtudiantAneeScolaire() }}</p>
 
 
             <div class="top-menu ms-auto" style="display:none">
@@ -317,20 +317,44 @@
                 </ul>
             </div>
             <div class="user-box dropdown">
-                <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#"
+                <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href=""
                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+                    <img src="assets/images/avatars/icon-user.png" class="user-img" alt="user avatar">
                     <div class="user-info ps-3"> <br>
-                        {{--  <p class="user-name mb-0"> {{ $data->prenom }} {{ $data->name }} {{ $data->nom }}</p>  --}}
                         <p class="user-name mb-0"> {{ fullNameEtudiant() }} {{ UserfullNameProf() }} {{ UserfullName() }}
                             {{ FullNameSuperAdmin() }}<br>{{ UserfullRoleProf() }} {{ fullRoleSuperAdmin() }}</p>
 
-                        <p class="text-capitalize">{{ RoleEtudiant() }} {{ UserFullRole() }}  </p>
+                        <p class="text-capitalize">{{ RoleEtudiant() }} {{ UserFullRole() }} {{ ClasseEtudiant() }} </p>
 
-                    </div>
+
+                    </div> 
                 </a>
+
                 <ul class="dropdown-menu dropdown-menu-end">
-                    
+                    @if (UserFullRole() == 'Admin')
+
+                    <li><a class="dropdown-item d-flex align-items-center" href="{{ url('profil-admin=' . Userid()) }}"><i class="bx bx-user fs-5"></i><span>Profile</span></a>
+                    </li>
+                    @endif
+
+                    @if (UserFullRoleProf() == 'professeur')
+                    <li><a class="dropdown-item d-flex align-items-center" href="{{ url('profil-professeur=' . ProfId()) }}"><i class="bx bx-user fs-5"></i><span>Profile</span></a>
+                    </li>
+                    @endif
+
+                    @if (fullRoleSuperAdmin() == 'SuperAdmin')
+                    <li><a class="dropdown-item d-flex align-items-center" href="{{ url('profil-utilisateur=' . superAdminId()) }}"><i class="bx bx-user fs-5"></i><span>Profile</span></a>
+                    </li>
+                    @endif
+
+                    @if (RoleEtudiant() == 'etudiant')
+                    <li><a class="dropdown-item d-flex align-items-center" href="{{ url('profil-etudiant=' . EtudiantId()) }}"><i class="bx bx-user fs-5"></i><span>Profile</span></a>
+                    </li>
+                    @endif
+
+
+
+
                     <li>
                         <div class="dropdown-divider mb-0"></div>
                     </li>
@@ -342,16 +366,17 @@
                             @csrf
                         </form>
                     </li>
+                    
                 </ul>
             </div>
         </nav>
     </div>
 </header>
-<script>
+{{-- <script>
     var d = new Date();
     old = d.getFullYear();
 
     news = d.getFullYear() + 1;
 
     document.getElementById('wudes').innerText = " Annee scolaire :  " + old + " - " + news
-</script>
+</script> --}}

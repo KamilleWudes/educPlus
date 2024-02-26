@@ -21,8 +21,10 @@
                     <select class="form-select @error('annee_scolaire_id') is-invalid  @enderror" id="validationCustom04"
                         name="annee_scolaire_id">
                         @foreach ($AnneeScolaires as $AnneeScolaire)
-                            <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} -
-                                {{ $AnneeScolaire->annee2 }}</option>
+                            {{-- <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} -
+                                {{ $AnneeScolaire->annee2 }}</option> --}}
+                                 <option value="{{ AnneScolairesId() }}">{{ AnneScolaires() }}
+                            </option>
                         @endforeach
                     </select>
                     @error('annee_scolaire_id')
@@ -71,11 +73,10 @@
                                 <div id="inteligen">
                                     <select class="form-select single-select" id="inputGroupSelect03" onchange="send()"
                                         name="ecole_id">
-                                        <option value="">Selectionnez l''etudiant</option>
+                                        <option value="">Selectionnez l'etudiant</option>
                                         @foreach ($etudiants as $etudiant)
-                                            <option value="{{ $etudiant }}"> {{ $etudiant->nom }}
-                                                {{ $etudiant->prenom }}
-                                            </option>
+                                        <option value="{{ json_encode($etudiant) }}"> {{ $etudiant->nom }} {{ $etudiant->prenom }}</option>
+
                                         @endforeach
                                     </select>
                                 </div>
@@ -112,9 +113,10 @@
                                     <div class="input-group"> <span class="input-group-text"><i
                                                 class='bx bxs-calendar'></i></span><input
                                             class="result form-control form-control @error('dateNaissance') is-invalid  @enderror"
-                                            name="dateNaissance" value="{{ old('dateNaissance') }}" type="text" id="date"
+                                            name="dateNaissance" value="{{ old('dateNaissance') }}" type="date" id="date"
                                             placeholder="Date de Naissance...">
                                     </div>
+                                    
                                     @error('dateNaissance')
                                         <span class="error" style="color:red">{{ $message }}</span>
                                     @enderror
@@ -177,14 +179,14 @@
 
                                 <div class="col-md-6">
                                     <label for="inputAddress3" class="form-label">Address</label>
-                                    <textarea class="form-control" name="adresse" value="{{ old('adresse') }}" id="inputAddress3" placeholder="Enter Address" rows="2"></textarea>
+                                    <input class="form-control" name="adresse" value="{{ old('adresse') }}" id="inputAddress3" placeholder="Enter Address" rows="2">
                                     @error('adresse')
                                         <span class="error" style="color:red">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="inputAddress3" class="form-label">Photo</label><br><br>
+                                    <label for="inputAddress3" class="form-label">Photo</label>
                                     <input type="file" class="form-control" aria-label="file example" id="image"
                                         name="image" accept=".jpg, .png, image/jpeg, image/png" multiple
                                         style="text-align: center;">
@@ -231,7 +233,7 @@
                                         name="ecole_id">
                                         <option value="">Selectionnez le tuteur</option>
                                         @foreach ($Tuteurss as $tuteur1)
-                                            <option value="{{ $tuteur1 }}"> {{ $tuteur1->noms }}
+                                            <option value="{{ json_encode($tuteur1) }}"> {{ $tuteur1->noms }}
                                                 {{ $tuteur1->prenoms }}
                                             </option>
                                         @endforeach
@@ -302,15 +304,14 @@
 
                                 <div class="col-md-6">
                                     <label for="inputAddress" class="form-label">Address</label>
-                                    <textarea class="form-control @error('adresses') is-invalid  @enderror" name="adresses" id="inputAddress" value="{{ old('adresses') }}"
-                                        placeholder="Enter Address" rows="2"></textarea>
+                                    <input class="form-control @error('adresses') is-invalid  @enderror" name="adresses" id="inputAddress" value="{{ old('adresses') }}"
+                                        placeholder="Enter Address" rows="2">
                                     @error('adresses')
                                         <span class="error" style="color:red">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="col-md-6">
-                                    <br>
                                     <label for="inputAddress3" class="form-label">Sexe</label>
                                     <div class="input-group"> <span class="input-group-text"><i
                                                 class='bx bxs-user'></i></span>
@@ -558,10 +559,7 @@
                 hideClass: {
                     popup: 'animate__animated animate__zoomOut'
                 },
-                //timer: 50000, // Temps en millisecondes (3 secondes dans cet exemple)
-                //timerProgressBar: true, // Affiche une barre de progression
-                //toast: false, // Style de popup de notification
-                //position: 'top-end' // Position de la notification
+  
             });
         }
     </script>

@@ -54,16 +54,7 @@ function UserfullName(){
      }
  }
 
-// function UserfullRole(){
-//        $data = array();
-//         if(Session::has('user')){
-//             $datas = User::where('id','=', Session::get('user'))->first()->role;
 
-//            // $datas = DB::table('roles')->where('id','=', $data)->first()->nom;
-
-//             return $datas ;
-//         }
-//     }
 
 function UserfullRole(){
     if(Session::has('user')){
@@ -153,7 +144,7 @@ function UserfullRole(){
          }
      }
 
-
+   
     // function AnneScolaire(){
     //     $anneeScolaire = anneeScolaire::orderBy("id", "desc")->first();
     
@@ -167,24 +158,39 @@ function UserfullRole(){
     
     //     return $AnneeScolaire;
     // }
+    function AnneScolaire()
+{
+    $user_id = Userid(); // l'id de l'utilisateur connecté
 
-        if (!function_exists('AnneScolaire')) {
-            function AnneScolaire()
-            {
-                $user_id = Userid(); // Supposons que Userid() est une fonction existante dans votre helper
-        
-                $anneeScolaire = DB::table('users')
-                ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-                ->leftJoin('annee_scolaires', 'ecoles.id', '=', 'annee_scolaires.ecole_id')
-                ->select('annee_scolaires.annee1', 'annee_scolaires.annee2')
-                ->where('users.id', '=', $user_id)
-                ->orderBy('annee_scolaires.id', 'desc')
-                ->first();
+    $AnneeScolaire = DB::table('users')
+        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+        ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+        ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+        ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+        ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+        ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+        ->select('annee_scolaires.annee1 as annee1','annee_scolaires.annee2 as annee2','annee_scolaires.id as id')
+        ->where('users.id', '=', $user_id)
+        ->orderBy("id","Desc")
+        ->distinct()
+        ->first();
 
-        return $anneeScolaire ? "Année scolaire: {$anneeScolaire->annee1} - {$anneeScolaire->annee2}" : '';
+    // Convertir l'objet en tableau
+    $AnneeScolaireArray = json_decode(json_encode($AnneeScolaire), true);
+
+    // Utiliser htmlspecialchars sur les valeurs pertinentes
+    $AnneeScolaire1 = htmlspecialchars($AnneeScolaireArray['annee1']);
+    $AnneeScolaire2 = htmlspecialchars($AnneeScolaireArray['annee2']);
+
+    $AnneeScolaireText = 'Annee scolaire : ' . $AnneeScolaire1 . '-' . $AnneeScolaire2;
+
+    if ($AnneeScolaire) {
+        return $AnneeScolaireText;
     }
-        }
 
+    return '';
+
+}
 
     
 
@@ -195,27 +201,43 @@ function UserfullRole(){
     //     $AnneeScolaire2 = anneeScolaire::offset(0)->limit(1)->orderBy("id","Desc")->get()->first()->annee2;
 
     //     $AnneeScolaire = $AnneeScolaire1.' - '. $AnneeScolaire2;
-        
 
     //     return $AnneeScolaire;
     //  }
+    function AnneScolaires(){
+        $user_id = Userid(); // l'id de l'utilisateur connecté
 
-    if (!function_exists('AnneScolaires')) {
-        function AnneScolaires()
-        {
-            $user_id = Userid(); // Supposons que Userid() est une fonction existante dans votre helper
-            $anneeScolaire = DB::table('users')
+        $AnneeScolaire = DB::table('users')
             ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-            ->leftJoin('annee_scolaires', 'ecoles.id', '=', 'annee_scolaires.ecole_id')
-            ->select('annee_scolaires.annee1', 'annee_scolaires.annee2')
+            ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+            ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+            ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+            ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+            ->select('annee_scolaires.annee1 as annee1','annee_scolaires.annee2 as annee2','annee_scolaires.id as id')
             ->where('users.id', '=', $user_id)
-            ->orderBy('annee_scolaires.id', 'desc')
+            ->orderBy("id","Desc")
+            ->distinct()
             ->first();
-    
-            return $anneeScolaire ? "{$anneeScolaire->annee1} - {$anneeScolaire->annee2}" : '';
-        }
+
+                // Convertir l'objet en tableau
+    $AnneeScolaireArray = json_decode(json_encode($AnneeScolaire), true);
+
+    // Utiliser htmlspecialchars sur les valeurs pertinentes
+    $AnneeScolaire1 = htmlspecialchars($AnneeScolaireArray['annee1']);
+    $AnneeScolaire2 = htmlspecialchars($AnneeScolaireArray['annee2']);
+
+    $AnneeScolaire = $AnneeScolaire1.' - '. $AnneeScolaire2;
+
+    if ($AnneeScolaire) {
+        return $AnneeScolaire;
     }
 
+    return '';
+    
+    
+
+     }
 
     //  function AnneScolairesId(){
     //     $AnneeScolaire1 = anneeScolaire::offset(0)->limit(1)->orderBy("id","Desc")->get()->first();
@@ -226,24 +248,33 @@ function UserfullRole(){
 
     //     return '';
     //  }
+    function AnneScolairesId(){
+        $user_id = Userid(); // l'id de l'utilisateur connecté
 
-    if (!function_exists('AnneScolairesId')) {
-        function AnneScolairesId()
-        {
-            $user_id = Userid(); // Supposons que Userid() est une fonction existante dans votre helper
-    
-            $anneeScolaire = DB::table('users')
+        $AnneeScolaire = DB::table('users')
             ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-            ->leftJoin('annee_scolaires', 'ecoles.id', '=', 'annee_scolaires.ecole_id')
-            ->select('annee_scolaires.id')
+            ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+            ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+            ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+            ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+            ->select('annee_scolaires.annee1 as annee1','annee_scolaires.annee2 as annee2','annee_scolaires.id as id')
             ->where('users.id', '=', $user_id)
-            ->orderBy('annee_scolaires.id', 'desc')
+            ->orderBy("id","Desc")
+            ->distinct()
             ->first();
+                       // Convertir l'objet en tableau
+    $AnneeScolaireArray = json_decode(json_encode($AnneeScolaire), true);
 
-        return $anneeScolaire ? "{$anneeScolaire->id}" : '';
-    }
+       // Utiliser htmlspecialchars sur les valeurs pertinentes
+       $AnneeScolaire1 = htmlspecialchars($AnneeScolaireArray['id']);
+
+       if ($AnneeScolaire) {
+        return $AnneeScolaire = $AnneeScolaire1;
     }
 
+    return '';
+     }
 
 
     //  function lastAneeScolaire(){
@@ -256,23 +287,36 @@ function UserfullRole(){
     //     return '';
     // }
 
-    if (!function_exists('lastAneeScolaire')) {
-        function lastAneeScolaire()
-        {
-            $user_id = Userid();
+    function lastAneeScolaire(){
+        $user_id = Userid(); // l'id de l'utilisateur connecté
+
+        $AnneeScolaire = DB::table('users')
+            ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+            ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+            ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+            ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+            ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+            ->select('annee_scolaires.annee1 as annee1','annee_scolaires.annee2 as annee2','annee_scolaires.id as id')
+            ->where('users.id', '=', $user_id)
+            ->orderBy("id","Desc")
+            ->distinct()
+            ->first();
+                       // Convertir l'objet en tableau
+    $AnneeScolaireArray = json_decode(json_encode($AnneeScolaire), true);
     
-            $anneeScolaire = DB::table('users')
-                ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-                ->leftJoin('annee_scolaires', 'ecoles.id', '=', 'annee_scolaires.ecole_id')
-                ->select('annee_scolaires.annee1')
-                ->where('users.id', '=', $user_id)
-                ->orderBy('annee_scolaires.id', 'desc')
-                ->first();
-    
-            return $anneeScolaire ? "{$anneeScolaire->annee1}" : '';
-        }
+    if ($AnneeScolaireArray) {
+        $AnneeScolaire1 = htmlspecialchars($AnneeScolaireArray['annee1']);
+
+        dd($AnneeScolaire1);
+
+        return $AnneeScolaire = $AnneeScolaire1;
     }
-    
+       // Utiliser htmlspecialchars sur les valeurs pertinentes
+
+
+        return '';
+    }
 
     //  function UserEcoles(){
     //    // $eco = array();
@@ -287,7 +331,7 @@ function UserfullRole(){
     function UserEcoles(){
         if(Session::has('user')){
             $data = User::where('id', Session::get('user'))->first();
-
+    
             if ($data) {
                 $ecoles = DB::table('ecoles')->where('id', $data->ecole_id)->first();
     
@@ -370,23 +414,6 @@ if (!function_exists('getConnectedEcoleName')) {
          return $fulNames ;
      }
  }
- //ClasseEtudiant
- if (!function_exists('ClasseEtudiant')) {
-    function ClasseEtudiant()
-    {
-        $ClasseEtudiants = EtudiantId();
-
-        $classe = DB::table('inscriptions')
-            ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
-            ->join('classes', 'inscriptions.classe_id', '=', 'classes.id')
-            ->where('etudiants.id', $ClasseEtudiants)
-            ->select('classes.nom as classe_nom')
-            ->first();
-
-        return $classe ? '| Classe: '. $classe->classe_nom : '';
-    }
-}
-
 
  //Recuperation de l'id de l'etudiant
  function EtudiantId(){
@@ -520,77 +547,4 @@ function getTotalUtilisateurs(){
       return $NiveauScolaires;
                 
         }
-
-        //annee Scolaire actuel professeur
-        if (!function_exists('ProfesseurAneeScolaire')) {
-    function ProfesseurAneeScolaire()
-    {
-        $prof_id = ProfId(); 
-
-        $anneeScolaire = DB::table('professeur_classe_matieres')
-            ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
-            ->select('annee_scolaires.annee1', 'annee_scolaires.annee2')
-            ->where('professeur_classe_matieres.professeur_id', '=', $prof_id)
-            ->orderBy('annee_scolaires.id', 'desc')
-            ->distinct()
-            ->first();
-
-        return $anneeScolaire ? "Année scolaire: {$anneeScolaire->annee1} - {$anneeScolaire->annee2}" : '';
-    }
-}
-
-if (!function_exists('ProfesseurNewAneeScolaire')) {
-    function ProfesseurNewAneeScolaire()
-    {
-        $prof_id = ProfId(); 
-
-        $anneeScolaire = DB::table('professeur_classe_matieres')
-            ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
-            ->select('annee_scolaires.annee1', 'annee_scolaires.annee2')
-            ->where('professeur_classe_matieres.professeur_id', '=', $prof_id)
-            ->distinct()
-            ->orderBy('annee_scolaires.id', 'desc')
-            ->first();
-
-        return $anneeScolaire ? "{$anneeScolaire->annee1} - {$anneeScolaire->annee2}" : '';
-    }
-}
-   //ProfesseurAneeScolaireId
-if (!function_exists('ProfesseurAneeScolaireId')) {
-    function ProfesseurAneeScolaireId()
-    {
-        $prof_id = ProfId(); 
-
-        $anneeScolaire = DB::table('professeur_classe_matieres')
-            ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
-            ->select('annee_scolaires.id')
-            ->where('professeur_classe_matieres.professeur_id', '=', $prof_id)
-            ->orderBy('annee_scolaires.id', 'desc')
-            ->distinct()
-            ->first();
-
-        return $anneeScolaire ? "{$anneeScolaire->id}" : '';
-    }
-}
-
-//Etudiant année scolaire
-if (!function_exists('EtudiantAneeScolaire')) {
-    function EtudiantAneeScolaire()
-    {
-        $etudiant_id = EtudiantId();
-
-        $anneeScolaire = DB::table('inscriptions')
-            ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
-            ->select('annee_scolaires.annee1', 'annee_scolaires.annee2')
-            ->where('inscriptions.etudiant_id', '=', $etudiant_id)
-            ->orderBy('annee_scolaires.id', 'desc')
-            ->first();
-
-            return $anneeScolaire ? "Année scolaire: {$anneeScolaire->annee1} - {$anneeScolaire->annee2}" : '';
-        }
-}
-
-
-
-
 ?>

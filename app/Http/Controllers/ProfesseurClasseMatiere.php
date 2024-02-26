@@ -32,6 +32,7 @@ class ProfesseurClasseMatiere extends Controller
         ->select('annee_scolaires.*')
         ->where('ecoles.id', $user_id)
         ->distinct()
+        ->orderby('annee_scolaires.id','desc')
         ->get();
 
         $data = DB::table('professeur_classe_matieres')
@@ -42,7 +43,7 @@ class ProfesseurClasseMatiere extends Controller
         ->join('ecoles', 'ecoles.id', '=', 'classes.ecole_id')
         ->join('users', 'users.ecole_id', '=', 'ecoles.id')
         ->where('users.id', '=', $user_id)
-        ->where('annee_scolaires.annee1',lastAneeScolaire())
+        //->where('annee_scolaires.annee1',lastAneeScolaire())
         ->select('classes.nom as classe', 'matiers.nom as matiere', 'professeurs.nom as nom','professeurs.prenom as prenom','professeurs.matricule as matricule','professeur_classe_matieres.id as id')
         ->orderBy('professeur_classe_matieres.created_at', 'desc')
         ->get();
@@ -105,6 +106,7 @@ class ProfesseurClasseMatiere extends Controller
         ->select('annee_scolaires.*')
         ->where('annee_scolaires.ecole_id', '=', $ecoleId)
         ->distinct()
+        ->orderBy('annee_scolaires.id', 'desc') // Tri par ordre décroissant d'ID
         ->get();
 
         // $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
@@ -120,7 +122,7 @@ class ProfesseurClasseMatiere extends Controller
         $classes = DB::table('inscriptions')
         ->join('classes', 'inscriptions.classe_id', '=', 'classes.id')
         ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
-        ->where('annee_scolaires.annee1', lastAneeScolaire())
+       // ->where('annee_scolaires.annee1', lastAneeScolaire())
         ->where('inscriptions.ecole_id', $ecoleId)
          ->select('classes.id as classe_id', 'classes.nom as classe_nom')
         ->distinct()

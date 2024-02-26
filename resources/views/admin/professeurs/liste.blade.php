@@ -19,7 +19,7 @@
                         <label for="validationCustom04" class="form-label">Année scolaire</label>
                         <select class="form-select @error('annee_scolaire_id') is-invalid  @enderror" id="idProf"
                             name="annee_scolaire_id">
-                            <option value="">Annee Scolaires </option>
+                            <option value="">Année Scolaire</option>
                             @foreach ($anneesScolairesEcole as $AnneeScolaire)
                                 <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} -
                                     {{ $AnneeScolaire->annee2 }}</option>
@@ -55,7 +55,7 @@
                                     <tr>
                                         <td style="text-align:center">{{ $professeur->matricule }}</td>
 
-                                        <td style="text-align:center">{{ $professeur->prenom }} {{ $professeur->nom }}</td>
+                                        <td style="text-align:center">{{ $professeur->nom }} {{ $professeur->prenom }}</td>
                                         <td style="text-align:center">
                                             @if ($professeur->sexe == 'H')
                                                 H
@@ -117,7 +117,7 @@
 
                             professeur += `<tr>
                               <td style="text-align:center">${ resp.matricule} </td>
-                              <td style="text-align:center">${ resp.prenom} ${ resp.nom}</td>
+                              <td style="text-align:center">${ resp.nom} ${ resp.prenom}</td>
                               <td style="text-align:center">${ resp.sexe} </td>
                               <td style="text-align:center">${ resp.telephone1}</td>
                                    <td style="text-align:center"><a

@@ -26,7 +26,7 @@
     <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
 	<link href="assets/plugins/select2/css/select2-bootstrap4.css" rel="stylesheet" />
 
-    <title>Dashtreme - Multipurpose Bootstrap5 Admin Template</title>
+    <title>EducPlus</title>
 </head>
 
 

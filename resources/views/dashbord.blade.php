@@ -321,13 +321,13 @@
                                                     <div class="d-flex align-items-center">
 
                                                         <div class="ms-0">
-                                                            <h6 class="mb-1 font-14">{{ $inscription->etudiant_prenom }}
-                                                                {{ $inscription->etudiant_nom }}</h6>
+                                                            <h6 class="mb-1 font-14">{{ $inscription->etudiant_nom }}
+                                                                {{ $inscription->etudiant_prenom }}</h6>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>{{ $inscription->tuteur_prenoms }}
-                                                    {{ $inscription->tuteur_nom }}</td>
+                                                <td>{{ $inscription->tuteur_nom }}
+                                                    {{ $inscription->tuteur_prenoms }}</td>
                                                 <td class="">{{ $inscription->classe_nom }}</td>
                                                 <td>{{ $inscription->date_insription }}</td>
 

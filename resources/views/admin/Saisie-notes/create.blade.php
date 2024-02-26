@@ -18,13 +18,15 @@
                  </div>
                  <div class="ms-auto">
                      <label for="validationCustom04" class="form-label">Année scolaire</label>
-                     <select class="form-select @error('annee_scolaire_id') is-invalid  @enderror" id="validationCustom04"
+                     <select class="form-select @error('annee_scolaire_id') is-invalid  @enderror" id="anScolaire"
                          name="annee_scolaire_id">
-                         @foreach ($anneeScolaires as $AnneeScolaire)
+                         {{-- @foreach ($anneeScolaires as $AnneeScolaire)
                              <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} -
-                                 {{ $AnneeScolaire->annee2 }}</option>
-                         @endforeach
-                     </select>
+                                 {{ $AnneeScolaire->annee2 }}</option>      
+                         @endforeach --}}
+                         <option value="{{ ProfesseurAneeScolaireId() }}">{{ ProfesseurNewAneeScolaire() }}
+                        </option>
+                     </select> 
                      @error('annee_scolaire_id')
                          <span class="error" style="color:red">{{ $message }}</span>
                      @enderror
@@ -148,7 +150,7 @@
 
                  <a href="{{ route('saisi-note') }}"> <button type="button" class="btn btn-danger px-5"
                          onclick="error_noti()"><i class="bx bx-x-circle mr-1"></i> Annuler</button> </a>
-             </div><br>
+             </div><br><br>
          </div>
          </div>
      </form>
@@ -222,7 +224,7 @@
          /*  $(document).ready(function(){
 
              $('#note').on("onKeydown",function(){
-                 console.log('yygfryhj')
+                 console.log('hello')
 
              })
          });*/
@@ -230,15 +232,21 @@
          var etudiants = [];
          $(document).ready(function() {
              console.log("hello word");
-             $('#classe-select').on("change", function() {
+             $('#anScolaire, #classe-select').on("change", function() {
+                 var anScolaire_id = $('#anScolaire').val();
                  var classe_id = $('#classe-select').val();
-                 console.log(classe_id);
+
+                 console.log("anScolaire",anScolaire_id);
+                 console.log("tt",classe_id);
+
                  $.ajax({
                      type: 'GET',
                      url: '{{ route('GetClasseMatiere') }}',
                      datatype: 'JSON',
                      data: {
+                         anneeScolaire_id: anScolaire_id,
                          classe_id: classe_id
+
                      },
                      success: (response) => {
                          allCoef = response.coefficient;
@@ -247,7 +255,9 @@
                          etudiants = response.etudiantsInscrits
 
                          console.log('sans filtre', etudiants);
-                         etudiants = etudiants.filter(d => d.classe_id == classe_id)
+                        //  etudiants = etudiants.filter(d => d.classe_id == classe_id)
+                        etudiants = etudiants.filter(d => d.classe_id == classe_id && d.annee_scolaire_id == anScolaire_id);
+
                          etuu = etudiants
                          console.log('avec filtre', etudiants);
                          console.log('avec filtre', etudiants);
@@ -349,10 +359,7 @@
                  hideClass: {
                      popup: 'animate__animated animate__zoomOut'
                  },
-                   //timer: 50000, // Temps en millisecondes (3 secondes dans cet exemple)
-                    //timerProgressBar: true, // Affiche une barre de progression
-                    //toast: false, // Style de popup de notification
-                    //position: 'top-end' // Position de la notification
+                
              });
          }
      </script>

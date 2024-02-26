@@ -41,13 +41,14 @@
     <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
     <link href="assets/plugins/select2/css/select2-bootstrap4.css" rel="stylesheet" />
 
+
     <style>
         .swal2-popup {
             font-size: 20px !important;
         }
     </style>
 
-    <title>Bootstrap5 Admin Template</title>
+    <title>EducPlus</title>
 </head>
 
 <body class="bg-theme bg-theme2">
@@ -272,7 +273,7 @@
             }),
             $('.timepicker').pickatime()
     </script>
-    <script>
+    {{-- <script>
         $(function() {
             $('#date-time').bootstrapMaterialDatePicker({
                 format: 'YYYY-MM-DD HH:mm'
@@ -285,7 +286,7 @@
                 format: 'HH:mm'
             });
         });
-    </script>
+    </script> --}}
 
     <script>
         $(document).ready(function() {
@@ -336,6 +337,10 @@
     @stack('NoteEtudiant')
 
     @stack('bulletin-client')
+
+    @stack('editNote')
+    @stack('matiere_coefficient')
+
 </body>
 
 

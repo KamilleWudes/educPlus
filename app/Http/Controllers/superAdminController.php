@@ -142,8 +142,8 @@ class superAdminController extends Controller
      public function reset($id)
      {
          return view('admin.password.reset-user');
- 
- 
+
+         
          
      } 
      public function modifierMotDePasse(Request $request, $id)
@@ -177,6 +177,15 @@ class superAdminController extends Controller
           return back()->with('error', 'Le mot de passe actuel est incorrect.');
       }
   }
+
+  //Profile utilisateur
+  public function profil($id)
+  {
+    $utilisateurs = userprincipal::find($id);
+
+      return view('admin.profil.superAdmin',compact('utilisateurs'));
+      
+  } 
     public function destroy($id)
     {
         //

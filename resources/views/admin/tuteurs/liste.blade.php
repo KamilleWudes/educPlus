@@ -48,13 +48,13 @@
                                 @foreach ($tuteurs as $tuteur)
                                     <tr>
                                         {{-- <td style="text-align:center">{{ $tuteur->tuteurs_id }}</td> --}}
-                                        <td style="text-align:center">{{ $tuteur->prenoms }} {{ $tuteur->noms }}</td>
+                                        <td style="text-align:center">{{ $tuteur->noms }}  {{ $tuteur->prenoms }} </td>
                                         <td style="text-align:center"> {{ $tuteur->sex }}
                                             
                                         </td>
                                         <td style="text-align:center">{{ $tuteur->adresses }}</td>
 
-                                        <td style="text-align:center">{{ $tuteur->etudiant_prenom }} {{ $tuteur->etudiant_nom }}</td>
+                                        <td style="text-align:center">{{ $tuteur->etudiant_nom }}  {{ $tuteur->etudiant_prenom }} </td>
 
 
                                         <td style="text-align:center"><a href="{{ url('detail-tuteur=' . $tuteur->id) }}"><button type="button"
@@ -99,10 +99,10 @@
 
                             tuteur += `<tr>
                               {{-- <td style="text-align:center">${ resp.id} </td> --}}
-                              <td style="text-align:center">${ resp.tuteur_prenoms} ${ resp.tuteur_nom}</td>
+                              <td style="text-align:center">${ resp.tuteur_nom} ${ resp.tuteur_prenoms} </td>
                               <td style="text-align:center">${ resp.sex} </td>
                               <td style="text-align:center">${ resp.tuteur_adresse}</td>
-                              <td style="text-align:center">${ resp.etudiant_prenom} ${ resp.etudiant_nom}</td>
+                              <td style="text-align:center"> ${ resp.etudiant_nom} ${ resp.etudiant_prenom}</td>
 
                                     <td style="text-align:center"><a
                                                 href="{{ url('detail-tuteur=') }}${resp.id}"><button type="button"

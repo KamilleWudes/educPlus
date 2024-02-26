@@ -112,6 +112,9 @@ class profController extends Controller
                 $user = User::where("email", $request->email)->first();
                 if ($user && Hash::check($request->password, $user->password)) {
                     $request->session()->put('user', $user->id);
+                    $request->session()->put('ecole_id', $user->ecole_id);
+
+                    
                     return redirect('dashbord');
                 }
             } else {
@@ -156,9 +159,11 @@ public function dashbord()
     ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
     ->select('inscriptions.id', 'inscriptions.date_insription', 'ecoles.nom as ecole_nom','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2', 'etudiants.nom as etudiant_nom','etudiants.prenom as etudiant_prenom','etudiants.matricule as matricule')
     ->where('users.id', '=', $user_id)
-   // ->where('annee_scolaires.annee1',lastAneeScolaire())
-    ->orderBy('inscriptions.id', 'desc') // Trie par ID d'inscription décroissante
-    ->take(7) // Limiter à 7 résultats
+    ->when(lastAneeScolaire(), function ($query, $lastYear) {
+        return $query->where('annee_scolaires.annee1', $lastYear);
+    })
+    ->orderBy('inscriptions.id', 'desc')
+    ->take(7) 
     ->get();
 
     $data = DB::table('professeur_classe_matieres')
@@ -169,11 +174,14 @@ public function dashbord()
     ->join('ecoles', 'ecoles.id', '=', 'classes.ecole_id')
     ->join('users', 'users.ecole_id', '=', 'ecoles.id')
     ->where('users.id', '=', $user_id)
-   // ->where('annee_scolaires.annee1',lastAneeScolaire())
+    ->when(lastAneeScolaire(), function ($query, $lastYear) {
+        return $query->where('annee_scolaires.annee1', $lastYear);
+    })
+    //->where('annee_scolaires.annee1',lastAneeScolaire())
     ->select('classes.nom as classe', 'matiers.nom as matiere', 'professeurs.nom as nom','professeurs.prenom as prenom','professeurs.matricule as matricule','professeurs.created_at as created_at','professeurs.image as image','professeur_classe_matieres.id as id')
     ->orderBy('professeur_classe_matieres.created_at', 'desc')
-    ->take(7) // Limiter à 7 résultats
-    ->orderBy('professeur_classe_matieres.id', 'desc') // Trie par ID d'inscription décroissante
+    ->take(7) 
+    ->orderBy('professeur_classe_matieres.id', 'desc')
     ->get();
     
         return view('dashbord',compact('inscriptions','data'));

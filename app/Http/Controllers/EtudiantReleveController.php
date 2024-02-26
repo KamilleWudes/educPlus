@@ -1,22 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\typeTrimestre;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\typeComposition;
+use PDF;
+use Session;
+use Dompdf\Dompdf;
+use App\Models\User;
 use App\Models\Ecole;
-use App\Models\inscription;
 use App\Models\classe;
-use App\Models\anneeScolaire;
 use App\Models\Matier;
 use App\Models\Professeur;
-use App\Models\an_ttri_prof_mat_tcomp_in;
-use Session;
+use App\Models\inscription;
+use Illuminate\Http\Request;
+use App\Models\anneeScolaire;
+use App\Models\typeTrimestre;
+use App\Models\typeComposition;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use App\Models\an_ttri_prof_mat_tcomp_in;
 use Illuminate\Support\Facades\Validator;
-use PDF;
-use Dompdf\Dompdf;
 
 class EtudiantReleveController extends Controller
 {
@@ -49,11 +50,21 @@ class EtudiantReleveController extends Controller
         ->distinct()
         ->get();
 
-        $anneeScolaires = DB::table('annee_scolaires')
-        ->select('annee_scolaires.*')
-        ->where('annee_scolaires.ecole_id', '=', $ecoleId)
-        ->distinct()
-        ->get();
+        // $anneeScolaires = DB::table('annee_scolaires')
+        // ->select('annee_scolaires.*')
+        // ->where('annee_scolaires.ecole_id', '=', $ecoleId)
+        // ->distinct()
+        // ->orderBy('annee_scolaires.id', 'desc') // Tri par ordre décroissant d'ID
+        // ->get();
+
+        $etudiant_id = EtudiantId();
+
+        $anneeScolaires = DB::table('inscriptions')
+            ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->select('annee_scolaires.*')
+            ->where('inscriptions.etudiant_id', '=', $etudiant_id)
+            ->orderBy('annee_scolaires.id', 'desc')
+            ->get();
         //dd($anneeScolaires);
         
         return view ('clients.Releve-de-notes.notes-etudiant',compact('typeCompositions','typesTrimestreInfos','anneeScolaires'));
@@ -71,12 +82,19 @@ class EtudiantReleveController extends Controller
         $typeComposition = $request->input('type_composition');
         $classe = $request->input('classe');
 
+        $inscription = DB::table('inscriptions')
+        ->select('inscriptions.id')
+        ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+        ->where('annee_scolaires.id', $anneeScolaire)
+        ->first();
+        //dd($inscription->id);
+
 
         $classesEtudiant = DB::table('inscriptions')
         ->join('classes', 'inscriptions.classe_id', '=', 'classes.id')
         ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
         ->where('inscriptions.etudiant_id', $userId)
-        ->where('annee_scolaires.annee1', lastAneeScolaire())
+        //->where('annee_scolaires.annee1', lastAneeScolaire())
         ->where('inscriptions.ecole_id', $ecoleId)
         ->select('classes.nom as nom','classes.id as id')
         ->distinct()
@@ -148,17 +166,26 @@ class EtudiantReleveController extends Controller
         ->distinct()
         ->get();
 
-        $anneeScolaires = DB::table('annee_scolaires')
-        ->select('annee_scolaires.*')
-        ->where('annee_scolaires.ecole_id', '=', $ecoleId)
-        ->distinct()
-        ->get();
+        // $anneeScolaires = DB::table('annee_scolaires')
+        // ->select('annee_scolaires.*')
+        // ->where('annee_scolaires.ecole_id', '=', $ecoleId)
+        // ->distinct()
+        // ->orderBy('annee_scolaires.id', 'desc') // Tri par ordre décroissant d'ID
+        // ->get();
+        $etudiant_id = EtudiantId();
+
+        $anneeScolaires = DB::table('inscriptions')
+            ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->select('annee_scolaires.*')
+            ->where('inscriptions.etudiant_id', '=', $etudiant_id)
+            ->orderBy('annee_scolaires.id', 'desc')
+            ->get();
 
         $classesEtudiants = DB::table('inscriptions')
         ->join('classes', 'inscriptions.classe_id', '=', 'classes.id')
         ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
         ->where('inscriptions.etudiant_id', $userId)
-        ->where('annee_scolaires.annee1', lastAneeScolaire())
+        //->where('annee_scolaires.annee1', lastAneeScolaire())
         ->where('inscriptions.ecole_id', $ecoleId)
         ->select('classes.nom as nom','classes.id as id')
         ->distinct()
@@ -171,42 +198,52 @@ class EtudiantReleveController extends Controller
         $userId = EtudiantId(); // Récupération de l'identifiant de l'utilisateur connecté
         $ecoleId = DB::table('inscriptions')
         ->where('id', $userId)
-        ->value('ecole_id');    
+        ->value('ecole_id');   
         // Récupérez les critères de filtrage depuis la requête
         $anneeScolaire = $request->input('annee_scolaire');
         $typeTrimestre = $request->input('type_trimestre');
         $typeComposition = $request->input('type_composition');
         $classe = $request->input('classe');
-
+//*******************************************alert*********************************** */
+        $inscription = DB::table('inscriptions')
+        ->select('inscriptions.id')
+        ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+        ->where('annee_scolaires.id', $anneeScolaire)
+        ->first();
 
         $classesEtudiants = DB::table('inscriptions')
         ->join('classes', 'inscriptions.classe_id', '=', 'classes.id')
         ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
         ->where('inscriptions.etudiant_id', $userId)
-        ->where('annee_scolaires.annee1', lastAneeScolaire())
+        ->where('inscriptions.annee_scolaire_id', $anneeScolaire)
         ->where('inscriptions.ecole_id', $ecoleId)
         ->select('classes.nom as nom','classes.id as id')
         ->distinct()
         ->get();
 
-       
         $data = DB::table('etudiants')
         ->join('inscriptions', 'etudiants.id', '=', 'inscriptions.etudiant_id')
         ->join('classes', 'classes.id', '=', 'inscriptions.classe_id')
         ->join('ecoles', 'ecoles.id', '=', 'classes.ecole_id')
         ->join('annee_scolaires', 'annee_scolaires.id', '=', 'inscriptions.annee_scolaire_id')
         ->join('type_trimestres', 'type_trimestres.ecole_id', '=', 'ecoles.id') // Jointure sur l'école_id
-        ->select('etudiants.*')
-        ->where('inscriptions.id', $userId)
+        ->select('etudiants.*','inscriptions.*') 
+        ->where('inscriptions.id', $userId)///alert
         ->where('ecoles.id', $ecoleId)
         ->where('classes.id', $classe)
         ->where('annee_scolaires.id', $anneeScolaire)
         ->where('type_trimestres.id', $typeTrimestre) // Filtre sur le type de trimestre
         ->orderBy('etudiants.nom', 'asc')
         ->get();
-    
      // Récupérez la matiere  choisie
      $typeTrimestreChoisie = typeTrimestre::where('id', $typeTrimestre)->value('nom');
+     //dd($data);
+
+     //dd('inscriptions.id', $userId);  13
+     //dd('ecoles.id', $ecoleId);
+    // dd('classes.id', $classe);
+     //dd('annee_scolaires.id', $anneeScolaire);
+     //dd('type_trimestres.id', $typeTrimestre);
 
         return response()->json([
            "classesEtudiants"=>$classesEtudiants,
@@ -235,9 +272,11 @@ class EtudiantReleveController extends Controller
      * @return \Illuminate\Http\Response
      */ 
     //Bulletin niveau Etudiant
-    public function bulettinPdf($id)
+    public function bulettinPdf($id, Request $request)
     {
         $userId = EtudiantId(); // Récupération de l'identifiant de l'etudiant connecté
+        $anneeScolaireId = $request->input('anneeScolaire'); 
+
         $ecoleId = DB::table('inscriptions')
         ->where('id', $userId)
         ->value('ecole_id');
@@ -248,8 +287,19 @@ class EtudiantReleveController extends Controller
         ->distinct()
         ->get();
         
-        $entry = an_ttri_prof_mat_tcomp_in::where('inscription_id',$id)->first();
+        $typeTrimestreId = $request->input('trimestre');
+        //dd($typeTrimestreId);
+        //dd($id);
 
+        $entry = an_ttri_prof_mat_tcomp_in::where('inscription_id', $id)
+        ->where('type_trimestre_id', $typeTrimestreId) 
+        ->where('annee_scolaire_id', $anneeScolaireId)
+        ->first();
+
+        if (!$entry) {
+            $message = 'Le bulletin est actuellement indisponible. Merci de réessayer plus tard.';
+            return redirect()->back()->with('error', ($message));
+        }
         // dd($entry->inscription_id);
 
         // Exemple : Récupérez le type de composition associé
@@ -278,6 +328,7 @@ class EtudiantReleveController extends Controller
         $compositions = DB::table('an_ttri_prof_mat_tcomp_ins')
             ->where('type_trimestre_id', $entry->type_trimestre_id)
             ->where('inscription_id', $entry->inscription_id)
+            ->where('annee_scolaire_id', $entry->anneeScolaire->id)
             //->whereIn('type_compo_id', [1, 2, 3]) // Assurez-vous que ces valeurs correspondent aux types de composition souhaités
             ->orderBy('type_compo_id') // Triez par type_compo_id pour obtenir les compositions dans l'ordre 1, 2, 3
             ->distinct()
@@ -291,15 +342,17 @@ class EtudiantReleveController extends Controller
       $troisiemeCompositionId = $compositions[2]; // ID de la troisième composition
   } else {
       // Gérez la situation où vous n'avez pas suffisamment de compositions
-      // par exemple, en affectant des valeurs par défaut ou en lançant une exception
       $deuxiemeCompositionId = null;
       $troisiemeCompositionId = null;
+      $message = 'Le bulletin est actuellement indisponible. Merci de réessayer plus tard.';
+      return redirect()->back()->with('error', ($message));
   }
 
   // Utilisez le Query Builder pour compter le nombre d'étudiants dans la classe
   $effectifTotal = DB::table('etudiants')
       ->join('inscriptions', 'etudiants.id', '=', 'inscriptions.etudiant_id')
       ->where('inscriptions.classe_id', $classeId)
+      ->where('inscriptions.annee_scolaire_id', $entry->anneeScolaire->id)
       ->count();
 
       $matieres = DB::table('matiers')
@@ -313,6 +366,7 @@ class EtudiantReleveController extends Controller
   $join->on('matiers.id', '=', 'devoir1.matier_id')
       ->where('devoir1.inscription_id', $entry->inscription_id)
       ->where('devoir1.type_trimestre_id',  $entry->type_trimestre_id)
+      ->where('devoir1.annee_scolaire_id', $entry->anneeScolaire->id)
       ->where('devoir1.type_compo_id', $premiereCompositionId) // Utilisez l'ID de la première composition
       ->orderBy('devoir1.created_at') // Triez pour obtenir le premier devoir
       ->take(1); // Prenez seulement le premier devoir
@@ -324,6 +378,7 @@ class EtudiantReleveController extends Controller
       ->where('devoir2.inscription_id', $entry->inscription_id)
       ->where('devoir2.type_trimestre_id', $entry->type_trimestre_id)
       ->where('devoir2.type_compo_id', $deuxiemeCompositionId) // Utilisez l'ID de la deuxième composition
+      ->where('devoir2.annee_scolaire_id', $entry->anneeScolaire->id)
       ->orderBy('devoir2.created_at', 'desc') // Triez pour obtenir le deuxième devoir
       ->take(1); // Prenez seulement le deuxième devoir
 })
@@ -331,6 +386,7 @@ class EtudiantReleveController extends Controller
   $join->on('matiers.id', '=', 'composition.matier_id')
       ->where('composition.inscription_id', $entry->inscription_id)
       ->where('composition.type_trimestre_id', $entry->type_trimestre_id)
+      ->where('composition.annee_scolaire_id', $entry->anneeScolaire->id)
       ->where('composition.type_compo_id', $troisiemeCompositionId); // Utilisez l'ID de la troisième composition
 })
 
@@ -553,10 +609,19 @@ $dompdf->stream('releve-notes.pdf');
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+   //Profil Etudiant
+public function profil($id)
+{
+    $inscriptions = inscription::find($id)
+    ->where('etudiant_id', EtudiantId())     
+    ->first();
+    
+    $classes = classe::orderBy("id","Desc")->get();
+    $AnneeScolaires = anneeScolaire::orderBy("id","Desc")->get();
+
+    return view('admin.profil.etudiant', compact('inscriptions','classes','AnneeScolaires'));
+
+} 
 
     /**
      * Update the specified resource in storage.

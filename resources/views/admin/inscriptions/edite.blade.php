@@ -185,14 +185,14 @@
 
                                 <div class="col-md-6">
                                     <label for="inputAddress3" class="form-label">Address</label>
-                                    <textarea class="form-control" name="adresse" id="inputAddress3"  value="{{ $inscriptions->etudiant->adresse }}" placeholder="Enter Address" rows="2"></textarea>
+                                    <input class="form-control" name="adresse" id="inputAddress3"  value="{{ $inscriptions->etudiant->adresse }}" placeholder="Enter Address" rows="2"/>
                                     @error('adresse')
                                         <span class="error" style="color:red">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="inputAddress3" class="form-label">Photo</label><br><br>
+                                    <label for="inputAddress3" class="form-label">Photo</label>
                                     <input type="file" class="form-control" aria-label="file example" id="image"
                                         name="image" accept=".jpg, .png, image/jpeg, image/png" multiple
                                         style="text-align: center;">
@@ -300,15 +300,15 @@
 
                                 <div class="col-md-6">
                                     <label for="inputAddress3" class="form-label">Address</label>
-                                    <textarea class="form-control @error('adresses') is-invalid  @enderror" name="adresses" value="{{$inscriptions->tuteur->adresses  }}" id="inputAddress3"
-                                        placeholder="Enter Address" rows="2"></textarea>
+                                    <input class="form-control @error('adresses') is-invalid  @enderror" name="adresses" value="{{$inscriptions->tuteur->adresses  }}" id="inputAddress3"
+                                        placeholder="Enter Address" rows="2"/>
                                     @error('adresses')
                                         <span class="error" style="color:red">{{ $message }}</span>
                                     @enderror 
                                 </div>
 
                                 <div class="col-md-6">
-                                    <br>
+                                    
                                     <label for="inputAddress3" class="form-label">Sexe</label>
                                     <div class="input-group"> <span class="input-group-text"><i
                                                 class='bx bxs-user'></i></span>

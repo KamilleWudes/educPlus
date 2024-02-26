@@ -63,6 +63,7 @@
                                 </tr>
                             </thead>
                             <tbody id="etudNote">
+                                <input type="hidden" name="trimestre" id="ee">
 
 
                                 </tfoot>
@@ -134,11 +135,13 @@
 
                             NoteEtude += `<tr>
                               <td style="text-align:center">${ resp.matricule} </td>
-                              <td style="text-align:center">${ resp.prenom} ${ resp.nom}</td>
-                                    <td style="text-align:center"><a
-                                                href="Releve-pdf=${ resp.id}"><button type="button"
-                                                    class="btn btn-light btn-sm radius-30 px-4">Voir Bulletin</button></a>
-                                        </td> 
+                              <td style="text-align:center">${ resp.nom} ${ resp.prenom} </td>
+                              <td style="text-align:center">
+                ${resp.id ? `<a href="Releve-pdf=${resp.id}?trimestre=${typeTrimestre}&anneeScolaire=${anneeScolaire}">
+                        <button type="button" class="btn btn-light btn-sm radius-30 px-4" id="flash" data-flash="{!! session()->get('success') !!}">Voir Bulletin</button>
+                    </a>` : 'ID non disponible'}
+            </td>
+                                      
                             </tr>`
 
                         }
@@ -158,6 +161,8 @@
                         if (response.classes.length > 0) {
                             $('#classe').html(classe);
                             $('#etudNote').html(NoteEtude);
+                            $('#ee').val(typeTrimestre);
+
 
                             $('#typeTrimestreChoisie').html(
                                 `<h6 class="mb-0 text-upercase">Relevées de Notes : ${response.typeTrimestreChoisie ? response.typeTrimestreChoisie : ''}</h6>`
@@ -178,5 +183,43 @@
                 })
             })
         });
+    </script>
+@endpush
+@push("validate")
+    <script>
+
+        var successFlash = '{{ session('success') }}';
+        var errorFlash = '{{ session('error') }}';
+
+        if (successFlash) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: successFlash,
+                showClass: {
+                    popup: 'animate__animated animate__jackInTheBox'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                },
+                timer: 500000, // Temps en millisecondes (3 secondes dans cet exemple)
+                timerProgressBar: true, // Affiche une barre de progression
+                toast: false, // Style de popup de notification
+                position: 'center' // Position de la notification
+            });
+        } else if (errorFlash) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: errorFlash,
+                showClass: {
+                    popup: 'animate__animated animate__shakeX'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                },
+   
+            });
+        }
     </script>
 @endpush

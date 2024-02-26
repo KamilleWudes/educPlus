@@ -1,26 +1,29 @@
 <?php
 
 namespace App\Http\Controllers;
+use PDF;
+use Session;
+use Dompdf\Dompdf;
 use App\Models\Ecole;
-use App\Models\inscription;
-use Illuminate\Http\Request;
 use App\Models\classe;
-use App\Models\anneeScolaire;
 use App\Models\Matier;
+use App\Models\Tuteur;
 use App\Models\Etudiant;
 use App\Models\Professeur;
+use App\Models\inscription;
+use Illuminate\Http\Request;
+use App\Models\anneeScolaire;
 use App\Models\typeTrimestre;
 use App\Models\typeComposition;
-use App\Models\an_ttri_prof_mat_tcomp_in;
-use Session;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
-use PDF;
-use Dompdf\Dompdf;
-use App\Notifications\SendNotesEtudiantNotification;
-use App\Notifications\SendNotesNotification;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\an_ttri_prof_mat_tcomp_in;
+use Illuminate\Support\Facades\Validator;
+use App\Notifications\SendNotesNotification;
+use App\Notifications\SendNotesEtudiantNotification;
+use App\Notifications\SendReclamationNoteNotification;
+use App\Notifications\SendReclamationNoteEtudNotification;
 
 
 
@@ -58,6 +61,7 @@ class AnTtriProfMatTcompIn extends Controller
         ->select('annee_scolaires.*')
         ->where('annee_scolaires.ecole_id', '=', $ecoleId)
         ->distinct()
+        ->orderBy('annee_scolaires.id', 'desc') // Tri par ordre décroissant d'ID
         ->get();
 
          // Obtenez les classes de l'école du professeur pour la dernière année scolaire
@@ -67,7 +71,7 @@ class AnTtriProfMatTcompIn extends Controller
          ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
          ->where('professeur_classe_matieres.professeur_id', $professeurId)
          ->where('ecoles.id', session('ecole_id')) // ID de l'école connectée depuis la session
-         ->where('annee_scolaires.annee1', lastAneeScolaire())
+         //->where('annee_scolaires.annee1', lastAneeScolaire())
          ->select('classes.nom as nom', 'classes.id as id')
          ->distinct()
          ->get();
@@ -85,6 +89,7 @@ class AnTtriProfMatTcompIn extends Controller
        $matieres = DB::table('matiers')
         ->join('professeur_classe_matieres', 'professeur_classe_matieres.matier_id', '=', 'matiers.id')
         ->where('professeur_classe_matieres.classe_id', $request->classe_id)
+        ->where('professeur_classe_matieres.annee_scolaire_id', $request->anneeScolaire_id)
         ->where('professeur_classe_matieres.professeur_id', $professorId)
         ->distinct()
         ->select(
@@ -94,11 +99,12 @@ class AnTtriProfMatTcompIn extends Controller
 
         $mat= DB::table('classe_anneescolaire_matieres')
          ->whereClasseId($request->classe_id)
+         ->where('classe_anneescolaire_matieres.annee_scolaire_id', $request->anneeScolaire_id)
         ->select(
             'classe_anneescolaire_matieres.*'
         )
         ->get();
-                // dump(($mat));
+                 //dd(($mat));
                 $professeurId = ProfId(); // ID du professeur connecté
                 $ecoleId = session('ecole_id'); // ID de l'école connectée depuis la session
 
@@ -119,7 +125,7 @@ class AnTtriProfMatTcompIn extends Controller
                 ->where('professeur_classe_matieres.matier_id', $request->matieres)
                 ->where('professeur_classe_matieres.professeur_id', '=', $professeurId)
                 ->where('ecoles.id', $ecoleId)
-                ->where('annee_scolaires.annee1',lastAneeScolaire())
+                //->where('annee_scolaires.annee1',lastAneeScolaire())
                 ->get();
 
 
@@ -174,6 +180,7 @@ class AnTtriProfMatTcompIn extends Controller
         ->select('annee_scolaires.*')
         ->where('annee_scolaires.ecole_id', '=', $ecoleId)
         ->distinct()
+        ->orderBy('annee_scolaires.id', 'desc') // Tri par ordre décroissant d'ID
         ->get();
 
 
@@ -184,7 +191,7 @@ class AnTtriProfMatTcompIn extends Controller
         ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
         ->where('professeur_classe_matieres.professeur_id', $professeurId)
         ->where('ecoles.id', session('ecole_id')) // ID de l'école connectée depuis la session
-        ->where('annee_scolaires.annee1', lastAneeScolaire())
+        //->where('annee_scolaires.annee1', lastAneeScolaire())
         ->select('classes.nom as nom', 'classes.id as id')
         ->distinct()
         ->get();
@@ -222,6 +229,16 @@ class AnTtriProfMatTcompIn extends Controller
 
          ]);
 
+         $t = json_decode($request->etudiant_et_notes, true);
+
+         foreach ($t as $item) {
+             // Vérifier si le champ 'note' n'est pas vide avant d'appliquer la vérification
+             if (!empty($item['note']) && ($item['note'] < 0 || $item['note'] > 20)) {
+                 return redirect()->back()->with('error', 'La note doit être comprise entre 0 et 20.');
+             }
+         }
+
+
 //Validez les données avec la règle de validation unique
 $validator = Validator::make($request->all(), [
     'inscription_id' => [
@@ -258,18 +275,28 @@ if ($validator->fails()) {
 
         $noteModel->save();
          // Récupérez l'étudiant associé à cette note
-    $etudiant = Etudiant::find($t[$i]['etu']);
+         $etudiant = Etudiant::join('inscriptions', 'etudiants.id', '=', 'inscriptions.etudiant_id')
+         ->join('an_ttri_prof_mat_tcomp_ins', 'inscriptions.id', '=', 'an_ttri_prof_mat_tcomp_ins.inscription_id')
+         ->where('an_ttri_prof_mat_tcomp_ins.inscription_id', $t[$i]['etu'])
+         ->select('etudiants.*')
+         ->first();  
+         $tuteur = Tuteur::join('inscriptions', 'tuteurs.id', '=', 'inscriptions.tuteur_id')
+    ->join('an_ttri_prof_mat_tcomp_ins', 'inscriptions.id', '=', 'an_ttri_prof_mat_tcomp_ins.inscription_id')
+    ->where('an_ttri_prof_mat_tcomp_ins.inscription_id', $t[$i]['etu'])
+    ->select('tuteurs.*') // Ajoutez d'autres colonnes tuteur si nécessaire
+    ->first();
+          //dd($tuteur);
 
     // Envoyez la notification à l'étudiant
     $etudiant->notify(new SendNotesEtudiantNotification($noteModel));
-    $etudiant->notify(new SendNotesNotification($noteModel));
+    $tuteur->notify(new SendNotesNotification($noteModel));
 
 
     }
     
     
      //return response()->json(['success' => true, 'message' => 'Enregistrement réussi']);
-     return redirect()->back()->with('success', "L'enregistrement a été effectué avec succès");
+     return redirect()->back()->with('success', "Les notes ont été sauvegardées avec succès.");
 
 
 }
@@ -307,7 +334,10 @@ public function GetNotesEtudes(request $request){
         'etudiants.prenom as prenom_etudiant',
         'etudiants.matricule as matricule',
         'classe_anneescolaire_matieres.coefficient as coefficient',
+
+        'an_ttri_prof_mat_tcomp_ins.id as id',
         'an_ttri_prof_mat_tcomp_ins.note as note',
+        
         DB::raw('an_ttri_prof_mat_tcomp_ins.note * classe_anneescolaire_matieres.coefficient as note_coefficient'),
         DB::raw('CASE 
         WHEN (an_ttri_prof_mat_tcomp_ins.note) = 20 THEN "Excellent"
@@ -361,6 +391,7 @@ public function GetprofReleve(){
     ->select('annee_scolaires.*')
     ->where('annee_scolaires.ecole_id', '=', $ecoleId)
     ->distinct()
+    ->orderBy('annee_scolaires.id', 'desc') // Tri par ordre décroissant d'ID
     ->get();
 
     $typesTrimestreInfos = DB::table('type_trimestres')
@@ -392,15 +423,14 @@ $data = DB::table('etudiants')
     ->join('ecoles', 'ecoles.id', '=', 'classes.ecole_id')
     ->join('annee_scolaires', 'annee_scolaires.id', '=', 'inscriptions.annee_scolaire_id')
     ->join('type_trimestres', 'type_trimestres.ecole_id', '=', 'ecoles.id') // Jointure sur l'école_id
-    ->select('etudiants.*')
+    ->select('etudiants.*','inscriptions.*')
     ->where('ecoles.id', $ecoleId)
     ->where('classes.id', $classe)
     ->where('annee_scolaires.id', $anneeScolaire)
     ->where('type_trimestres.id', $typeTrimestre) // Filtre sur le type de trimestre
-    ->orderBy('etudiants.nom', 'asc')
+    ->orderBy('etudiants.id', 'asc')
     ->get();
 
-    
         // Obtenez les classes de l'école du professeur pour la dernière année scolaire
         $professeurId = ProfId(); // ID du professeur connecté
 
@@ -410,7 +440,7 @@ $data = DB::table('etudiants')
         ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
         ->where('professeur_classe_matieres.professeur_id', $professeurId)
         ->where('ecoles.id', session('ecole_id')) // ID de l'école connectée depuis la session
-        ->where('annee_scolaires.annee1', lastAneeScolaire())
+        //->where('annee_scolaires.annee1', lastAneeScolaire())
         ->select('classes.nom as nom', 'classes.id as id')
         ->distinct()
         ->get();
@@ -433,23 +463,29 @@ return response()->json([
      */
     // public function exportPdf()
    
-    public function exportPdf($id)
+    public function exportPdf($id, Request $request)
     {
         $ecoleId = session('ecole_id'); // ID de l'école connectée depuis la session
+        $anneeScolaireId = $request->input('anneeScolaire'); // Ajout du filtre pour annee_scolaire_id
+        $typeTrimestreId = $request->input('trimestre');
+//dd($anneeScolaireId);
 
         $responsables = DB::table('users')
         ->select('users.*')
         ->where('users.ecole_id', '=', $ecoleId)
         ->distinct()
         ->get();
-        //bibliothèque  dompdf
-       //$pdf = PDF::loadView('admin.Releve-notes.export-pdf');
+        
+        $entry = an_ttri_prof_mat_tcomp_in::where('inscription_id', $id)
+        ->where('type_trimestre_id', $typeTrimestreId) 
+        ->where('annee_scolaire_id', $anneeScolaireId)
+        ->first();
 
-        // Téléchargez le PDF ou affichez-le dans le navigateur
-        // $entry = Etudiant::find($id);
-        //return $pdf->download('jude.pdf'); etudiants
-        $entry = an_ttri_prof_mat_tcomp_in::where('inscription_id',$id)->first();
-
+        if (!$entry) {
+            $message = 'Le bulletin est actuellement indisponible. Merci de réessayer plus tard.';
+            return redirect()->back()->with('error', ($message));
+        }
+        
         // dd($entry->inscription_id);
 
         // Exemple : Récupérez le type de composition associé
@@ -470,7 +506,7 @@ return response()->json([
 
         $typeTrimestre = $entry->typeTrimestre;
 
-       // dd($entry->type_trimestre_id);
+        //dd($entry->anneeScolaire->id);
 
 
         $inscription =  $entry->inscription;
@@ -483,6 +519,7 @@ return response()->json([
         $compositions = DB::table('an_ttri_prof_mat_tcomp_ins')
             ->where('type_trimestre_id', $entry->type_trimestre_id)
             ->where('inscription_id', $entry->inscription_id)
+            ->where('annee_scolaire_id', $entry->anneeScolaire->id)
             //->whereIn('type_compo_id', [1, 2, 3]) // Assurez-vous que ces valeurs correspondent aux types de composition souhaités
             ->orderBy('type_compo_id') // Triez par type_compo_id pour obtenir les compositions dans l'ordre 1, 2, 3
             ->distinct()
@@ -498,6 +535,8 @@ return response()->json([
             // Gérez la situation où vous n'avez pas suffisamment de compositions
             $deuxiemeCompositionId = null;
             $troisiemeCompositionId = null;
+            $message = 'Le bulletin est actuellement indisponible. Merci de réessayer plus tard.';
+            return redirect()->back()->with('error', ($message));
         }
        // dd($troisiemeCompositionId);
 
@@ -506,22 +545,25 @@ return response()->json([
         $effectifTotal = DB::table('etudiants')
             ->join('inscriptions', 'etudiants.id', '=', 'inscriptions.etudiant_id')
             ->where('inscriptions.classe_id', $classeId)
+            ->where('inscriptions.annee_scolaire_id', $entry->anneeScolaire->id)
             ->count();
+
 
             $matieres = DB::table('matiers')
     ->join('classe_anneescolaire_matieres', function ($join) use ($classeId, $anneeScolaire, $typeTrimestre) {
         $join->on('matiers.id', '=', 'classe_anneescolaire_matieres.matier_id')
             ->where('classe_anneescolaire_matieres.classe_id', $classeId)
             ->where('classe_anneescolaire_matieres.annee_scolaire_id', $anneeScolaire->id);
-
     })
     ->leftJoin('an_ttri_prof_mat_tcomp_ins as devoir1', function ($join) use ($entry,$premiereCompositionId){
         $join->on('matiers.id', '=', 'devoir1.matier_id')
             ->where('devoir1.inscription_id', $entry->inscription_id)
             ->where('devoir1.type_trimestre_id',  $entry->type_trimestre_id)
-            ->where('devoir1.type_compo_id', $premiereCompositionId) // Utilisez l'ID de la première composition
+            ->where('devoir1.annee_scolaire_id', $entry->anneeScolaire->id)
+            ->where('devoir1.type_compo_id', 1) // Utilisez l'ID de la première composition
             ->orderBy('devoir1.created_at') // Triez pour obtenir le premier devoir
             ->take(1); // Prenez seulement le premier devoir
+
 
     })
        
@@ -530,6 +572,7 @@ return response()->json([
             ->where('devoir2.inscription_id', $entry->inscription_id)
            ->where('devoir2.type_trimestre_id', $entry->type_trimestre_id)
             ->where('devoir2.type_compo_id', $deuxiemeCompositionId) // Utilisez l'ID de la deuxième composition
+            ->where('devoir2.annee_scolaire_id', $entry->anneeScolaire->id)
             ->orderBy('devoir2.created_at', 'desc') // Triez pour obtenir le deuxième devoir
             ->take(1); // Prenez seulement le deuxième devoir
     })
@@ -537,7 +580,9 @@ return response()->json([
         $join->on('matiers.id', '=', 'composition.matier_id')
             ->where('composition.inscription_id', $entry->inscription_id)
             ->where('composition.type_trimestre_id', $entry->type_trimestre_id)
+            ->where('composition.annee_scolaire_id', $entry->anneeScolaire->id)
             ->where('composition.type_compo_id', $troisiemeCompositionId); // Utilisez l'ID de la troisième composition
+
     })
     
 
@@ -735,6 +780,7 @@ $NewmoyenneDeLaClasse = ($moyenneMaxClasse + $moyenneMinClasse) / 2;
 
 $dompdf = new Dompdf();
 
+// return view  ('admin.pdf-Releve-notes-professeur.export-pdf',compact('moyenneMaxClasseArrondie','moyenneMinClasseArrondie','moyenneGlobaleArrondie','NewmoyenneDeLaClasse','moyenneMinClasse','moyenneMaxClasse','rangEtudiant','moyenneDeLaClasse','plusFaibleMoyenne','maxMoyenneDeLaClasse','maxMoyenneClasse','appreciation','moyenneGlobale','sommeProduits','sommeCoefficients','responsables','entry','effectifTotal','matieres','typeComposition','professeur','classe','matiere','anneeScolaire','typeTrimestre','inscription'))->render();;
 
         
 $pdfContent = view  ('admin.pdf-Releve-notes-professeur.export-pdf',compact('moyenneMaxClasseArrondie','moyenneMinClasseArrondie','moyenneGlobaleArrondie','NewmoyenneDeLaClasse','moyenneMinClasse','moyenneMaxClasse','rangEtudiant','moyenneDeLaClasse','plusFaibleMoyenne','maxMoyenneDeLaClasse','maxMoyenneClasse','appreciation','moyenneGlobale','sommeProduits','sommeCoefficients','responsables','entry','effectifTotal','matieres','typeComposition','professeur','classe','matiere','anneeScolaire','typeTrimestre','inscription'))->render();;
@@ -758,10 +804,46 @@ $dompdf->stream('releve-notes.pdf');
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+
+public function edit($id)
+{
+    // Récupérer l'ID de l'école connectée depuis la session
+    $ecoleId = session('ecole_id');
+
+    // Récupérer les notes en filtrant par ID d'école
+    // $notes = an_ttri_prof_mat_tcomp_in::where('ecole_id', $ecoleId)->find($id);
+
+    // Récupérer les notes en filtrant par ID d'école
+    $notes = an_ttri_prof_mat_tcomp_in::whereHas('inscription', function ($query) use ($ecoleId) {
+        $query->where('ecole_id', $ecoleId);
+    })->find($id);
+
+    // Vérifiez si les données ont été trouvées
+    if ($notes) {
+        // Exemple : Récupérez le type de composition associé
+        $typeComposition = $notes->typeComposition ?? ''; // Si null, affectez une valeur par défaut
+
+        // Exemple : Récupérez la classe associée
+        $classe = $notes->classe ?? '';
+
+        // Exemple : Récupérez la matière associée
+        $matiere = $notes->matiere ?? '';
+
+        // Exemple : Récupérez l'année scolaire associée
+        $anneeScolaire = $notes->anneeScolaire ?? '';
+
+        $inscription =  $notes->inscription;
+
+        $typeTrimestre = $notes->typeTrimestre ?? '';
+
+        return view('admin.Saisie-notes.edite', compact('inscription', 'typeTrimestre', 'typeComposition', 'classe', 'matiere', 'anneeScolaire', 'notes'));
+    } else {
+        // Si les données ne sont pas trouvées, redirigez ou effectuez une autre action appropriée
+        abort(404);
     }
+}
+
+
 
     /**
      * Update the specified resource in storage.
@@ -772,7 +854,33 @@ $dompdf->stream('releve-notes.pdf');
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'note' => 'required|numeric|between:0,20',
+        ]);
+        
+          $notes = an_ttri_prof_mat_tcomp_in::find($id);
+          $notes->note = $request->note;
+        
+          $notes->update();
+
+     // Récupérez l'étudiant et le tuteur associés à cette note
+     $etudiant = $notes->inscription->etudiant;
+     $tuteur = $notes->inscription->tuteur;
+
+
+    if ($etudiant) {
+        // Notifiez la réclamation
+        $etudiant->notify(new SendReclamationNoteEtudNotification($notes));  
+
+    }
+
+    if ($tuteur) {
+        // Notifiez la réclamation
+        $tuteur->notify(new SendReclamationNoteNotification($notes));
+
+    }
+ 
+          return back()->with("success","Note mise à jour avec succès!");
     }
 
     /**
@@ -815,4 +923,12 @@ $dompdf->stream('releve-notes.pdf');
             return back()->with('error', 'Le mot de passe actuel est incorrect.');
         }
     }
+//Profil
+    public function profil($id)
+    {
+        $professeurs = professeur::find($id);
+
+        return view('admin.profil.professeur', compact('professeurs'));
+
+    } 
 }    

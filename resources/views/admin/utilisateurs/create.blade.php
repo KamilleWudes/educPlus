@@ -117,14 +117,14 @@
 
                             <div class="col-md-6">
                                 <label for="inputAddress3" class="form-label">Address</label>
-                                <textarea class="form-control" name="adresse" value="{{ old('adresse') }}" id="inputAddress3" placeholder="Enter Address" rows="2"></textarea>
+                                <input class="form-control" name="adresse" value="{{ old('adresse') }}" id="inputAddress3" placeholder="Enter Address">
                                 @error('adresse')
                                     <span class="error" style="color:red">{{ $message }}</span>
                                 @enderror
                             </div>
 
                             <div class="col-md-6">
-                                <label for="inputChoosePassword" class="form-label">Mot de passe</label><br><br>
+                                <label for="inputChoosePassword" class="form-label">Mot de passe</label>
                                 <div class="input-group" id="show_hide_password">
                                     <input type="password" class="form-control @error('password') is-invalid  @enderror border-end-0" id="inputChoosePassword" name="password" value="{{ old('password') }}" placeholder="Enter Password"> <a href="javascript:;" class="input-group-text"><i class='bx bx-hide'></i></a>
                                 </div>

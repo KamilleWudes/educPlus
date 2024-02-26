@@ -8,9 +8,9 @@ use Illuminate\Notifications\Notifiable;
 
 class Tuteur extends Model
 {
-    use HasFactory,Notifiable;
+    use HasFactory, Notifiable;
 
     public function inscription(){
-        return $this->hasMany(inscription::class);
+        return $this->hasMany(inscription::class, 'tuteur_id', 'id');
     }
 }

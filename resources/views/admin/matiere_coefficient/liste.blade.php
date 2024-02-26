@@ -15,8 +15,19 @@
                     </nav>
                 </div>
                 <div class="ms-auto">
-                
+                    <label for="validationCustom04" class="form-label">Année scolaire</label>
+                    <select class="form-select @error('annee_scolaire_id') is-invalid  @enderror" id="idannee"
+                        name="annee_scolaire_id">
+                        <option value="">Annee Scolaires </option>
 
+                        @foreach ($AnneeScolaires as $AnneeScolaire)
+                            <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} -
+                                {{ $AnneeScolaire->annee2 }}</option>
+                        @endforeach
+                    </select>
+                    @error('annee_scolaire_id')
+                        <span class="error" style="color:red">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
             <!--end breadcrumb-->
@@ -40,7 +51,7 @@
 
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="table">
                             @foreach ($data as $matiere)
                             <tr>
                                 {{-- <td style="text-align:center">{{ $matiere->anneescolaire_annee1 }} - {{ $matiere->anneescolaire_annee2 }}  </td> --}}
@@ -68,3 +79,57 @@
             </div>
         </div>
     @endsection
+    @push('matiere_coefficient')
+    <script>
+        $(document).ready(function() {
+            console.log("hello word");
+            $('#idannee').on("change", function() {
+                var coef_id = $('#idannee').val();
+                console.log(coef_id);
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('GetCoefAnnee') }}',
+                    datatype: 'JSON',
+                    data: {
+                        annee: coef_id
+                    },
+                    success: (response) => {
+                        console.log("matiere", response.coefAnnee)
+                        coefficient = response.coefAnnee
+                        console.log('avec filtre', coefficient);
+
+                        var coef = ''
+
+                        for (let resp of coefficient) {
+
+                            coef += `<tr>
+                            <td style="text-align:center">${ resp.classe_nom}</td>
+                            <td style="text-align:center">${ resp.matiere_nom} </td>
+                            <td style="text-align:center">${ resp.coefficient}</td>
+
+                                    <td style="text-align:center">
+                                                <button type="button"
+                                                    class="btn btn-light btn-sm radius-30 px-4" disabled="true">Action</button>
+                                        </td>
+                                
+                            
+                        </tr>`
+
+                        }
+
+                        if (response.coefAnnee.length > 0) {
+
+                            $('#table').html(coef);
+
+                        } else {
+                            $('#table').html('');
+
+                        }
+
+                    },
+
+                })
+            })
+        });
+    </script>
+@endpush

@@ -246,8 +246,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-3"></div>
-                                        <div class="col-sm-9"><br><br><br>
-                                            <a href="{{ route('etudiant') }}">  <button type="button" class="btn btn-danger px-5" onclick="error_noti()"><i class="bx bx-x-circle mr-1"></i> Retour sur la liste des etudiants</button> </a>
+                                        <div class="col-sm-9"><br>
+                                            <a href="{{ route('Note-etudiant') }}">  <button type="button" class="btn btn-danger px-5" onclick="error_noti()"><i class="bx bx-x-circle mr-1"></i> Retour à l'accueil</button> </a>
                                         </div>
                                     </div>
                                 </div>

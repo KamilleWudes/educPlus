@@ -54,7 +54,7 @@
                                         name="ecole_id">
                                         <option value="">Selectionnez professeur</option>
                                         @foreach ($professeurs as $Professeur)
-                                            <option value="{{ $Professeur }}"> {{ $Professeur->nom }}
+                                            <option value="{{ json_encode($Professeur) }}"> {{ $Professeur->nom }}
                                                 {{ $Professeur->prenom }}
                                             </option>
                                         @endforeach
@@ -133,15 +133,15 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inputAddress3" class="form-label">Address</label>
-                                    <textarea class="form-control @error('adresse') is-invalid  @enderror" id="inputAddress3" name="adresse"
-                                        value="{{ old('adresse') }}" placeholder="Enter Address" rows="2"></textarea>
+                                    <input class="form-control @error('adresse') is-invalid  @enderror" id="inputAddress3" name="adresse"
+                                        value="{{ old('adresse') }}" placeholder="Enter Address">
                                     @error('adresse')
                                         <span class="error" style="color:red">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="inputAddress3" class="form-label">Photo</label><br><br>
+                                    <label for="inputAddress3" class="form-label">Photo</label>
                                     <input type="file" class="form-control" id="image" aria-label="file example"
                                         name="image" accept=".jpg, .png, .jfif, image/jpeg, image/png, image/jfif"
                                         multiple style="text-align:center;">
@@ -196,24 +196,6 @@
                                         <span class="error" style="color:red">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                {{--  <div class="col-12">
-                                    <label class="form-label">Selectionnez la Matière</label>
-                                    <div class="input-group">
-                                        <button class="btn btn-outline-secondary" type="button"><i
-                                                class='bx bx-search'></i>
-                                        </button>
-                                        {{--  <select class="single-select  @error('matier_id') is-invalid  @enderror form-select"  name="matier_id">
-                                            <option value="">Selectionnez la Matière</option>
-                                            @foreach ($matieres as $matiere)
-                                               <option value="{{ $matiere->id }}"> {{ $matiere->nom }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-
-                                    </div>  --}}
-                                {{--  @error('matier_id')
-                                    <span class="error" style="color:red">{{ $message }}</span>
-                                @enderror  --}}
 
                                 <div class="col-12">
                                     <label class="form-label">Selectionnez la Matière</label>
@@ -355,10 +337,7 @@
                 hideClass: {
                     popup: 'animate__animated animate__zoomOut'
                 },
-                //timer: 50000, // Temps en millisecondes (3 secondes dans cet exemple)
-                //timerProgressBar: true, // Affiche une barre de progression
-                //toast: false, // Style de popup de notification
-                //position: 'top-end' // Position de la notification
+              
             });
         }
     </script>

@@ -18,7 +18,7 @@ class SendBulettinNotification extends Notification
      */
     protected $etudiant;
 
-    public function __construct()
+    public function __construct($etudiant)
     {
         $this->etudiant = $etudiant;
 

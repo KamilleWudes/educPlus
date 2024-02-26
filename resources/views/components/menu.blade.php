@@ -5,7 +5,7 @@
             <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
         </div>
         <div>
-            <h4 class="logo-text">Dashtreme</h4>
+            <h4 class="logo-text">EducPlus</h4>
         </div>
         <div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
         </div>
@@ -17,10 +17,10 @@
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class='bx bx-home-circle'></i>
                     </div>
-                    <div class="menu-title">Dashboard</div>
+                    <div class="menu-title">Tableau de bord</div>
                 </a>
                 <ul>
-                    <li> <a href="{{ route('dashboard') }}"><i class="bx bx-right-arrow-alt"></i>Dashboard</a>
+                    <li> <a href="{{ route('dashboard') }}"><i class="bx bx-right-arrow-alt"></i>Accueil</a>
                     </li>
 
                 </ul>

@@ -33,10 +33,20 @@ class ClasseAnneescolaireMatiere extends Controller
     ->join('ecoles', 'ecoles.id', '=', 'classes.ecole_id')
     ->join('users', 'users.ecole_id', '=', 'ecoles.id')
     ->where('users.id', '=', $user_id)
+    ->where('classe_anneescolaire_matieres.annee_scolaire_id', AnneScolairesId())
     ->select('classes.nom as classe_nom', 'matiers.nom as matiere_nom', 'annee_scolaires.annee1 as anneescolaire_annee1', 'annee_scolaires.annee2 as anneescolaire_annee2', 'classe_anneescolaire_matieres.coefficient','classe_anneescolaire_matieres.id')
     ->orderBy('classe_anneescolaire_matieres.created_at', 'desc')
     ->get();
-    return view ('admin.matiere_coefficient.liste', compact('data'));
+
+    $AnneeScolaires = DB::table('users')
+    ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+    ->join('annee_scolaires', 'ecoles.id', '=', 'annee_scolaires.ecole_id')
+    ->where('users.id', '=', $user_id)
+    ->select('annee_scolaires.annee1 as annee1','annee_scolaires.id as id','annee_scolaires.annee2 as annee2')
+    ->orderBy("id","Desc")
+    ->get();
+
+    return view ('admin.matiere_coefficient.liste', compact('data','AnneeScolaires'));
 
     }
  
@@ -237,5 +247,27 @@ class ClasseAnneescolaireMatiere extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function GetCoefAnnees(request $request){
+        $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+
+        $data = DB::table('classe_anneescolaire_matieres')
+       ->join('classes', 'classes.id', '=', 'classe_anneescolaire_matieres.classe_id')
+       ->join('matiers', 'matiers.id', '=', 'classe_anneescolaire_matieres.matier_id')
+       ->join('annee_scolaires', 'annee_scolaires.id', '=', 'classe_anneescolaire_matieres.annee_scolaire_id')
+       ->join('ecoles', 'ecoles.id', '=', 'classes.ecole_id')
+       ->join('users', 'users.ecole_id', '=', 'ecoles.id')
+       ->where('users.id', '=', $user_id)
+       ->where('classe_anneescolaire_matieres.annee_scolaire_id','=', $request->annee)
+       ->select('classes.nom as classe_nom', 'matiers.nom as matiere_nom', 'annee_scolaires.annee1 as anneescolaire_annee1', 'annee_scolaires.annee2 as anneescolaire_annee2', 'classe_anneescolaire_matieres.coefficient','classe_anneescolaire_matieres.id')
+       ->orderBy('classe_anneescolaire_matieres.created_at', 'desc')
+       ->get();
+
+
+    return response()->json([
+        "coefAnnee"=>$data,
+
+
+    ]);
     }
 }

@@ -60,6 +60,7 @@ class ProfesseurController extends Controller
             ->join('ecoles', 'classes.ecole_id', '=', 'ecoles.id')
             ->select('annee_scolaires.*')
             ->where('ecoles.id', $ecoleId)
+            ->orderBy("id","Desc")
             ->distinct()
             ->get();
 
@@ -118,7 +119,20 @@ class ProfesseurController extends Controller
        // $matieres = Matier::orderBy("id", "Desc")->get();
 
         $professeurss = Professeur::offset(0)->limit(1)->orderBy("id", "Desc")->get();
-        $professeurs = Professeur::orderBy("id","Desc")->get();
+        $ecoleId = DB::table('users')
+        ->where('id', $user_id)
+        ->value('ecole_id');
+
+        $professeurs = DB::table('professeurs')
+        ->join('professeur_classe_matieres', 'professeurs.id', '=', 'professeur_classe_matieres.professeur_id')
+        ->join('classes', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
+        ->join('ecoles', 'classes.ecole_id', '=', 'ecoles.id')
+        ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
+        ->select('professeurs.*')
+        ->where('ecoles.id', $ecoleId)
+        ->orderBy("id","Desc")
+        ->distinct()
+        ->get();
 
         $matieres = DB::table('users')
         ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')

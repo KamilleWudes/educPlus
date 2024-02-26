@@ -226,11 +226,11 @@ Route::get('/Releve-de-note', [App\Http\Controllers\AnTtriProfMatTcompIn::class,
 
 Route::get('/bulletin-pdf={id}', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'exportPdf'])->name('bulletin-pdf')->middleware("auth.professeur");
 
-Route::put('/update_bulletin/{id}', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'update'])->name ('update_bulletin')->middleware("auth.professeur");
+Route::put('/update_note/{id}', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'update'])->name ('update_bulletin')->middleware("auth.professeur");
 
+Route::get('/edit_note={id}', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'edit'])->name ('edit_note')->middleware("auth.professeur");
 
-
-//Route Recuperation dans le select  
+//Route Recuperation dans le select
 
  Route::get('/GetClasseMatiere', [App\Http\Controllers\AnTtriProfMatTcompIn::class,'GetClasseMatiere'])->name('GetClasseMatiere');
 
@@ -256,6 +256,8 @@ Route::get('/GetReleve', [App\Http\Controllers\EtudiantController::class, 'GetRe
 
 Route::get('/GetProfReleve', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'GetProfReleves'])->name ('GetProfReleve');
 
+Route::get('/GetCoefAnnee', [App\Http\Controllers\ClasseAnneescolaireMatiere::class, 'GetCoefAnnees'])->name('GetCoefAnnee');
+
 
 //Route Zone Etudiant
 Route::get('/space-etudiant', [App\Http\Controllers\UserPrincipalController::class,'zoneEtude'])->name('zoneEtude');
@@ -270,7 +272,7 @@ Route::get('/GetNotesEtudiant', [App\Http\Controllers\EtudiantReleveController::
 
 Route::get('/GetBulettin', [App\Http\Controllers\EtudiantReleveController::class, 'GetBulettins'])->name ('GetBulettin');
 
-//Route bulletin niveau Etudiant ->middleware("auth.Etudiant");
+//Route bulletin niveau Etudiant
 Route::get('/bulettin-pdf={id}', [App\Http\Controllers\EtudiantReleveController::class,'bulettinPdf'])->name('bulettin-pdf');
 
 
@@ -287,3 +289,15 @@ Route::put('/update_password/{id}', [App\Http\Controllers\EtudiantController::cl
 //Reset password professeur
 Route::get('/reset-password-professeur={id}', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'reset'])->name('reset')->middleware("auth.professeur");
 Route::put('/update-password-professeur/{id}', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'modifierMotDePasse'])->name('update_password')->middleware("auth.professeur");
+
+//Profil Admin
+Route::get('/profil-admin={id}', [App\Http\Controllers\EtudiantController::class, 'profil'])->name('profil')->middleware("auth.admin");
+
+//Profil Professeur
+Route::get('/profil-professeur={id}', [App\Http\Controllers\AnTtriProfMatTcompIn::class, 'profil'])->name('profil')->middleware("auth.professeur");
+
+//Profil SuperAdmin
+Route::get('/profil-utilisateur={id}', [App\Http\Controllers\superAdminController::class, 'profil'])->name('profil')->middleware("auth.superAdmin");
+
+//Profil Etudiant
+Route::get('/profil-etudiant={id}', [App\Http\Controllers\EtudiantReleveController::class, 'profil'])->name('profil');

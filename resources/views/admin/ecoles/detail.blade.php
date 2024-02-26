@@ -29,7 +29,7 @@
                             <div class="card-body">
                                 <div class="d-flex flex-column align-items-center text-center">
                                     <img src="/storage/images/{{$ecoles->image}}" alt="Admin"
-                                        class=" p-1 bg-primary" width="350" height="350">
+                                        class="p-1 bg-primary" width="350" height="350">
                                           {{-- <h6> Matricule: {{ $professeurs->matricule }}</h6>
 
                                         <h6>Nom: {{ $professeurs->nom }} {{ $professeurs->prenom }}</h6> --}}

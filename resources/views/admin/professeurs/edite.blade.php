@@ -93,7 +93,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="inputAddress3" class="form-label">Address</label>
-                                <textarea class="form-control @error('adresse') is-invalid  @enderror" id="inputAddress3" name="adresse" placeholder="Enter Address" rows="2" value="{{ $professeurs->adresse }}"></textarea>
+                                <input class="form-control @error('adresse') is-invalid  @enderror" id="inputAddress3" name="adresse" placeholder="Enter Address" value="{{ $professeurs->adresse }}">
                                 @error('adresse')
                                 <span class="error" style="color:red">{{ $message }}</span>
                             @enderror
