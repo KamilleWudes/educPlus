@@ -6,6 +6,8 @@ use App\Models\Ecole;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Notifications\SendEcoleRegistrationNotification;
+use Illuminate\Support\Facades\File;
+
 
 
 class EcoleController extends Controller

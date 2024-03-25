@@ -49,8 +49,11 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <h6  id="typeTrimestreChoisie" class="mb-0 text-uppercase">Relevées de Notes</h6>
-            <hr />
+
+            <h6 id="typeTrimestreChoisie" class="mb-0 text-uppercase">Relevées de Notes</h6><br>
+            <h6 id="classeChoisie" class="mb-0 text-uppercase">Classe</h6>
+
+            <hr/>
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
@@ -167,11 +170,15 @@
                             $('#typeTrimestreChoisie').html(
                                 `<h6 class="mb-0 text-upercase">Relevées de Notes : ${response.typeTrimestreChoisie ? response.typeTrimestreChoisie : ''}</h6>`
                             );
+                            $('#classeChoisie').html(
+                                `<h6 class="mb-0 text-upercase">Classe : ${response.classeChoisie ? response.classeChoisie : ''}</h6>`
+                            );
 
                         } else {
                             $('#classe').html('');
                             $('#etudNote').html('');
                             $('#typeTrimestreChoisie').html('');
+                            $('#classeChoisie').html('');  
 
 
 

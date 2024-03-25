@@ -1,7 +1,7 @@
 @extends('layouts/master')
 @section('contenu')
     <form class="row g-3" method="POST" action="{{ url('update_inscription/' . $inscriptions->id) }}",
-        enctype="multipart/form-data">
+        enctype="multipart/form-data" id="ecoleForm">
         @csrf
         @method('PUT')
         <div class="page-content">
@@ -338,6 +338,7 @@
             </div>
         </div>
     </form>
+    <br><br>
 
 
 @endsection
@@ -373,11 +374,23 @@
                 hideClass: {
                     popup: 'animate__animated animate__zoomOut'
                 },
-                //timer: 50000, // Temps en millisecondes (3 secondes dans cet exemple)
-                //timerProgressBar: true, // Affiche une barre de progression
-                //toast: false, // Style de popup de notification
-                //position: 'top-end' // Position de la notification
             });
         }
     </script>
+@endpush
+@push('validate')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Désactive le bouton Enregistrer lorsqu'il est cliqué
+        document.getElementById("ecoleForm").addEventListener("submit", function() {
+            document.getElementById("flash").setAttribute("disabled", "disabled");
+        });
+    });
+
+    window.onload = function() {
+        // Réactive le bouton Enregistrer une fois que la page a fini de se charger
+        document.getElementById("flash").removeAttribute("disabled");
+    };
+
+</script>
 @endpush

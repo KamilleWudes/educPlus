@@ -301,3 +301,10 @@ Route::get('/profil-utilisateur={id}', [App\Http\Controllers\superAdminControlle
 
 //Profil Etudiant
 Route::get('/profil-etudiant={id}', [App\Http\Controllers\EtudiantReleveController::class, 'profil'])->name('profil');
+
+
+Route::get('/choix-ecole', [App\Http\Controllers\Auth\profController::class, 'choiceSchool'])
+    ->name('choix-ecole')
+    ->middleware(["auth.professeur"]);
+
+Route::post('/loginProfEcole', [App\Http\Controllers\Auth\profController::class,'loginProfEcole'])->name('verificationEcole');

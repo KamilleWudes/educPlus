@@ -30,7 +30,7 @@
                             <h5 class="mb-0 text-white">Edition Professeur</h5>
                         </div>
                         <hr>
-                        <form class="row g-3" method="POST" action="{{ url('update_professeur/'. $professeurs->id) }}", enctype="multipart/form-data">
+                        <form class="row g-3" method="POST" action="{{ url('update_professeur/'. $professeurs->id) }}", enctype="multipart/form-data" id="ecoleForm">
                             @csrf
                             @method('PUT')
                             <div class="col-md-6">
@@ -127,3 +127,20 @@
     <br><br><br>
 
 @endsection
+@push('validate')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Désactive le bouton Enregistrer lorsqu'il est cliqué
+        document.getElementById("ecoleForm").addEventListener("submit", function() {
+            document.getElementById("flash").setAttribute("disabled", "disabled");
+        });
+    });
+
+    window.onload = function() {
+        // Réactive le bouton Enregistrer une fois que la page a fini de se charger
+        document.getElementById("flash").removeAttribute("disabled");
+    };
+
+</script>
+@endpush
+

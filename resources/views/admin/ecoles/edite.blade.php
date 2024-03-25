@@ -30,11 +30,11 @@
                             <h5 class="mb-0 text-white">Edition Ecole</h5>
                         </div>
                         <hr>
-                        <form class="row g-3" method="POST" action="{{ url('update_ecole/'. $ecoles->id) }}",enctype="multipart/form-data">
+                        <form class="row g-3" method="POST" action="{{ url('update_ecole/'. $ecoles->id) }}",enctype="multipart/form-data" id="ecoleForm">
                             @csrf
                             @method('PUT')
                             <div class="col-md-6">
-                                <label for="inputLastName1" class="form-label">Nom</label> <br> <br>
+                                <label for="inputLastName1" class="form-label">Nom</label> 
                                 <div class="input-group"> <span class="input-group-text"><i class='bx bxs-user'></i></span>
                                     <input type="text"
                                         class="form-control @error('nom') is-invalid  @enderror border-start-0" value="{{ $ecoles->nom }}"
@@ -47,8 +47,8 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="inputAddress3" class="form-label">Address</label>
-                                <textarea class="form-control @error('adresse') is-invalid  @enderror" value="{{ $ecoles->adresse }}" name="adresse" id="inputAddress3"
-                                    placeholder="Enter Address" rows="2"></textarea>
+                                <input class="form-control @error('adresse') is-invalid  @enderror" value="{{ $ecoles->adresse }}" name="adresse" id="inputAddress3"
+                                    placeholder="Enter Address" rows="2"/>
                                 @error('adresse')
                                     <span class="error" style="color:red">{{ $message }}</span>
                                 @enderror
@@ -94,13 +94,13 @@
                                 @enderror
                             </div>
                              <div class="col-md-6">
-                                <label for="inputAddress3" class="form-label">Photo</label><br><br>
+                                <label for="inputAddress3" class="form-label">Photo</label>
                                 <input type="file" class="form-control" aria-label="file example" name="image" accept=".jpg, .png, image/jpeg, image/png" multiple
                                     style="text-align: center;">
                             </div>
                             <div class="col-md-6">
                                 <br>
-                                <button type="submit" class="btn btn-primary px-5" id="flash"
+                                <button type="submit" class="btn btn-primary px-3" id="flash"
                                     data-flash="{!! session()->get('success') !!}"><i
                                         class="bx bx-check-circle mr-1"></i>Valider la modification</button>
                             </div>
@@ -116,3 +116,19 @@
         </div>
     </div>
 @endsection
+@push('validate')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Désactive le bouton Enregistrer lorsqu'il est cliqué
+        document.getElementById("ecoleForm").addEventListener("submit", function() {
+            document.getElementById("flash").setAttribute("disabled", "disabled");
+        });
+    });
+
+    window.onload = function() {
+        // Réactive le bouton Enregistrer une fois que la page a fini de se charger
+        document.getElementById("flash").removeAttribute("disabled");
+    };
+
+</script>
+@endpush

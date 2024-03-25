@@ -1,6 +1,6 @@
 @extends('layouts/master')
 @section('contenu')
-    <form class="row g-3" method="POST" action="{{ route('createMatiere_coefficient') }}">
+    <form class="row g-3" method="POST" action="{{ route('createMatiere_coefficient') }}" id="ecoleForm">
         @csrf
         <div class="page-content">
             <!--breadcrumb-->
@@ -82,7 +82,7 @@
 
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="inputLastName1" class="form-label" style="text-align: center">Actions</label><br>
                             <button type="submit" class="btn btn-primary px-4" id="flash"
                                 data-flash="{!! session()->get('success') !!}"><i
@@ -179,4 +179,20 @@
             });
         }
     </script>
+@endpush
+@push('validate')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Désactive le bouton Enregistrer lorsqu'il est cliqué
+        document.getElementById("ecoleForm").addEventListener("submit", function() {
+            document.getElementById("flash").setAttribute("disabled", "disabled");
+        });
+    });
+
+    window.onload = function() {
+        // Réactive le bouton Enregistrer une fois que la page a fini de se charger
+        document.getElementById("flash").removeAttribute("disabled");
+    };
+
+</script>
 @endpush

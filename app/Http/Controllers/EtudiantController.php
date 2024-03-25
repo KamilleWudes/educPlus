@@ -124,7 +124,7 @@ class EtudiantController extends Controller
     }
 
     public function GetReleves(request $request){
-          // Récupérez les critères de filtrage depuis la requête
+    // Récupérez les critères de filtrage depuis la requête
     $anneeScolaire = $request->input('annee_scolaire');
     $typeTrimestre = $request->input('type_trimestre');
     $classe = $request->input('classe');
@@ -159,10 +159,15 @@ class EtudiantController extends Controller
  // Récupérez la matiere  choisie
  $typeTrimestreChoisie = typeTrimestre::where('id', $typeTrimestre)->value('nom');
 
+ $classeChoisie = classe::where('id', $classe)->value('nom');
+
+
     return response()->json([
         "Notes"=>$data,
         "classes"=> $classes,
         "typeTrimestreChoisie"=>$typeTrimestreChoisie,
+        "classeChoisie"=>$classeChoisie,
+
 
     ]);
     }

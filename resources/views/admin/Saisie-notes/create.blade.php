@@ -154,6 +154,7 @@
          </div>
          </div>
      </form>
+     <br><br>
  @endsection
 
  @push('select_matiere')

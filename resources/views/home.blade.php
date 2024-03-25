@@ -92,22 +92,13 @@
                 <div class="col-12 col-lg-6 col-xl-12 d-flex">
                     <div class="card radius-10 w-100">
                         <div class="card-header border-bottom bg-transparent">
-                            <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <h5 class="mb-0">Ecoles Récents</h5>
                                 </div>
-                                <div class="dropdown options ms-auto">
-                                    <div class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
-                                        <i class='bx bx-dots-horizontal-rounded'></i>
-                                    </div>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="{{ route('ecole') }}">Voir tous les
-                                                Ecoles</a></li>
-
-                                    </ul>
-                                </div>
-
+                                <button class="btn btn-secondary text-start" onclick="window.location.href='{{ route('ecole') }}'">Voir tous les Ecoles</button>
                             </div>
+                            
                         </div>
                         @foreach ($ecoles as $ecole)
                             <ul class="list-group list-group-flush">

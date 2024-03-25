@@ -25,7 +25,7 @@
                     <div class="table-responsive">
                         <div class="ms-auto"><a href="javascript:;" class="btn btn-light radius-30 mt-2 mt-lg-0"
                                 data-bs-toggle="modal" data-bs-target="#exampleDarkModal"><i
-                                    class="bx bxs-plus-square"></i>Nouvelle Matières</a></div>
+                                    class="bx bxs-plus-square"></i>Nouvelle Matière</a></div>
                         @include('admin.matieres.create')
                         {{--  <div class="ms-auto"><a href=" {{ route('addMatiere_coefficient') }}" class="btn btn-light radius-30 mt-2 mt-lg-0"
                             data-bs-toggle="" data-bs-target=""><i

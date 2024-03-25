@@ -23,7 +23,7 @@
                 <h6 class="mb-0 text-uppercase">Formulaire d'edition du coefficient</h6>
                 <hr />
                 <div class="card">
-                    <form class="row g-3" method="POST" action="{{ url('matiere_coefficient/' . $data->id) }}">
+                    <form class="row g-3" method="POST" action="{{ url('matiere_coefficient/' . $data->id) }}" id="ecoleForm">
                         @csrf
                         @method('PUT')
                         <div class="card-body">
@@ -141,11 +141,24 @@
                 hideClass: {
                     popup: 'animate__animated animate__zoomOut'
                 },
-                //timer: 50000, // Temps en millisecondes (3 secondes dans cet exemple)
-                //timerProgressBar: true, // Affiche une barre de progression
-                //toast: false, // Style de popup de notification
-                //position: 'top-end' // Position de la notification
+              
             });
         }
     </script>
+@endpush
+@push('validate')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Désactive le bouton Enregistrer lorsqu'il est cliqué
+        document.getElementById("ecoleForm").addEventListener("submit", function() {
+            document.getElementById("flash").setAttribute("disabled", "disabled");
+        });
+    });
+
+    window.onload = function() {
+        // Réactive le bouton Enregistrer une fois que la page a fini de se charger
+        document.getElementById("flash").removeAttribute("disabled");
+    };
+
+</script>
 @endpush

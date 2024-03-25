@@ -30,7 +30,7 @@
                         </div>
                         <hr>
                         <form class="row g-3" method="POST"
-                            action="{{ route('createutilisateur') }}">
+                            action="{{ route('createutilisateur') }}" id="ecoleForm">
                             @csrf
                             <div class="col-md-6">
                                 <label for="inputLastName1" class="form-label">Nom</label>
@@ -102,7 +102,7 @@
                             @enderror
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-6">
                                 <label for="inputEmailAddress" class="form-label"> Address Email</label>
                                 <div class="input-group"> <span class="input-group-text"><i
                                             class='bx bxs-message'></i></span>
@@ -123,7 +123,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <label for="inputChoosePassword" class="form-label">Mot de passe</label>
                                 <div class="input-group" id="show_hide_password">
                                     <input type="password" class="form-control @error('password') is-invalid  @enderror border-end-0" id="inputChoosePassword" name="password" value="{{ old('password') }}" placeholder="Enter Password"> <a href="javascript:;" class="input-group-text"><i class='bx bx-hide'></i></a>
@@ -131,7 +131,7 @@
                                 @error('password')
                                 <span class="error" style="color:red">{{ $message }}</span>
                             @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-6">
                                 <br>
@@ -151,5 +151,21 @@
 
             </div>
         </div>
-    </div>
+    </div><br><br>
 @endsection
+@push('validate')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Désactive le bouton Enregistrer lorsqu'il est cliqué
+        document.getElementById("ecoleForm").addEventListener("submit", function() {
+            document.getElementById("flash").setAttribute("disabled", "disabled");
+        });
+    });
+
+    window.onload = function() {
+        // Réactive le bouton Enregistrer une fois que la page a fini de se charger
+        document.getElementById("flash").removeAttribute("disabled");
+    };
+
+</script>
+@endpush

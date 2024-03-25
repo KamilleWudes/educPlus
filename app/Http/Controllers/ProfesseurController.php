@@ -6,7 +6,7 @@ use App\Models\classe;
 use App\Models\Matier;
 use App\Models\Professeur;
 use Illuminate\Contracts\Session\Session as SessionSession;
-
+use Illuminate\Support\Str;
 use App\Models\ProfesseurClasseMatiere;
 use App\Models\User;
 // use Illuminate\Contracts\Validation\Rule;
@@ -163,7 +163,7 @@ class ProfesseurController extends Controller
                 'telephone1' => 'required|numeric|unique:professeurs,telephone1',
                 'adresse' => 'required',
                 'email' => 'required|email|unique:professeurs,email',
-                'password' => ['required', 'string', 'min:8'],
+                //'password' => ['required', 'string', 'min:8'],
                 'classe_id' => 'required|array',
                 'classe_id.*' => 'integer',
                 'matier_id' => 'required|array',
@@ -204,7 +204,8 @@ class ProfesseurController extends Controller
                 $fileNameTotore = 'user.png';
             }
 
-           
+            $password = Str::random(8);
+
             $professeurs = new Professeur();
             $professeurs->nom = $request->nom;
             $professeurs->prenom = $request->prenom;
@@ -213,7 +214,7 @@ class ProfesseurController extends Controller
             $professeurs->adresse = $request->adresse;
             $professeurs->email = $request->email;
             $professeurs->image = $fileNameTotore;
-            $professeurs->password = hash::make($request->password);
+            $professeurs->password = Hash::make($password);
             $professeurs->role = $request->role;
 
             $professeurs->save();
@@ -245,7 +246,7 @@ class ProfesseurController extends Controller
                 $professeurs = Professeur::with(['classe', 'matieres', 'ecoles', 'anneesScolaires'])->find($professeurs->id);
 
                 if($professeurs){
-                    $professeurs->notify(new SendProfesseurRegistrationNotification($professeurs));
+                    $professeurs->notify(new SendProfesseurRegistrationNotification($professeurs, $password));
                 }
            return back()->with("success", "Professeur ajouté avec succè!");
 

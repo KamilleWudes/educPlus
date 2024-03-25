@@ -1,6 +1,6 @@
 @extends('layouts/master')
 @section('contenu')
-    <form class="row g-3" method="POST" action="{{ route('createprofesseur') }}" enctype='multipart/form-data'>
+    <form class="row g-3" method="POST" action="{{ route('createprofesseur') }}" enctype='multipart/form-data' id="ecoleForm">
         @csrf
         <div class="page-content">
             <!--breadcrumb-->
@@ -146,7 +146,7 @@
                                         name="image" accept=".jpg, .png, .jfif, image/jpeg, image/png, image/jfif"
                                         multiple style="text-align:center;">
                                 </div>
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <label for="inputChoosePassword" class="form-label">Mot de passe</label>
                                     <div class="input-group" id="show_hide_password">
                                         <input type="password" id="password"
@@ -158,7 +158,7 @@
                                     @error('password')
                                         <span class="error" style="color:red">{{ $message }}</span>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <input type="hidden" id="roles" name="role" value="professeur">
                             </div>
                         </div>
@@ -221,7 +221,7 @@
 
                                 </div>
                             </div> <br> <br><br>
-                            <button type="submit" class="btn btn-primary px-5"><i
+                            <button type="submit" class="btn btn-primary px-5" id="flash"><i
                                     class="bx bx-check-circle mr-1"></i>Enregistrer</button>
                             <a href="{{ route('professeur') }}"> <button type="button" class="btn btn-danger px-5"
                                     onclick="error_noti()"><i class="bx bx-x-circle mr-1"></i> Annuler</button> </a>
@@ -341,4 +341,20 @@
             });
         }
     </script>
+@endpush
+@push('validate')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Désactive le bouton Enregistrer lorsqu'il est cliqué
+        document.getElementById("ecoleForm").addEventListener("submit", function() {
+            document.getElementById("flash").setAttribute("disabled", "disabled");
+        });
+    });
+
+    window.onload = function() {
+        // Réactive le bouton Enregistrer une fois que la page a fini de se charger
+        document.getElementById("flash").removeAttribute("disabled");
+    };
+
+</script>
 @endpush

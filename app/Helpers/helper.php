@@ -152,7 +152,19 @@ function UserfullRole(){
              return  $professeurId ;
          }
      }
+          // récupérer l'Email du professeur connecté
 
+      function ProfEmail(){
+        $professeurEmail = '';
+        if(Session::has('Professeur')){
+            $professeur = Professeur::find(Session::get('Professeur'));
+            if($professeur){
+                $professeurEmail = $professeur->email;
+            }
+        }
+        return $professeurEmail;
+    }
+    
 
     // function AnneScolaire(){
     //     $anneeScolaire = anneeScolaire::orderBy("id", "desc")->first();

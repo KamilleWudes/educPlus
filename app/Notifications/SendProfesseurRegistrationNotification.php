@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notification;
 class SendProfesseurRegistrationNotification extends Notification
 {
     use Queueable;
+    protected $password;
 
     /**
      * Create a new notification instance.
@@ -18,9 +19,11 @@ class SendProfesseurRegistrationNotification extends Notification
      */
     public $professeur;
 
-    public function __construct($professeur)
+    public function __construct($professeur,$password)
     {
         $this->professeur = $professeur;
+        $this->password = $password;
+
     }
 
     /**
@@ -58,6 +61,8 @@ class SendProfesseurRegistrationNotification extends Notification
         ->line('Vous enseignez le(s) matière(s) suivante(s) : ' . $this->professeur->matieres->pluck('nom')->unique()->implode(', '))
         ->line('Vous êtes responsable de(s) classe(s) : ' . $this->professeur->classe->pluck('nom')->unique()->implode(', '))
         ->line('L\'année scolaire en cours est : ' . $anneesScolaires->pluck('annee1')->unique()->implode(', ') . ' - ' . $anneesScolaires->pluck('annee2')->unique()->implode(', '))
+        ->line('Votre mot de passe temporaire est : ' . $this->password)
+        ->line('Nous vous recommandons de vous connecter dès que possible pour changer votre mot de passe.')
         ->line('En tant que professeur, vous avez maintenant accès à un ensemble de fonctionnalités pour gérer vos cours et vos élèves de manière plus efficace.')
         ->action('Visitez notre site Web', url('/'))
          ->line('N\'hésitez pas à explorer et à utiliser toutes les fonctionnalités que nous offrons.')

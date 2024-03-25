@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -25,68 +26,65 @@ class InscriptionController extends Controller
     public $nouveau = "";
     public $ancien = "";
 
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */     
+     */
 
-    public function GetAnnees(request $request){
+    public function GetAnnees(request $request)
+    {
         $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
 
-       // dd($request->annee);
-       $data = DB::table('users')
+        // dd($request->annee);
+        $data = DB::table('users')
 
-       ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-       ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
-       ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
-       ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
-       ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
-       ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
-       ->select('inscriptions.id', 'inscriptions.date_insription','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','etudiants.nom as etudiant_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2','etudiants.prenom as etudiant_prenom','etudiants.matricule as matricule','annee_scolaires.annee1', 'annee_scolaires.annee2', 'ecoles.nom as ecole_nom')
-       ->where('users.id', '=', $user_id)
-       ->orderBy("id","Desc")
-       ->where('inscriptions.annee_scolaire_id','=', $request->annee)
-       ->get();
+            ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+            ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+            ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+            ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+            ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+            ->select('inscriptions.id', 'inscriptions.date_insription', 'classes.nom as classe_nom', 'tuteurs.noms as tuteur_nom', 'etudiants.nom as etudiant_nom', 'tuteurs.prenoms as tuteur_prenoms', 'tuteurs.telephone1 as tuteur_telephone1', 'tuteurs.telephone2 as tuteur_telephone2', 'etudiants.prenom as etudiant_prenom', 'etudiants.matricule as matricule', 'annee_scolaires.annee1', 'annee_scolaires.annee2', 'ecoles.nom as ecole_nom')
+            ->where('users.id', '=', $user_id)
+            ->orderBy("id", "Desc")
+            ->where('inscriptions.annee_scolaire_id', '=', $request->annee)
+            ->get();
 
-      // dd($data);
+        // dd($data);
 
-    return response()->json([
-        "inscriptions"=>$data,
-
-
-    ]);
-
-
+        return response()->json([
+            "inscriptions" => $data,
+        ]);
     }
     public function index()
     {
         // $inscriptions= inscription::all();
-     $user_id = Userid(); // l'id de l'utilisateur connecté
-     $anneeScolaireEnCours = AnneeScolaire::orderBy('id', 'desc')->first(); // récupération de l'année scolaire en cours
+        $user_id = Userid(); // l'id de l'utilisateur connecté
+        $anneeScolaireEnCours = AnneeScolaire::orderBy('id', 'desc')->first(); // récupération de l'année scolaire en cours
 
-   $inscriptions = DB::table('users')
-    ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-    ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
-    ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
-    ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
-    ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
-    ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
-    ->select('inscriptions.id', 'inscriptions.date_insription', 'ecoles.nom as ecole_nom','classes.nom as classe_nom','tuteurs.noms as tuteur_nom','tuteurs.prenoms as tuteur_prenoms','tuteurs.telephone1 as tuteur_telephone1','tuteurs.telephone2 as tuteur_telephone2', 'etudiants.nom as etudiant_nom','etudiants.prenom as etudiant_prenom','etudiants.matricule as matricule','annee_scolaires.annee1', 'annee_scolaires.annee2')
-    ->where('users.id', '=', $user_id)
-    ->where('annee_scolaires.annee1',lastAneeScolaire())
-    ->get();
+        $inscriptions = DB::table('users')
+            ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+            ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+            ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+            ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+            ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+            ->select('inscriptions.id', 'inscriptions.date_insription', 'ecoles.nom as ecole_nom', 'classes.nom as classe_nom', 'tuteurs.noms as tuteur_nom', 'tuteurs.prenoms as tuteur_prenoms', 'tuteurs.telephone1 as tuteur_telephone1', 'tuteurs.telephone2 as tuteur_telephone2', 'etudiants.nom as etudiant_nom', 'etudiants.prenom as etudiant_prenom', 'etudiants.matricule as matricule', 'annee_scolaires.annee1', 'annee_scolaires.annee2')
+            ->where('users.id', '=', $user_id)
+            ->where('annee_scolaires.annee1', lastAneeScolaire())
+            ->get();
 
-    $AnneeScolaires = DB::table('users')
-    ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-    ->join('annee_scolaires', 'ecoles.id', '=', 'annee_scolaires.ecole_id')
-    ->where('users.id', '=', $user_id)
-    ->select('annee_scolaires.annee1 as annee1','annee_scolaires.id as id','annee_scolaires.annee2 as annee2')
-    ->orderBy("id","Desc")
-    ->get();
+        $AnneeScolaires = DB::table('users')
+            ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+            ->join('annee_scolaires', 'ecoles.id', '=', 'annee_scolaires.ecole_id')
+            ->where('users.id', '=', $user_id)
+            ->select('annee_scolaires.annee1 as annee1', 'annee_scolaires.id as id', 'annee_scolaires.annee2 as annee2')
+            ->orderBy("id", "Desc")
+            ->get();
 
 
-    return view ('admin.inscriptions.liste',compact('inscriptions','AnneeScolaires'));
+        return view('admin.inscriptions.liste', compact('inscriptions', 'AnneeScolaires'));
     }
 
     /**
@@ -99,48 +97,48 @@ class InscriptionController extends Controller
 
         $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
         $classes = DB::table('users')
-        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-        ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
-        ->join('niveau_scolaires', 'classes.niveau_scolaires_id', '=', 'niveau_scolaires.id')
-        ->where('users.id', '=', $user_id)
-        ->select('ecoles.nom as ecole_nom', 'classes.id as classe_id', 'classes.nom as classe_nom','niveau_scolaires.nom as niveau_scolaire')
-        ->orderBy("classe_id","Desc")
-        ->distinct()
-        ->get();
-     
-        $etudiantss = Etudiant::offset(0)->limit(1)->orderBy("id","Desc")->get();
-        $tuteurs = Tuteur::offset(0)->limit(1)->orderBy("id","Desc")->get();
+            ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+            ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+            ->join('niveau_scolaires', 'classes.niveau_scolaires_id', '=', 'niveau_scolaires.id')
+            ->where('users.id', '=', $user_id)
+            ->select('ecoles.nom as ecole_nom', 'classes.id as classe_id', 'classes.nom as classe_nom', 'niveau_scolaires.nom as niveau_scolaire')
+            ->orderBy("classe_id", "Desc")
+            ->distinct()
+            ->get();
 
-        $AnneeScolaires = anneeScolaire::offset(0)->limit(1)->orderBy("id","Desc")->get();
+        $etudiantss = Etudiant::offset(0)->limit(1)->orderBy("id", "Desc")->get();
+        $tuteurs = Tuteur::offset(0)->limit(1)->orderBy("id", "Desc")->get();
+
+        $AnneeScolaires = anneeScolaire::offset(0)->limit(1)->orderBy("id", "Desc")->get();
 
         $etudiants = DB::table('users')
-        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-        ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
-        ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
-        ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
-        ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
-        ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
-        ->select('etudiants.*')
-        ->where('users.id', '=', $user_id)
-        ->orderBy('inscriptions.id', 'desc')
-        ->distinct()
-        ->get();
+            ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+            ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+            ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+            ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+            ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+            ->select('etudiants.*')
+            ->where('users.id', '=', $user_id)
+            ->orderBy('inscriptions.id', 'desc')
+            ->distinct()
+            ->get();
 
         $Tuteurss = DB::table('users')
-        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-        ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
-        ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
-        ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
-        ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
-        ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
-        ->select('tuteurs.*')
-        ->where('users.id', '=', $user_id)
-        ->distinct()
-        ->orderBy('inscriptions.id', 'desc')
-        ->get();
-        
+            ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+            ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+            ->join('inscriptions', 'classes.id', '=', 'inscriptions.classe_id')
+            ->join('annee_scolaires', 'inscriptions.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->join('tuteurs', 'inscriptions.tuteur_id', '=', 'tuteurs.id')
+            ->join('etudiants', 'inscriptions.etudiant_id', '=', 'etudiants.id')
+            ->select('tuteurs.*')
+            ->where('users.id', '=', $user_id)
+            ->distinct()
+            ->orderBy('inscriptions.id', 'desc')
+            ->get();
 
-        return view ('admin.inscriptions.create',compact('etudiants','classes','AnneeScolaires','etudiantss','tuteurs','Tuteurss'));
+
+        return view('admin.inscriptions.create', compact('etudiants', 'classes', 'AnneeScolaires', 'etudiantss', 'tuteurs', 'Tuteurss'));
     }
 
     /**
@@ -152,472 +150,466 @@ class InscriptionController extends Controller
 
     public function store(Request $request)
     {
-        if($request->na == 'nouveau' and $request->nw == 'new'){
+        if ($request->na == 'nouveau' and $request->nw == 'new') {
 
-        //dd($request->nouveau);
-        $this->validate($request, [
-            'nom' => 'required',
-            'prenom' => 'required',
-            'sexe' => 'required',
-            'LieuNaissance'=>'required',
-            'dateNaissance' => 'required|date',
-            'telephone' => 'nullable|numeric|unique:etudiants,telephone',
-            'adresse' => 'required',
-            'email' => 'nullable|email|unique:etudiants,email',
-            'image' => 'image|nullable|max:1999',
- 
-            'noms' => 'required',
-            'prenoms' => 'required',
-            'sex' => 'required',
-            'telephone1'=>'required|numeric|unique:tuteurs,telephone1',
-            'telephone2' => 'nullable|numeric|unique:tuteurs,telephone2',
-            'adresses' => 'required',
-            'emails' => 'required|email|unique:tuteurs,emails',
- 
-            'annee_scolaire_id'=>'required',
-            'classe_id' => 'required',
-            'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
- 
-        ]); 
+            //dd($request->nouveau);
+            $this->validate($request, [
+                'nom' => 'required',
+                'prenom' => 'required',
+                'sexe' => 'required',
+                'LieuNaissance' => 'required',
+                'dateNaissance' => 'required|date',
+                'telephone' => 'nullable|numeric|unique:etudiants,telephone',
+                'adresse' => 'required',
+                'email' => 'nullable|email|unique:etudiants,email',
+                'image' => 'image|nullable|max:1999',
 
-         // Vérifiez manuellement si la date de naissance est antérieure ou égale à la date actuelle
-    $dateNaissance = \Carbon\Carbon::createFromFormat('Y-m-d', $request->dateNaissance);
+                'noms' => 'required',
+                'prenoms' => 'required',
+                'sex' => 'required',
+                'telephone1' => 'required|numeric|unique:tuteurs,telephone1',
+                'telephone2' => 'nullable|numeric|unique:tuteurs,telephone2',
+                'adresses' => 'required',
+                'emails' => 'required|email|unique:tuteurs,emails',
 
-    if ($dateNaissance->isAfter(now()) || $dateNaissance->isSameDay(now())) {
-        return redirect()->back()->with('error', 'La date de naissance doit être antérieure à la date actuelle.')->withInput();
+                'annee_scolaire_id' => 'required',
+                'classe_id' => 'required',
+                'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
+
+            ]);
+
+            // Vérifiez manuellement si la date de naissance est antérieure ou égale à la date actuelle
+            $dateNaissance = \Carbon\Carbon::createFromFormat('Y-m-d', $request->dateNaissance);
+
+            if ($dateNaissance->isAfter(now()) || $dateNaissance->isSameDay(now())) {
+                return redirect()->back()->with('error', 'La date de naissance doit être antérieure à la date actuelle.')->withInput();
+            }
+
+            $validator = Validator::make($request->all(), [
+
+                'classe_id' => [
+                    'required',
+                    Rule::unique('inscriptions')->where(function ($query) use ($request) {
+                        $query->where('ecole_id', $request->ecole_id)
+
+                            ->where('etudiant_id', $request->etudiant_id)
+                            ->where('annee_scolaire_id', $request->annee_scolaire_id);
+                    }),
+                ],
+
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
+            }
+
+
+            if ($request->hasFile('image')) {
+                //1 : get File with ext
+                $fileNameWithExt = $request->file('image')->getClientOriginalName();
+                //2 : get just file name
+                $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+                // 3 : GET JUSTE FILE EXTENSION
+                $extension = $request->file('image')->getClientOriginalExtension();
+                //4 : file name to store
+                $fileNameTotore = $fileName . '_' . time() . '.' . $extension;
+
+                //uploader l'image
+                $path = $request->file('image')->storeAs('public/images', $fileNameTotore);
+            } else {
+                $fileNameTotore = 'user.png';
+            }
+            //  User::create($request->all());
+            //save Etudiant
+            $etudiants = new Etudiant();
+            $etudiants->nom = $request->nom;
+            $etudiants->prenom = $request->prenom;
+            $etudiants->sexe = $request->sexe;
+            $etudiants->telephone = $request->telephone;
+            $etudiants->adresse = $request->adresse;
+            $etudiants->LieuNaissance = $request->LieuNaissance;
+            $etudiants->dateNaissance = $request->dateNaissance;
+            $etudiants->email = $request->email;
+            $etudiants->image = $fileNameTotore;
+            $etudiants->role = $request->role;
+
+
+            $etudiants->save();
+
+            //save tuteurs
+            $tuteurs = new Tuteur();
+            $tuteurs->noms = $request->noms;
+            $tuteurs->prenoms = $request->prenoms;
+            $tuteurs->sex = $request->sex;
+            $tuteurs->telephone1 = $request->telephone1;
+            $tuteurs->telephone2 = $request->telephone2;
+            $tuteurs->adresses = $request->adresses;
+            $tuteurs->emails = $request->emails;
+
+            $tuteurs->save();
+
+            //save inscriptions
+            $inscriptions = new inscription();
+            $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
+            $inscriptions->date_insription = $request->date_insription;
+            $inscriptions->classe_id = $request->classe_id;
+            $inscriptions->etudiant_id = $etudiants->id;
+            $inscriptions->tuteur_id = $tuteurs->id;
+            $inscriptions->ecole_id = $request->ecole_id;
+
+            $inscriptions->save();
+
+            $annes = substr(AnneScolaires(), 9, 2);
+            $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1) . substr($etudiants->dateNaissance, 2, 2) . $annes;
+            $etudiants->matricule = $matricule;
+
+            $etudiants->save();
+            if ($inscriptions->save()) {
+                // Obtenez l'étudiant et le tuteur liés à cette inscription
+                $etudiant = $inscriptions->etudiant;
+                $tuteur = $inscriptions->tuteur;
+
+                //   // Envoyez un e-mail au tuteur
+                $etudiant->notify(new SendEtudiantRegistrationNotification(
+                    $etudiant->nom,
+                    $etudiant->prenom,
+                    $inscriptions->classe->nom,
+                    $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
+                    $inscriptions->ecoles->nom, // Nom de l'école
+                    $tuteur->noms, // Nom du tuteur
+                    $tuteur->prenoms,
+                    $etudiant->matricule
+                ));
+
+                // Envoyez un e-mail à l'étudiant
+                $etudiant->notify(new SendTuteurRegistrationNotification(
+                    $etudiant->nom,
+                    $etudiant->prenom,
+                    $inscriptions->classe->nom,
+                    $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
+                    $inscriptions->ecoles->nom, // Nom de l'école
+                    $tuteur->noms, // Nom du tuteur
+                    $tuteur->prenoms,
+                    $etudiant->matricule
+
+                ));
+            }
+
+
+
+            return back()->with("success", " inscription realiser avec succè!");
+        } else if ($request->na == 'ancien' and $request->nw == 'new') {
+            $this->validate($request, [
+
+                'noms' => 'required',
+                'prenoms' => 'required',
+                'sex' => 'required',
+                'telephone1' => 'required|numeric|unique:tuteurs,telephone1',
+                'telephone2' => 'nullable|numeric|unique:tuteurs,telephone2',
+                'adresses' => 'required',
+                'emails' => 'required|email|unique:tuteurs,emails',
+
+                'annee_scolaire_id' => 'required',
+                'classe_id' => 'required',
+                'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
+                'etudiant_id' => 'required',
+
+
+            ]);
+
+            $validator = Validator::make($request->all(), [
+
+                'classe_id' => [
+                    'required',
+                    Rule::unique('inscriptions')->where(function ($query) use ($request) {
+                        $query->where('ecole_id', $request->ecole_id)
+
+                            ->where('etudiant_id', $request->etudiant_id)
+                            ->where('annee_scolaire_id', $request->annee_scolaire_id);
+                    }),
+                ],
+
+                // Vérifier si l'étudiant est déjà inscrit à une autre classe pour la même année scolaire et la même école
+                $existingInscription = Inscription::where('etudiant_id', $request->etudiant_id)
+                    ->where('annee_scolaire_id', $request->annee_scolaire_id)
+                    ->where('ecole_id', $request->ecole_id)
+                    ->first()
+
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
+            }
+            if ($existingInscription) {
+                // L'étudiant est déjà inscrit à une autre classe pour cette année scolaire et cette école
+                return redirect()->back()->with('error', "Etudiant  déjà inscrit à une autre classe pour cette année scolaire et cette école.");
+            }
+
+            //save tuteurs
+            $tuteurs = new Tuteur();
+            $tuteurs->noms = $request->noms;
+            $tuteurs->prenoms = $request->prenoms;
+            $tuteurs->sex = $request->sex;
+            $tuteurs->telephone1 = $request->telephone1;
+            $tuteurs->telephone2 = $request->telephone2;
+            $tuteurs->adresses = $request->adresses;
+            $tuteurs->emails = $request->emails;
+
+            $tuteurs->save();
+
+            //save inscriptions
+            $inscriptions = new inscription();
+            $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
+            $inscriptions->date_insription = $request->date_insription;
+            $inscriptions->classe_id = $request->classe_id;
+            $inscriptions->etudiant_id = $request->etudiant_id;
+            $inscriptions->tuteur_id = $tuteurs->id;
+            $inscriptions->ecole_id = $request->ecole_id;
+
+            $inscriptions->save();
+
+            if ($inscriptions->save()) {
+                // Obtenez l'étudiant et le tuteur liés à cette inscription
+                $etudiant = $inscriptions->etudiant;
+                $tuteur = $inscriptions->tuteur;
+
+                //   // Envoyez un e-mail au tuteur
+                $etudiant->notify(new SendEtudiantRegistrationNotification(
+                    $etudiant->nom,
+                    $etudiant->prenom,
+                    $inscriptions->classe->nom,
+                    $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
+                    $inscriptions->ecoles->nom, // Nom de l'école
+                    $tuteur->noms, // Nom du tuteur
+                    $tuteur->prenoms,
+                    $etudiant->matricule
+                ));
+
+                // Envoyez un e-mail à l'étudiant
+                $etudiant->notify(new SendTuteurRegistrationNotification(
+                    $etudiant->nom,
+                    $etudiant->prenom,
+                    $inscriptions->classe->nom,
+                    $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
+                    $inscriptions->ecoles->nom, // Nom de l'école
+                    $tuteur->noms, // Nom du tuteur
+                    $tuteur->prenoms,
+                    $etudiant->matricule
+
+                ));
+            }
+
+            return back()->with("success", " inscription realiser avec succè!");
+        } elseif ($request->na == 'nouveau' and $request->nw == 'old') {
+
+            //dd($request->nouveau);
+            $this->validate($request, [
+                'nom' => 'required',
+                'prenom' => 'required',
+                'sexe' => 'required',
+                'LieuNaissance' => 'required',
+                'dateNaissance' => 'required|date',
+                'telephone' => 'nullable|numeric|unique:etudiants,telephone',
+                'adresse' => 'required',
+                'email' => 'nullable|email|unique:etudiants,email',
+                'image' => 'image|nullable|max:1999',
+
+                'annee_scolaire_id' => 'required',
+                'classe_id' => 'required',
+                'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
+                'tuteur_id' => 'required',
+
+            ]);
+            // Vérifiez manuellement si la date de naissance est antérieure ou égale à la date actuelle
+            $dateNaissance = \Carbon\Carbon::createFromFormat('Y-m-d', $request->dateNaissance);
+
+            if ($dateNaissance->isAfter(now()) || $dateNaissance->isSameDay(now())) {
+                return redirect()->back()->with('error', 'La date de naissance doit être antérieure à la date actuelle.')->withInput();
+            }
+
+            $validator = Validator::make($request->all(), [
+
+                'classe_id' => [
+                    'required',
+                    Rule::unique('inscriptions')->where(function ($query) use ($request) {
+                        $query->where('ecole_id', $request->ecole_id)
+
+                            ->where('etudiant_id', $request->etudiant_id)
+                            ->where('annee_scolaire_id', $request->annee_scolaire_id);
+                    }),
+                ],
+
+
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
+            }
+
+
+            if ($request->hasFile('image')) {
+                //1 : get File with ext
+                $fileNameWithExt = $request->file('image')->getClientOriginalName();
+                //2 : get just file name
+                $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+                // 3 : GET JUSTE FILE EXTENSION
+                $extension = $request->file('image')->getClientOriginalExtension();
+                //4 : file name to store
+                $fileNameTotore = $fileName . '_' . time() . '.' . $extension;
+
+                //uploader l'image
+                $path = $request->file('image')->storeAs('public/images', $fileNameTotore);
+            } else {
+                $fileNameTotore = 'user.png';
+            }
+            //  User::create($request->all());
+            //save Etudiant
+            $etudiants = new Etudiant();
+            $etudiants->nom = $request->nom;
+            $etudiants->prenom = $request->prenom;
+            $etudiants->sexe = $request->sexe;
+            $etudiants->telephone = $request->telephone;
+            $etudiants->adresse = $request->adresse;
+            $etudiants->LieuNaissance = $request->LieuNaissance;
+            $etudiants->dateNaissance = $request->dateNaissance;
+            $etudiants->email = $request->email;
+            $etudiants->image = $fileNameTotore;
+            $etudiants->role = $request->role;
+
+
+            $etudiants->save();
+
+            //save inscriptions
+            $inscriptions = new inscription();
+            $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
+            $inscriptions->date_insription = $request->date_insription;
+            $inscriptions->classe_id = $request->classe_id;
+            $inscriptions->tuteur_id = $request->tuteur_id;
+            $inscriptions->etudiant_id = $etudiants->id;
+            $inscriptions->ecole_id = $request->ecole_id;
+
+            $inscriptions->save();
+
+            $annes = substr(AnneScolaires(), 9, 2);
+            $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1) . substr($etudiants->dateNaissance, 2, 2) . $annes;
+            $etudiants->matricule = $matricule;
+
+            $etudiants->save();
+
+            if ($inscriptions->save()) {
+                // Obtenez l'étudiant et le tuteur liés à cette inscription
+                $etudiant = $inscriptions->etudiant;
+                $tuteur = $inscriptions->tuteur;
+
+                //   // Envoyez un e-mail au tuteur
+                $etudiant->notify(new SendEtudiantRegistrationNotification(
+                    $etudiant->nom,
+                    $etudiant->prenom,
+                    $inscriptions->classe->nom,
+                    $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
+                    $inscriptions->ecoles->nom, // Nom de l'école
+                    $tuteur->noms, // Nom du tuteur
+                    $tuteur->prenoms,
+                    $etudiant->matricule
+                ));
+
+                // Envoyez un e-mail à l'étudiant
+                $etudiant->notify(new SendTuteurRegistrationNotification(
+                    $etudiant->nom,
+                    $etudiant->prenom,
+                    $inscriptions->classe->nom,
+                    $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
+                    $inscriptions->ecoles->nom, // Nom de l'école
+                    $tuteur->noms, // Nom du tuteur
+                    $tuteur->prenoms,
+                    $etudiant->matricule
+
+                ));
+            }
+
+            return back()->with("success", " inscription realiser avec succè!");
+        } else {
+
+            // dd($request->nouveau);
+            $this->validate($request, [
+
+                'annee_scolaire_id' => 'required',
+                'classe_id' => 'required',
+                'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
+                'tuteur_id' => 'required',
+                'etudiant_id' => 'required',
+
+            ]);
+            $validator = Validator::make($request->all(), [
+
+
+                'classe_id' => [
+                    'required',
+                    Rule::unique('inscriptions')->where(function ($query) use ($request) {
+                        $query->where('etudiant_id', $request->etudiant_id)
+                            ->where('annee_scolaire_id', $request->annee_scolaire_id);
+                    }),
+                ],
+            ]);
+
+            // Vérifier si l'étudiant est déjà inscrit à une autre classe pour la même année scolaire et la même école
+            $existingInscription = Inscription::where('etudiant_id', $request->etudiant_id)
+                ->where('annee_scolaire_id', $request->annee_scolaire_id)
+                ->where('ecole_id', $request->ecole_id)
+                ->first();
+
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
+            }
+            if ($existingInscription) {
+                // L'étudiant est déjà inscrit à une autre classe pour cette année scolaire et cette école
+                return redirect()->back()->with('error', "Etudiant déjà inscrit à une autre classe pour cette année scolaire et cette école.");
+            }
+
+            //save inscriptions
+            $inscriptions = new inscription();
+            $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
+            $inscriptions->date_insription = $request->date_insription;
+            $inscriptions->classe_id = $request->classe_id;
+            $inscriptions->tuteur_id = $request->tuteur_id;
+            $inscriptions->etudiant_id = $request->etudiant_id;
+            $inscriptions->ecole_id = $request->ecole_id;
+
+            $inscriptions->save();
+            if ($inscriptions->save()) {
+                // Obtenez l'étudiant et le tuteur liés à cette inscription
+                $etudiant = $inscriptions->etudiant;
+                $tuteur = $inscriptions->tuteur;
+
+                //   // Envoyez un e-mail au tuteur
+                $etudiant->notify(new SendEtudiantRegistrationNotification(
+                    $etudiant->nom,
+                    $etudiant->prenom,
+                    $inscriptions->classe->nom,
+                    $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
+                    $inscriptions->ecoles->nom, // Nom de l'école
+                    $tuteur->noms, // Nom du tuteur
+                    $tuteur->prenoms,
+                    $etudiant->matricule
+                ));
+
+                // Envoyez un e-mail à l'étudiant
+                $etudiant->notify(new SendTuteurRegistrationNotification(
+                    $etudiant->nom,
+                    $etudiant->prenom,
+                    $inscriptions->classe->nom,
+                    $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
+                    $inscriptions->ecoles->nom, // Nom de l'école
+                    $tuteur->noms, // Nom du tuteur
+                    $tuteur->prenoms,
+                    $etudiant->matricule
+
+                ));
+            }
+
+            return back()->with("success", " inscription realiser avec succè!");
+        }
     }
- 
-    $validator = Validator::make($request->all(), [
-        
-           'classe_id' => [
-            'required',
-            Rule::unique('inscriptions')->where(function ($query) use ($request) {
-                                 $query->where('ecole_id', $request->ecole_id)
-    
-                ->where('etudiant_id', $request->etudiant_id)
-                    ->where('annee_scolaire_id', $request->annee_scolaire_id);
-            }),
-        ],
-
-    ]);
-    
-if ($validator->fails()) {
-        return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
-    }
-    
-
-       if ($request->hasFile('image')) {
-           //1 : get File with ext
-           $fileNameWithExt = $request->file('image')->getClientOriginalName();
-           //2 : get just file name
-           $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-               // 3 : GET JUSTE FILE EXTENSION
-               $extension = $request->file('image')->getClientOriginalExtension();
-           //4 : file name to store
-           $fileNameTotore = $fileName.'_'.time().'.'.$extension;
-
-           //uploader l'image
-           $path = $request->file('image')->storeAs('public/images', $fileNameTotore);
-       } else {
-           $fileNameTotore = 'user.png';
-       }
-   //  User::create($request->all());
-   //save Etudiant
-       $etudiants = new Etudiant();
-       $etudiants->nom = $request->nom;
-       $etudiants->prenom = $request->prenom;
-       $etudiants->sexe = $request->sexe;
-       $etudiants->telephone = $request->telephone;
-       $etudiants->adresse = $request->adresse;
-       $etudiants->LieuNaissance = $request->LieuNaissance;
-       $etudiants->dateNaissance = $request->dateNaissance;
-       $etudiants->email = $request->email;
-       $etudiants->image = $fileNameTotore;
-       $etudiants->role = $request->role;
-
-
-       $etudiants->save();
-
-     //save tuteurs
-       $tuteurs = new Tuteur();
-       $tuteurs->noms = $request->noms;
-       $tuteurs->prenoms = $request->prenoms;
-       $tuteurs->sex = $request->sex;
-       $tuteurs->telephone1 = $request->telephone1;
-       $tuteurs->telephone2 = $request->telephone2;
-       $tuteurs->adresses = $request->adresses;
-       $tuteurs->emails = $request->emails;
-
-       $tuteurs->save();
-
-       //save inscriptions
-       $inscriptions = new inscription();
-       $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
-       $inscriptions->date_insription = $request->date_insription;
-       $inscriptions->classe_id = $request->classe_id;
-       $inscriptions->etudiant_id = $etudiants->id;
-       $inscriptions->tuteur_id = $tuteurs->id;
-       $inscriptions->ecole_id = $request->ecole_id;
-
-       $inscriptions->save();
-
-       $annes = substr(AnneScolaires(), 9, 2);
-       $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1).substr($etudiants->dateNaissance, 2, 2).$annes;
-       $etudiants->matricule = $matricule;
-
-       $etudiants->save();
-       if ($inscriptions->save()) {
-        // Obtenez l'étudiant et le tuteur liés à cette inscription
-         $etudiant = $inscriptions->etudiant;
-         $tuteur = $inscriptions->tuteur;
-
-        //   // Envoyez un e-mail au tuteur
-        $etudiant->notify(new SendEtudiantRegistrationNotification(
-            $etudiant->nom,
-            $etudiant->prenom,
-            $inscriptions->classe->nom, 
-            $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
-            $inscriptions->ecoles->nom, // Nom de l'école
-            $tuteur->noms, // Nom du tuteur
-            $tuteur->prenoms,
-            $etudiant->matricule
-        ));
-
-         // Envoyez un e-mail à l'étudiant
-         $etudiant->notify(new SendTuteurRegistrationNotification(
-            $etudiant->nom,
-            $etudiant->prenom,
-            $inscriptions->classe->nom, 
-            $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
-            $inscriptions->ecoles->nom, // Nom de l'école
-            $tuteur->noms, // Nom du tuteur
-            $tuteur->prenoms,
-            $etudiant->matricule
-
-        ));
-       }
-                  
-    
-
-       return back()->with("success"," inscription realiser avec succè!");
-
-
-    } else if($request->na == 'ancien' and $request->nw == 'new'){
-        $this->validate($request, [
-
-            'noms' => 'required',
-            'prenoms' => 'required',
-            'sex' => 'required',
-            'telephone1'=>'required|numeric|unique:tuteurs,telephone1',
-            'telephone2' => 'nullable|numeric|unique:tuteurs,telephone2',
-            'adresses' => 'required',
-            'emails' => 'required|email|unique:tuteurs,emails',
- 
-            'annee_scolaire_id'=>'required',
-            'classe_id' => 'required',
-            'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
-            'etudiant_id' => 'required',
- 
- 
-        ]);
-
-    $validator = Validator::make($request->all(), [
-
-           'classe_id' => [
-            'required',
-            Rule::unique('inscriptions')->where(function ($query) use ($request) {
-                                 $query->where('ecole_id', $request->ecole_id)
-    
-                ->where('etudiant_id', $request->etudiant_id)
-                    ->where('annee_scolaire_id', $request->annee_scolaire_id);
-            }),
-        ],
-
-// Vérifier si l'étudiant est déjà inscrit à une autre classe pour la même année scolaire et la même école
-$existingInscription = Inscription::where('etudiant_id', $request->etudiant_id)
-->where('annee_scolaire_id', $request->annee_scolaire_id)
-->where('ecole_id', $request->ecole_id)
-->first()
-
-]);
-
-if ($validator->fails()) {
-    return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
-}
-if ($existingInscription) {
-    // L'étudiant est déjà inscrit à une autre classe pour cette année scolaire et cette école
-    return redirect()->back()->with('error', "Etudiant  déjà inscrit à une autre classe pour cette année scolaire et cette école.");
-}
-
-        //save tuteurs
-      $tuteurs = new Tuteur();
-      $tuteurs->noms = $request->noms;
-      $tuteurs->prenoms = $request->prenoms;
-      $tuteurs->sex = $request->sex;
-      $tuteurs->telephone1 = $request->telephone1;
-      $tuteurs->telephone2 = $request->telephone2;
-      $tuteurs->adresses = $request->adresses;
-      $tuteurs->emails = $request->emails;
-
-      $tuteurs->save();
-
-       //save inscriptions
-       $inscriptions = new inscription();
-       $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
-       $inscriptions->date_insription = $request->date_insription;
-       $inscriptions->classe_id = $request->classe_id;
-       $inscriptions->etudiant_id = $request->etudiant_id;
-       $inscriptions->tuteur_id = $tuteurs->id;
-        $inscriptions->ecole_id = $request->ecole_id;
-
-       $inscriptions->save();
-
-       if ($inscriptions->save()) {
-        // Obtenez l'étudiant et le tuteur liés à cette inscription
-         $etudiant = $inscriptions->etudiant;
-         $tuteur = $inscriptions->tuteur;
-
-        //   // Envoyez un e-mail au tuteur
-        $etudiant->notify(new SendEtudiantRegistrationNotification(
-            $etudiant->nom,
-            $etudiant->prenom,
-            $inscriptions->classe->nom, 
-            $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
-            $inscriptions->ecoles->nom, // Nom de l'école
-            $tuteur->noms, // Nom du tuteur
-            $tuteur->prenoms,
-            $etudiant->matricule
-        ));
-
-         // Envoyez un e-mail à l'étudiant
-         $etudiant->notify(new SendTuteurRegistrationNotification(
-            $etudiant->nom,
-            $etudiant->prenom,
-            $inscriptions->classe->nom, 
-            $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
-            $inscriptions->ecoles->nom, // Nom de l'école
-            $tuteur->noms, // Nom du tuteur
-            $tuteur->prenoms,
-            $etudiant->matricule
-
-        ));
-       }
-
-       return back()->with("success"," inscription realiser avec succè!");
-
-    }elseif($request->na == 'nouveau' and $request->nw == 'old'){
-
-        //dd($request->nouveau);
-        $this->validate($request, [
-            'nom' => 'required',
-            'prenom' => 'required',
-            'sexe' => 'required',
-            'LieuNaissance'=>'required',
-            'dateNaissance'=>'required|date',
-            'telephone' => 'nullable|numeric|unique:etudiants,telephone',
-            'adresse' => 'required',
-            'email' => 'nullable|email|unique:etudiants,email',
-            'image' => 'image|nullable|max:1999',
- 
-            'annee_scolaire_id'=>'required',
-            'classe_id' => 'required',
-            'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
-            'tuteur_id' => 'required',
- 
-        ]);
-           // Vérifiez manuellement si la date de naissance est antérieure ou égale à la date actuelle
-    $dateNaissance = \Carbon\Carbon::createFromFormat('Y-m-d', $request->dateNaissance);
-
-    if ($dateNaissance->isAfter(now()) || $dateNaissance->isSameDay(now())) {
-        return redirect()->back()->with('error', 'La date de naissance doit être antérieure à la date actuelle.')->withInput();
-    }
-
-    $validator = Validator::make($request->all(), [
-         
-           'classe_id' => [
-            'required',
-            Rule::unique('inscriptions')->where(function ($query) use ($request) {
-                                 $query->where('ecole_id', $request->ecole_id)
-    
-                ->where('etudiant_id', $request->etudiant_id)
-                    ->where('annee_scolaire_id', $request->annee_scolaire_id);
-            }),
-        ],
-    
-
-    ]);
-    
-if ($validator->fails()) {
-        return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
-    }
-
-    
-       if ($request->hasFile('image')) {
-           //1 : get File with ext
-           $fileNameWithExt = $request->file('image')->getClientOriginalName();
-           //2 : get just file name
-           $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-               // 3 : GET JUSTE FILE EXTENSION
-               $extension = $request->file('image')->getClientOriginalExtension();
-           //4 : file name to store
-           $fileNameTotore = $fileName.'_'.time().'.'.$extension;
-
-           //uploader l'image
-           $path = $request->file('image')->storeAs('public/images', $fileNameTotore);
-       } else {
-           $fileNameTotore = 'user.png';
-       }
-   //  User::create($request->all());
-   //save Etudiant
-       $etudiants = new Etudiant();
-       $etudiants->nom = $request->nom;
-       $etudiants->prenom = $request->prenom;
-       $etudiants->sexe = $request->sexe;
-       $etudiants->telephone = $request->telephone;
-       $etudiants->adresse = $request->adresse;
-       $etudiants->LieuNaissance = $request->LieuNaissance;
-       $etudiants->dateNaissance = $request->dateNaissance;
-       $etudiants->email = $request->email;
-       $etudiants->image = $fileNameTotore;
-       $etudiants->role = $request->role;
-
-
-       $etudiants->save();
-
-       //save inscriptions
-       $inscriptions = new inscription();
-       $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
-       $inscriptions->date_insription = $request->date_insription;
-       $inscriptions->classe_id = $request->classe_id;
-       $inscriptions->tuteur_id = $request->tuteur_id;
-       $inscriptions->etudiant_id = $etudiants->id;
-       $inscriptions->ecole_id = $request->ecole_id;
-
-       $inscriptions->save();
-
-       $annes = substr(AnneScolaires(), 9, 2);
-       $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1).substr($etudiants->dateNaissance, 2, 2).$annes;
-       $etudiants->matricule = $matricule;
-
-       $etudiants->save();
-
-       if ($inscriptions->save()) {
-        // Obtenez l'étudiant et le tuteur liés à cette inscription
-         $etudiant = $inscriptions->etudiant;
-         $tuteur = $inscriptions->tuteur;
-
-        //   // Envoyez un e-mail au tuteur
-        $etudiant->notify(new SendEtudiantRegistrationNotification(
-            $etudiant->nom,
-            $etudiant->prenom,
-            $inscriptions->classe->nom, 
-            $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
-            $inscriptions->ecoles->nom, // Nom de l'école
-            $tuteur->noms, // Nom du tuteur
-            $tuteur->prenoms,
-            $etudiant->matricule
-        ));
-
-         // Envoyez un e-mail à l'étudiant
-         $etudiant->notify(new SendTuteurRegistrationNotification(
-            $etudiant->nom,
-            $etudiant->prenom,
-            $inscriptions->classe->nom, 
-            $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
-            $inscriptions->ecoles->nom, // Nom de l'école
-            $tuteur->noms, // Nom du tuteur
-            $tuteur->prenoms,
-            $etudiant->matricule
-
-        ));
-       }
-
-       return back()->with("success"," inscription realiser avec succè!");
-  } else {
-
-    // dd($request->nouveau);
-    $this->validate($request, [
-
-        'annee_scolaire_id'=>'required',
-        'classe_id' => 'required',
-        'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
-        'tuteur_id' => 'required',
-        'etudiant_id' => 'required',
-
-    ]);
-    $validator = Validator::make($request->all(), [
-
-       
-        'classe_id' => [
-            'required',
-            Rule::unique('inscriptions')->where(function ($query) use ($request) {
-                 $query->where('etudiant_id', $request->etudiant_id)
-                    ->where('annee_scolaire_id', $request->annee_scolaire_id);
-            }),
-        ],
-    ]);
-
-    // Vérifier si l'étudiant est déjà inscrit à une autre classe pour la même année scolaire et la même école
-    $existingInscription = Inscription::where('etudiant_id', $request->etudiant_id)
-    ->where('annee_scolaire_id', $request->annee_scolaire_id)
-    ->where('ecole_id', $request->ecole_id)
-    ->first();
-
-if ($validator->fails()) {
-        return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
-    }
-    if ($existingInscription) {
-        // L'étudiant est déjà inscrit à une autre classe pour cette année scolaire et cette école
-        return redirect()->back()->with('error', "Etudiant déjà inscrit à une autre classe pour cette année scolaire et cette école.");
-    }
-    
-     //save inscriptions
-     $inscriptions = new inscription();
-     $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
-     $inscriptions->date_insription = $request->date_insription;
-     $inscriptions->classe_id = $request->classe_id;
-     $inscriptions->tuteur_id = $request->tuteur_id;
-     $inscriptions->etudiant_id = $request->etudiant_id;
-     $inscriptions->ecole_id = $request->ecole_id;
-
-     $inscriptions->save();
-     if ($inscriptions->save()) {
-        // Obtenez l'étudiant et le tuteur liés à cette inscription
-         $etudiant = $inscriptions->etudiant;
-         $tuteur = $inscriptions->tuteur;
-
-        //   // Envoyez un e-mail au tuteur
-        $etudiant->notify(new SendEtudiantRegistrationNotification(
-            $etudiant->nom,
-            $etudiant->prenom,
-            $inscriptions->classe->nom, 
-            $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
-            $inscriptions->ecoles->nom, // Nom de l'école
-            $tuteur->noms, // Nom du tuteur
-            $tuteur->prenoms,
-            $etudiant->matricule
-        ));
-
-         // Envoyez un e-mail à l'étudiant
-         $etudiant->notify(new SendTuteurRegistrationNotification(
-            $etudiant->nom,
-            $etudiant->prenom,
-            $inscriptions->classe->nom, 
-            $inscriptions->created_at->format('Y-m-d'), // Date d'inscription
-            $inscriptions->ecoles->nom, // Nom de l'école
-            $tuteur->noms, // Nom du tuteur
-            $tuteur->prenoms,
-            $etudiant->matricule
-
-        ));
-       }
-
-     return back()->with("success"," inscription realiser avec succè!");
-
-
-}
-
-}
 
     /**
      * Display the specified resource.
@@ -639,20 +631,20 @@ if ($validator->fails()) {
     public function edit($id)
     {
         $inscriptions = inscription::find($id);
-       // $classes = classe::orderBy("id","Desc")->get();
-        $AnneeScolaires = anneeScolaire::orderBy("id","Desc")->get();
+        // $classes = classe::orderBy("id","Desc")->get();
+        $AnneeScolaires = anneeScolaire::orderBy("id", "Desc")->get();
         $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
         $classes = DB::table('users')
-        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-        ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
-        ->join('niveau_scolaires', 'classes.niveau_scolaires_id', '=', 'niveau_scolaires.id')
-        ->where('users.id', '=', $user_id)
-        ->select('ecoles.nom as ecole_nom', 'classes.id as id', 'classes.nom as nom','niveau_scolaires.nom as niveau_scolaire')
-        ->orderBy("id","Desc")
-        ->get();
+            ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+            ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+            ->join('niveau_scolaires', 'classes.niveau_scolaires_id', '=', 'niveau_scolaires.id')
+            ->where('users.id', '=', $user_id)
+            ->select('ecoles.nom as ecole_nom', 'classes.id as id', 'classes.nom as nom', 'niveau_scolaires.nom as niveau_scolaire')
+            ->orderBy("id", "Desc")
+            ->get();
 
 
-        return view ('admin.inscriptions.edite',compact('inscriptions','AnneeScolaires','classes'));
+        return view('admin.inscriptions.edite', compact('inscriptions', 'AnneeScolaires', 'classes'));
     }
 
     /**
@@ -664,13 +656,13 @@ if ($validator->fails()) {
      */
     public function update(Request $request, $id)
     {
-    $validator = Validator::make($request->all(), [
-        'noms' => 'required',
+        $validator = Validator::make($request->all(), [
+            'noms' => 'required',
 
             'nom' => 'required',
             'prenom' => 'required',
             'sexe' => 'required',
-            'LieuNaissance'=>'required',
+            'LieuNaissance' => 'required',
             'dateNaissance' => ['required', 'date', 'before:' . now()->format('Y-m-d')],
             'telephone' => 'nullable|numeric|' . Rule::unique('etudiants')->ignore($id),
             'adresse' => 'required',
@@ -679,31 +671,31 @@ if ($validator->fails()) {
 
             'prenoms' => 'required',
             'sex' => 'required',
-            'telephone1'=>'required|numeric|'. Rule::unique('tuteurs')->ignore($id),
-            'telephone2' => 'nullable|numeric|'. Rule::unique('tuteurs')->ignore($id),
+            'telephone1' => 'required|numeric|' . Rule::unique('tuteurs')->ignore($id),
+            'telephone2' => 'nullable|numeric|' . Rule::unique('tuteurs')->ignore($id),
             'adresses' => 'required',
-            'emails' => 'required|email|'. Rule::unique('tuteurs')->ignore($id),
+            'emails' => 'required|email|' . Rule::unique('tuteurs')->ignore($id),
 
-            'annee_scolaire_id'=>'required',
+            'annee_scolaire_id' => 'required',
             'classe_id' => 'required',
             'date_insription' => ['required', 'date', 'before_or_equal:' . now()->format('Y-m-d')],
             'etudiant_id' => 'required',
             'tuteur_id' => 'required'
 
         ]);
-    
 
-          //update tuteurs
-       $tuteurs = Tuteur::find($id);
-       $tuteurs->noms = $request->noms;
-       $tuteurs->prenoms = $request->prenoms;
-       $tuteurs->sex = $request->sex;
-       $tuteurs->telephone1 = $request->telephone1;
-       $tuteurs->telephone2 = $request->telephone2;
-       $tuteurs->adresses = $request->adresses;
-       $tuteurs->emails = $request->emails;
 
-       $tuteurs->update();
+        //update tuteurs
+        $tuteurs = Tuteur::find($id);
+        $tuteurs->noms = $request->noms;
+        $tuteurs->prenoms = $request->prenoms;
+        $tuteurs->sex = $request->sex;
+        $tuteurs->telephone1 = $request->telephone1;
+        $tuteurs->telephone2 = $request->telephone2;
+        $tuteurs->adresses = $request->adresses;
+        $tuteurs->emails = $request->emails;
+
+        $tuteurs->update();
 
         $etudiants = Etudiant::find($id);
         $etudiants->nom = $request->nom;
@@ -714,42 +706,39 @@ if ($validator->fails()) {
         $etudiants->LieuNaissance = $request->LieuNaissance;
         $etudiants->dateNaissance = $request->dateNaissance;
         $etudiants->email = $request->email;
-        if ($request->hasFile('image'))
-         {
-           $destination = 'public/images/'.$etudiants->image;
-           if(File::exists($destination))
-           {
-               File::delete($destination);
-           }
-           $file = $request->file('image');
+        if ($request->hasFile('image')) {
+            $destination = 'public/images/' . $etudiants->image;
+            if (File::exists($destination)) {
+                File::delete($destination);
+            }
+            $file = $request->file('image');
 
             $extension = $file->getClientOriginalExtension();
 
-           $fileName = time().'.'.$extension;
+            $fileName = time() . '.' . $extension;
 
-           $file =  $request->file('image')->storeAs('public/images/',$fileName);
-           $etudiants->image = $fileName;
-         }
-         $etudiants->update();
-
-       //update inscriptions
-       $inscriptions = inscription::find($id);
-       $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
-       $inscriptions->date_insription = $request->date_insription;
-       $inscriptions->classe_id = $request->classe_id;
-       $inscriptions->tuteur_id = $request->tuteur_id;
-       $inscriptions->etudiant_id = $request->etudiant_id;
-
-       $inscriptions->update();
-       $annes = substr(AnneScolaires(), 9, 2);
-       $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1).substr($etudiants->dateNaissance, 2, 2).$annes;
-       $etudiants->matricule = $matricule;
-
-       $etudiants->save();
-
-       return back()->with("success"," inscription Mise à jour avec succè!");
-       
+            $file =  $request->file('image')->storeAs('public/images/', $fileName);
+            $etudiants->image = $fileName;
         }
+        $etudiants->update();
+
+        //update inscriptions
+        $inscriptions = inscription::find($id);
+        $inscriptions->annee_scolaire_id = $request->annee_scolaire_id;
+        $inscriptions->date_insription = $request->date_insription;
+        $inscriptions->classe_id = $request->classe_id;
+        $inscriptions->tuteur_id = $request->tuteur_id;
+        $inscriptions->etudiant_id = $request->etudiant_id;
+
+        $inscriptions->update();
+        $annes = substr(AnneScolaires(), 9, 2);
+        $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1) . substr($etudiants->dateNaissance, 2, 2) . $annes;
+        $etudiants->matricule = $matricule;
+
+        $etudiants->save();
+
+        return back()->with("success", " inscription Mise à jour avec succè!");
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -758,33 +747,30 @@ if ($validator->fails()) {
      * @return \Illuminate\Http\Response
      */
 
-     public function detail($id)
-     {
+    public function detail($id)
+    {
         $inscriptions = inscription::find($id);
-        $classes = classe::orderBy("id","Desc")->get();
-        $AnneeScolaires = anneeScolaire::orderBy("id","Desc")->get();
-        return view ('admin.inscriptions.detail',compact('inscriptions','AnneeScolaires','classes'));
+        $classes = classe::orderBy("id", "Desc")->get();
+        $AnneeScolaires = anneeScolaire::orderBy("id", "Desc")->get();
+        return view('admin.inscriptions.detail', compact('inscriptions', 'AnneeScolaires', 'classes'));
     }
 
     public function destroy($id)
     {
         inscription::find($id)->delete();
-        return back()->with("success","Etudiant supprimer avec succè!");
+        return back()->with("success", "Etudiant supprimer avec succè!");
     }
 
     public function onlyTrashed()
     {
         $inscriptions = inscription::onlyTrashed()->get();
-        return view('admin.inscriptions.Alldelete',compact('inscriptions'));
-
+        return view('admin.inscriptions.Alldelete', compact('inscriptions'));
     }
 
     public function restore($id)
     {
         $inscriptions = inscription::onlyTrashed()->findOrFail($id);
         $inscriptions->restore();
-        return back()->with("success","Etudiant Restaurer avec succè!");
-
+        return back()->with("success", "Etudiant Restaurer avec succè!");
     }
-
 }

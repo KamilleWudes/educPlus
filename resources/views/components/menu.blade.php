@@ -100,9 +100,9 @@
                     <li> <a href="{{ route('inscription') }}"><i class="bx bx-right-arrow-alt"></i>Liste des
                             Inscriptions</a>
                     </li>
-                    <li> <a href="{{ route('inscription-delete-list') }}"><i class="bx bx-right-arrow-alt"></i>Corbeille
+                    {{-- <li> <a href="{{ route('inscription-delete-list') }}"><i class="bx bx-right-arrow-alt"></i>Corbeille
                             Inscription</a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
         @endif

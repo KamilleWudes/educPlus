@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\userprincipal;
-
+use App\Notifications\SendSuperAdminRegistrationNotification;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -53,18 +54,27 @@ class superAdminController extends Controller
            'nom' => 'required',
            'prenom' => 'required',
            'telephone' => 'required|numeric|unique:userprincipals,telephone',
-           'password' => ['required', 'string', 'min:8'],
            'email' => 'required|email|unique:userprincipals,email',
        ]);
+       // Générer un mot de passe aléatoire de 8 caractères
+   $password = Str::random(8);
+
        $userprincipals = new userprincipal();
        $userprincipals->nom = $request->nom;
        $userprincipals->prenom = $request->prenom;
        $userprincipals->telephone = $request->telephone;
        $userprincipals->email = $request->email;
-       $userprincipals->password = hash::make($request->password);
+    //    $userprincipals->password = hash::make($request->password);
+    $userprincipals->password = Hash::make($password); // Hasher le mot de passe aléatoire
+
        $userprincipals->role = $request->role;
 
        $userprincipals->save();
+        if($userprincipals){
+
+            // Notifiez l'école nouvellement créée
+            $userprincipals->notify(new SendSuperAdminRegistrationNotification($password));
+        }
 
        return back()->with("success","Utilisateur ajouté avec succè!");
 

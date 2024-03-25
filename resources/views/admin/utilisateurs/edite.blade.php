@@ -30,7 +30,7 @@
                             <h5 class="mb-0 text-white">Edition utilisateur</h5>
                         </div>
                         <hr>
-                        <form class="row g-3" method="POST" action="{{ url('update_responsable/'. $users->id) }}">
+                        <form class="row g-3" method="POST" action="{{ url('update_responsable/'. $users->id) }}" id="ecoleForm">
                             @csrf
                             @method('PUT')
                             <div class="col-md-6">
@@ -107,7 +107,7 @@
                             @enderror
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-6">
                                 <label for="inputEmailAddress" class="form-label"> Address Email</label>
                                 <div class="input-group"> <span class="input-group-text"><i
                                             class='bx bxs-message'></i></span>
@@ -128,19 +128,11 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="inputChoosePassword" class="form-label">Mot de passe</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control @error('password') is-invalid  @enderror border-end-0" id="inputChoosePassword" name="password"  value="{{ $users->password }}" placeholder="Enter Password" disabled="true"> <a href="javascript:;" class="input-group-text"><i class='bx bx-hide'></i></a>
-                                </div>
-                                @error('password')
-                                <span class="error" style="color:red">{{ $message }}</span>
-                            @enderror
-                            </div>
+                           
 
                             <div class="col-md-6">
                                 <br>
-                                <button type="submit" class="btn btn-primary px-5" id="flash"
+                                <button type="submit" class="btn btn-primary px-4" id="flash"
                                     data-flash="{!! session()->get('success') !!}"><i
                                         class="bx bx-check-circle mr-1"></i>Valider la modification</button>
                             </div>
@@ -158,3 +150,20 @@
         </div>
     </div>
 @endsection
+
+@push('validate')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Désactive le bouton Enregistrer lorsqu'il est cliqué
+        document.getElementById("ecoleForm").addEventListener("submit", function() {
+            document.getElementById("flash").setAttribute("disabled", "disabled");
+        });
+    });
+
+    window.onload = function() {
+        // Réactive le bouton Enregistrer une fois que la page a fini de se charger
+        document.getElementById("flash").removeAttribute("disabled");
+    };
+
+</script>
+@endpush

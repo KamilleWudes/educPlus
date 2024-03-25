@@ -77,7 +77,7 @@ class MatiereController extends Controller
         $mat->nom_ecole = Ecoles();
 
         $mat->save();
-         return back()->with("success","Matière ajouté avec succè!");
+         return back()->with("success","Matière ajoutée avec succès !");
     }
 
     /**

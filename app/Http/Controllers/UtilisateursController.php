@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ecole;
 use App\Models\role;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
@@ -63,8 +64,10 @@ class UtilisateursController extends Controller
            'email' => 'required|email|unique:users,email',
            'role' => 'required',
            'ecole_id' => 'required',
-           'password' => ['required', 'string', 'min:8'],
+           //'password' => ['required', 'string', 'min:8'],
         ]);
+        $password = Str::random(8);
+
        $users = new User();
         $users->name = $request->name;
         $users->prenom = $request->prenom;
@@ -74,13 +77,13 @@ class UtilisateursController extends Controller
         $users->role = $request->role;
         $users->ecole_id = $request->ecole_id;
         $users->email = $request->email;
-        $users->password = hash::make($request->password);
+        $users->password = Hash::make($password);
 
         $users->save();
         
         if($users){
                   
-            $users->notify(new SendUserRegistrationNotification($users->name,$users->prenom));
+            $users->notify(new SendUserRegistrationNotification($users->name,$users->prenom, $password));
         }
 
         return back()->with("success","Responsable ajouté avec succè!");

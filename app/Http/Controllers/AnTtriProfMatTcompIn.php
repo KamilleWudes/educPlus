@@ -447,11 +447,16 @@ $data = DB::table('etudiants')
 
         // Récupérez la matiere  choisie
  $typeTrimestreChoisie = typeTrimestre::where('id', $typeTrimestre)->value('nom');
+ 
+ $classeChoisie = classe::where('id', $classe)->value('nom');
+
 
 return response()->json([
   "Notes"=>$data,
   "classes"=>$classes,
   "typeTrimestreChoisie"=>$typeTrimestreChoisie,
+  "classeChoisie"=>$classeChoisie,
+
 
 ]);
 }

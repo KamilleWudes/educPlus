@@ -79,9 +79,9 @@
                                                 <a href="{{ url('inscription=' . $inscription->id) }}"><i
                                                         class='bx bxs-edit @disabled(true)'></i></a>
 
-                                                <a href="{{ url('inscription-delete/' . $inscription->id) }}" id="flash"
+                                                {{-- <a href="{{ url('inscription-delete/' . $inscription->id) }}" id="flash"
                                                     data-flash="{!! session()->get('success') !!}" class="ms-3"><i
-                                                        class='bx bxs-trash' style="text-align:center"></i></a>
+                                                        class='bx bxs-trash' style="text-align:center"></i></a> --}}
 
                                             </div>
                                         </td>

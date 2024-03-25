@@ -18,7 +18,7 @@
                             <input onclick="t(1)" type="radio" name="colors" id="blue"><span
                                 style="font-size:20px;">Professeur </span>
                         </div>
-                    
+
                         <div class="card">
                             <div class="card-body">
                                 <div class="border p-4 rounded">
@@ -50,7 +50,7 @@
                                                             class='bx bx-hide'></i></a>
                                                 </div>
                                             </div>
-                                            <div class="col-12" id="ecoles">
+                                            {{-- <div class="col-12" id="ecoles">
                                                 <label class="form-label">Selectionnez l'ecole</label>
 
                                                 <select
@@ -64,7 +64,7 @@
                                                         <option value="{{ $ecole->id }}">{{ $ecole->nom }}</option>
                                                     @endforeach
                                                 </select>
-                                            </div>
+                                            </div> --}}
 
 
                                             <div class="col-md-6 text-end"> <a
