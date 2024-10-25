@@ -203,7 +203,6 @@ class InscriptionController extends Controller
                 return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
             }
 
-
             if ($request->hasFile('image')) {
                 //1 : get File with ext
                 $fileNameWithExt = $request->file('image')->getClientOriginalName();
@@ -259,8 +258,13 @@ class InscriptionController extends Controller
 
             $inscriptions->save();
 
-            $annes = substr(AnneScolaires(), 9, 2);
-            $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1) . substr($etudiants->dateNaissance, 2, 2) . $annes;
+            $anneeScolaire = substr(AnneScolaires(), 0, 4);
+            $randomNumber = str_pad(rand(0, 9999999999), 10, '0', STR_PAD_LEFT);
+            $anneeNaissance = substr($etudiants->dateNaissance, 0, 4);
+
+            $matricule = "{$anneeScolaire}{$randomNumber}{$anneeNaissance}";
+
+            //$matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1) . substr($etudiants->dateNaissance, 2, 2) . $annes;
             $etudiants->matricule = $matricule;
 
             $etudiants->save();
@@ -297,7 +301,7 @@ class InscriptionController extends Controller
 
 
 
-            return back()->with("success", " inscription realiser avec succè!");
+            return back()->with("success", "Inscription realiser avec succè!");
         } else if ($request->na == 'ancien' and $request->nw == 'new') {
             $this->validate($request, [
 
@@ -373,7 +377,7 @@ class InscriptionController extends Controller
                 $etudiant = $inscriptions->etudiant;
                 $tuteur = $inscriptions->tuteur;
 
-                //   // Envoyez un e-mail au tuteur
+                // Envoyez un e-mail au tuteur
                 $etudiant->notify(new SendEtudiantRegistrationNotification(
                     $etudiant->nom,
                     $etudiant->prenom,
@@ -399,7 +403,7 @@ class InscriptionController extends Controller
                 ));
             }
 
-            return back()->with("success", " inscription realiser avec succè!");
+            return back()->with("success", "Inscription realiser avec succè!");
         } elseif ($request->na == 'nouveau' and $request->nw == 'old') {
 
             //dd($request->nouveau);
@@ -490,8 +494,12 @@ class InscriptionController extends Controller
 
             $inscriptions->save();
 
-            $annes = substr(AnneScolaires(), 9, 2);
-            $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1) . substr($etudiants->dateNaissance, 2, 2) . $annes;
+            $anneeScolaire = substr(AnneScolaires(), 0, 4);
+            $randomNumber = str_pad(rand(0, 9999999999), 10, '0', STR_PAD_LEFT);
+            $anneeNaissance = substr($etudiants->dateNaissance, 0, 4);
+
+            $matricule = "{$anneeScolaire}{$randomNumber}{$anneeNaissance}";
+            //$matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1) . substr($etudiants->dateNaissance, 2, 2) . $annes;
             $etudiants->matricule = $matricule;
 
             $etudiants->save();
@@ -527,7 +535,7 @@ class InscriptionController extends Controller
                 ));
             }
 
-            return back()->with("success", " inscription realiser avec succè!");
+            return back()->with("success", " Inscription realiser avec succè!");
         } else {
 
             // dd($request->nouveau);
@@ -607,19 +615,8 @@ class InscriptionController extends Controller
                 ));
             }
 
-            return back()->with("success", " inscription realiser avec succè!");
+            return back()->with("success", "Inscription realiser avec succè!");
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -731,13 +728,16 @@ class InscriptionController extends Controller
         $inscriptions->etudiant_id = $request->etudiant_id;
 
         $inscriptions->update();
-        $annes = substr(AnneScolaires(), 9, 2);
-        $matricule = substr($etudiants->nom, 0, 3) . substr($etudiants->prenom, 0, 1) . substr($etudiants->dateNaissance, 2, 2) . $annes;
+        $anneeScolaire = substr(AnneScolaires(), 0, 4);
+        $randomNumber = str_pad(rand(0, 9999999999), 10, '0', STR_PAD_LEFT);
+        $anneeNaissance = substr($etudiants->dateNaissance, 0, 4);
+
+        $matricule = "{$anneeScolaire}{$randomNumber}{$anneeNaissance}";
         $etudiants->matricule = $matricule;
 
         $etudiants->save();
 
-        return back()->with("success", " inscription Mise à jour avec succè!");
+        return back()->with("success", " Inscription Mise à jour avec succè!");
     }
 
     /**

@@ -10,7 +10,7 @@
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Notes Etudiants</li>
+                            <li class="breadcrumb-item active" aria-current="page">Notes Élèves</li>
                         </ol>
                     </nav>
                 </div>
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <h6 id="typeCompositionChoisie" class="mb-0 text-uppercase">Listes des Notes Etudiants </h6>
+            <h6 id="typeCompositionChoisie" class="mb-0 text-uppercase">Listes des Notes</h6>
             <hr />
             <div class="card">
                 <div class="card-body">
@@ -188,7 +188,7 @@
                             $('#etudNote').html(NoteEtude);
 
                             $('#typeCompositionChoisie').html(
-                                `<h6 class="mb-0 text-uppercase">Listes des Notes Etudiants : ${response.typeCompositionChoisie ? response.typeCompositionChoisie : ''}</h6>`
+                                `<h6 class="mb-0 text-uppercase">Listes des Notes : ${response.typeCompositionChoisie ? response.typeCompositionChoisie : ''}</h6>`
                             );
 
                         } else {

@@ -10,7 +10,7 @@
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Etudiants</li>
+                            <li class="breadcrumb-item active" aria-current="page">Élèves</li>
                         </ol>
                     </nav>
                 </div>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <h6 class="mb-0 text-uppercase">Listes des Etudiants</h6>
+            <h6 class="mb-0 text-uppercase">Listes des Élèves</h6>
             <hr />
             <div class="card">
                 <div class="card-body">

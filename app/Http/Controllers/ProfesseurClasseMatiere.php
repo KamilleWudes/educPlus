@@ -221,17 +221,6 @@ class ProfesseurClasseMatiere extends Controller
 }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -318,18 +307,8 @@ class ProfesseurClasseMatiere extends Controller
 
         
           $donnes->update();
- 
-          return back()->with("success","Coefficient mise à jour avec succè!");
+
+        return back()->with("success", "professeur mise à jour avec succè!");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

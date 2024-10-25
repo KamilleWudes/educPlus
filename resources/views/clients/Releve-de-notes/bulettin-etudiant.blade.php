@@ -10,7 +10,7 @@
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Notes Etudiants</li>
+                            <li class="breadcrumb-item active" aria-current="page">Notes Élèves</li>
                         </ol>
                     </nav>
                 </div>
@@ -58,9 +58,9 @@
                         <table id="example1" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th style="text-align:center">Matricule</th>
-                                    <th style="text-align:center">Etudiant</th>
-                                    <th style="text-align:center">Relevée de Notes</th>
+                                    <th style="text-align:center">Matricules</th>
+                                    <th style="text-align:center">Élèves</th>
+                                    <th style="text-align:center">Relevées de Notes</th>
                                 </tr>
                             </thead>
                             <tbody id="etudNote">

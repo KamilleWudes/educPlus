@@ -10,7 +10,7 @@
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            Edition Professeur</li>
+                            Edition enseignant</li>
                     </ol>
                 </nav>
             </div>
@@ -27,7 +27,7 @@
                         <div class="card-title d-flex align-items-center">
                             <div><i class="bx bxs-user me-1 font-22 text-white"></i>
                             </div>
-                            <h5 class="mb-0 text-white">Edition Professeur</h5>
+                            <h5 class="mb-0 text-white">Edition enseignant</h5>
                         </div>
                         <hr>
                         <form class="row g-3" method="POST" action="{{ url('update_professeur/'. $professeurs->id) }}", enctype="multipart/form-data" id="ecoleForm">

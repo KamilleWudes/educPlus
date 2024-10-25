@@ -12,7 +12,7 @@
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Nouvel Professeur</li>
+                                Nouvel enseignant</li>
                         </ol>
                     </nav>
                 </div>
@@ -39,8 +39,8 @@
                             <div class="card-title d-flex align-items-center">
                                 <div><i class="bx bxs-user me-1 font-22 text-white"></i>
                                 </div>
-                                <h5 class="mb-0 text-white"id="label2">Nouvel Professeur</h5>
-                                <h5 class="mb-0 text-white"id="label"> Ancienne Professeur</h5>
+                                <h5 class="mb-0 text-white"id="label2">Nouvel enseignant /</h5>
+                                <h5 class="mb-0 text-white"id="label"> Ancien enseignant</h5>
                             </div>
 
                             <input onclick="t(0)" type="radio" name="colors" id="red"><span
@@ -52,7 +52,7 @@
                                 <div id="inteligen">
                                     <select class="form-select single-select" id="inputGroupSelect03" onchange="sends()"
                                         name="ecole_id">
-                                        <option value="">Selectionnez professeur</option>
+                                        <option value="">Selectionnez enseignant</option>
                                         @foreach ($professeurs as $Professeur)
                                             <option value="{{ json_encode($Professeur) }}"> {{ $Professeur->nom }}
                                                 {{ $Professeur->prenom }}

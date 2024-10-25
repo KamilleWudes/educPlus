@@ -76,12 +76,12 @@
                         <table id="example2" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th style="text-align:center">Matricule</th>
-                                    <th style="text-align:center">Etudiant</th>
-                                    <th style="text-align:center">Note</th>
-                                    <th style="text-align:center">Note définitive</th>
+                                    <th style="text-align:center">Matricules</th>
+                                    <th style="text-align:center">Élèves</th>
+                                    <th style="text-align:center">Notes</th>
+                                    <th style="text-align:center">Notes définitives</th>
                                     <th style="text-align:center">Appreciations</th>
-                                    <th style="text-align:center">Edition Note</th>
+                                    <th style="text-align:center">Editions Notes</th>
 
 
 

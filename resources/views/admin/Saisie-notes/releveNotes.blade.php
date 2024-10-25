@@ -64,8 +64,8 @@
                             <thead>
                                 <tr>
 
-                                    <th style="text-align:center">Matricule</th>
-                                    <th style="text-align:center">Etudiant</th>
+                                    <th style="text-align:center">Matricules</th>
+                                    <th style="text-align:center">Élèves</th>
                                     <th style="text-align:center">Relevée de Notes</th>
                                 </tr>
                             </thead>

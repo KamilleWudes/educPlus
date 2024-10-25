@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notification;
 class SendProfesseurRegistrationNotification extends Notification
 {
     use Queueable;
+    public $professeur;
     protected $password;
 
     /**
@@ -17,9 +18,8 @@ class SendProfesseurRegistrationNotification extends Notification
      *
      * @return void
      */
-    public $professeur;
 
-    public function __construct($professeur,$password)
+    public function __construct($professeur,$password=null)
     {
         $this->professeur = $professeur;
         $this->password = $password;

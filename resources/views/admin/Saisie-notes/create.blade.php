@@ -12,7 +12,7 @@
                          <ol class="breadcrumb mb-0 p-0">
                              <li class="breadcrumb-item"><a href="{{ route('saisi-note') }}"><i class="bx bx-home-alt"></i></a>
                              </li>
-                             <li class="breadcrumb-item active" aria-current="page">Saisi de notes</li>
+                             <li class="breadcrumb-item active" aria-current="page">Saisie de notes</li>
                          </ol>
                      </nav>
                  </div>
@@ -43,7 +43,7 @@
                              <label class="form-label">Type Trimestre</label>
                              <select class="single-select @error('type_trimestre_id') is-invalid  @enderror"
                                  name="type_trimestre_id">
-                                 <option value="">Selectionnez Type Trimestre</option>
+                                 <option value="">Sélectionnez le type de trimestre</option>
                                  @foreach ($typesTrimestreInfos as $typeTrimestre)
                                      <option value="{{ $typeTrimestre->id }}">{{ $typeTrimestre->nom }}</option>
                                  @endforeach
@@ -57,7 +57,7 @@
                              <label class="form-label">Type Composition</label>
                              <select class="single-select @error('type_compo_id') is-invalid @enderror"
                                  name="type_compo_id">
-                                 <option value="">Selectionnez Type Composition</option>
+                                 <option value="">Sélectionnez le Type Composition</option>
                                  @foreach ($typeCompositions as $typeComposition)
                                      <option value="{{ $typeComposition->id }}">{{ $typeComposition->nom }}
                                      </option>
@@ -115,7 +115,7 @@
                  <div class="card-body">
                      <div class="d-flex align-items-center">
                          <div>
-                             <h5 class="mb-0">Listes des etudiants</h5>
+                             <h5 class="mb-0">Listes des Élèves</h5>
                          </div>
                          <div class="font-22 ms-auto">
                              {{--  <i class='bx bx-dots-horizontal-rounded'>  --}}
@@ -128,7 +128,7 @@
                          <table class="table align-middle mb-0">
                              <thead class="table-light">
                                  <tr>
-                                     <th>Order id</th>
+                                     <th>Matricule</th>
                                      <th>Nom et prenom</th>
                                      <th style="text-align: center">Notes</th>
 

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('nom');
             $table->string('prenom');
+            $table->string('matricule')->nullable();
             $table->char('sexe');
             $table->string('adresse');
-            $table->string('matricule')->nullable();
             $table->string('telephone1')->unique();
             $table->string("image");
             $table->string('email')->unique();

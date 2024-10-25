@@ -9,7 +9,7 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 @if (UserFullRole() == 'Admin')
-                                    <p class="mb-0 text-white">Nombre total d'étudiants</p>
+                                    <p class="mb-0 text-white">Total des étudiants</p>
                                     <h4 class="my-1 text-white">{{ getTotalEtudiants() }}</h4>
                                 @endif
                                 
@@ -26,7 +26,7 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 @if (UserFullRole() == 'Admin')
-                                    <p class="mb-0 text-white">Nombre total de professeurs</p>
+                                    <p class="mb-0 text-white">Total des enseignants</p>
                                     <h4 class="my-1 text-white">{{ getTotalProfesseurs() }}</h4>
                                 @endif
                                
@@ -85,9 +85,9 @@
                            
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <h5 class="mb-0">Professeurs Récents</h5>
+                                    <h5 class="mb-0">Enseignants Récents</h5>
                                 </div>
-                                <button class="btn btn-secondary text-start" onclick="window.location.href='{{ route('disposer') }}'">Voir tous les professeurs</button>
+                                <button class="btn btn-secondary text-start" onclick="window.location.href='{{ route('disposer') }}'">Voir tous les enseignants</button>
                             </div>
                         </div>
                         @foreach ($data as $dat)
@@ -100,7 +100,7 @@
                                             <h6 class="mb-0">{{ $dat->matricule }}<small class="ms-4">
                                                     {{ $dat->created_at }}</small></h6><br>
                                             <p class="mb-0 small-font">{{ $dat->nom }} {{ $dat->prenom }} :
-                                                Professeur(e)
+                                                Enseignant
                                                 de {{ $dat->matiere }} en {{ $dat->classe }}.</p>
                                         </div>
                                         <div class="ms-auto star">
@@ -132,7 +132,7 @@
                                 <div class="ms-auto">
                                     <a href="{{ route('etudiant') }}" class="btn btn-light btn-sm radius-30">Voir tous
                                         les
-                                        Etudiants</a>
+                                        etudiants</a>
                                 </div>
                             </div>
 

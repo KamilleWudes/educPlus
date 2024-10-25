@@ -50,16 +50,18 @@ class SendUserRegistrationNotification extends Notification
     public function toMail($notifiable)
     {
          $url = url('/');
-         $ecole = $notifiable->ecoles; // Supposons que vous ayez défini la relation dans le modèle User
+         $ecole = $notifiable->ecoles;
 
         return (new MailMessage)
         ->subject('Bienvenue dans notre application')
-        ->greeting('Cher(e) Responsable d\'École,' . $this->prenom . ' ' . $this->name . ',')
+        ->greeting('Cher(e) Responsable d\'École, ' . $this->prenom . ' ' . $this->name . ',')
         ->line("Nous sommes ravis de vous informer que vous venez de rejoindre notre application en tant que responsable d'école.")
-        ->line('Vous appartenez à l\'école : ' . $ecole->nom) 
+        ->line('Vous appartenez à l\'école : ' . $ecole->nom)
         ->line('En tant que responsable d\'école, vous avez maintenant accès à un ensemble de fonctionnalités puissantes pour gérer votre école de manière plus efficace.')
-        ->line('Votre mot de passe temporaire est : ' . $this->password)
-        ->line('Nous vous recommandons de vous connecter dès que possible pour changer votre mot de passe.')
+        ->line('Pour votre première connexion, veuillez utiliser les identifiants suivants :')
+        ->line('**Nom d\'utilisateur (login)** : ' . $this->name)
+        ->line('**Mot de passe temporaire** : ' . $this->password)
+        ->line('Nous vous recommandons de vous connecter dès que possible et de changer votre mot de passe pour garantir la sécurité de votre compte.')
         ->action('Commencer à explorer', $url)
         ->line('N\'hésitez pas à explorer et à utiliser toutes les fonctionnalités que nous offrons. Si vous avez des questions ou avez besoin d\'assistance, n\'hésitez pas à nous contacter.')
         ->line('Merci de faire partie de notre communauté. Nous sommes impatients de travailler avec vous pour une éducation de qualité.')

@@ -17,7 +17,7 @@
                                     <p class="mb-3">Merci de choisir votre établissement scolaire.</p>
                                     <div class="my-4">
                                         <input type="hidden" name="email" />
-                                        <label class="form-label">Ecole</label>
+                                       
                                         <select class="form-select single-select @error('ecole_id') is-invalid  @enderror"
                                             id="inputGroupSelect03" aria-label="Example select with button addon"
                                             name="ecole_id">

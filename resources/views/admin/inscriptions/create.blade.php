@@ -9,7 +9,8 @@
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i
+                                        class="bx bx-home-alt"></i></a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
                                 Gestions inscriptions</li>
@@ -23,7 +24,7 @@
                         @foreach ($AnneeScolaires as $AnneeScolaire)
                             {{-- <option value="{{ $AnneeScolaire->id }}">{{ $AnneeScolaire->annee1 }} -
                                 {{ $AnneeScolaire->annee2 }}</option> --}}
-                                 <option value="{{ AnneScolairesId() }}">{{ AnneScolaires() }}
+                            <option value="{{ AnneScolairesId() }}">{{ AnneScolaires() }}
                             </option>
                         @endforeach
                     </select>
@@ -60,8 +61,8 @@
                             <div class="card-title d-flex align-items-center">
                                 <div><i class="bx bxs-user me-1 font-22 text-white"></i>
                                 </div>
-                                <h5 class="mb-0 text-white"id="label2">Nouvel Etudiant</h5>
-                                <h5 class="mb-0 text-white"id="label"> Ancienne Etudiant</h5>
+                                <h5 class="mb-0 text-white"id="label2">Nouvel Élève</h5>
+                                <h5 class="mb-0 text-white"id="label"> Ancien Élève</h5>
                             </div>
 
                             <input onclick="t(0)" type="radio" name="colors" id="red"><span
@@ -75,8 +76,8 @@
                                         name="ecole_id">
                                         <option value="">Selectionnez l'etudiant</option>
                                         @foreach ($etudiants as $etudiant)
-                                        <option value="{{ json_encode($etudiant) }}"> {{ $etudiant->nom }} {{ $etudiant->prenom }}</option>
-
+                                            <option value="{{ json_encode($etudiant) }}"> {{ $etudiant->nom }}
+                                                {{ $etudiant->prenom }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -88,7 +89,8 @@
                                                 class='bx bxs-user'></i></span>
                                         <input type="text"
                                             class="form-control @error('nom') is-invalid  @enderror border-start-0"
-                                            id="inputLastName1" name="nom" value="{{ old('nom') }}" placeholder="Nom" />
+                                            id="inputLastName1" name="nom" value="{{ old('nom') }}"
+                                            placeholder="Nom" />
                                     </div>
                                     @error('nom')
                                         {{--  <div id="validationServer03Feedback" class="invalid-feedback">Please provide a valid city.</div>  --}}
@@ -101,7 +103,8 @@
                                                 class='bx bxs-user'></i></span>
                                         <input type="text"
                                             class="form-control @error('prenom') is-invalid  @enderror border-start-0"
-                                            id="inputLastName2" name="prenom" value="{{ old('prenom') }}" placeholder="Prenom" />
+                                            id="inputLastName2" name="prenom" value="{{ old('prenom') }}"
+                                            placeholder="Prenom" />
                                     </div>
                                     @error('prenom')
                                         <span class="error" style="color:red">{{ $message }}</span>
@@ -113,10 +116,10 @@
                                     <div class="input-group"> <span class="input-group-text"><i
                                                 class='bx bxs-calendar'></i></span><input
                                             class="result form-control form-control @error('dateNaissance') is-invalid  @enderror"
-                                            name="dateNaissance" value="{{ old('dateNaissance') }}" type="date" id="date"
-                                            placeholder="Date de Naissance...">
+                                            name="dateNaissance" value="{{ old('dateNaissance') }}" type="date"
+                                            id="date" placeholder="Date de Naissance...">
                                     </div>
-                                    
+
                                     @error('dateNaissance')
                                         <span class="error" style="color:red">{{ $message }}</span>
                                     @enderror
@@ -128,8 +131,8 @@
                                                 class='bx bxs-map-pin'></i></span>
                                         <input type="text"
                                             class="form-control @error('LieuNaissance') is-invalid  @enderror"
-                                            name="LieuNaissance" value="{{ old('LieuNaissance') }}" id="validationCustom03"
-                                            placeholder="Lieu de Naissance...">
+                                            name="LieuNaissance" value="{{ old('LieuNaissance') }}"
+                                            id="validationCustom03" placeholder="Lieu de Naissance...">
                                     </div>
                                     @error('LieuNaissance')
                                         <span class="error" style="color:red">{{ $message }}</span>
@@ -157,7 +160,8 @@
                                                 class='bx bxs-microphone'></i></span>
                                         <input type="text"
                                             class="form-control  @error('telephone') is-invalid  @enderror border-start-0"
-                                            id="inputPhoneNo" name="telephone"  value="{{ old('telephone') }}" placeholder="Phone No" />
+                                            id="inputPhoneNo" name="telephone" value="{{ old('telephone') }}"
+                                            placeholder="Phone No" />
                                     </div>
                                     @error('telephone')
                                         <span class="error" style="color:red">{{ $message }}</span>
@@ -170,7 +174,9 @@
                                                 class='bx bxs-message'></i></span>
                                         <input type="text"
                                             class="form-control  @error('email') is-invalid  @enderror border-start-0"
-                                            id="inputEmailAddress" name="email" value="{{ old('email') ?? request('email') }}" placeholder="example@gmail.com" />
+                                            id="inputEmailAddress" name="email"
+                                            value="{{ old('email') ?? request('email') }}"
+                                            placeholder="example@gmail.com" />
                                     </div>
                                     @error('email')
                                         <span class="error" style="color:red">{{ $message }}</span>
@@ -179,7 +185,8 @@
 
                                 <div class="col-md-6">
                                     <label for="inputAddress3" class="form-label">Address</label>
-                                    <input class="form-control" name="adresse" value="{{ old('adresse') }}" id="inputAddress3" placeholder="Enter Address" rows="2">
+                                    <input class="form-control" name="adresse" value="{{ old('adresse') }}"
+                                        id="inputAddress3" placeholder="Enter Address" rows="2">
                                     @error('adresse')
                                         <span class="error" style="color:red">{{ $message }}</span>
                                     @enderror
@@ -205,7 +212,8 @@
                     <label class="form-label">Date d''inscription</label>
                     <div class="input-group"> <span class="input-group-text"><i class='bx bxs-calendar'></i></span><input
                             class="result form-control form-control @error('date_insription') is-invalid  @enderror"
-                            name="date_insription" value="{{ old('date_insription') }}" type="date" id="date" placeholder="Date de Naissance...">
+                            name="date_insription" value="{{ old('date_insription') }}" type="date" id="date"
+                            placeholder="Date de Naissance...">
                     </div>
                     @error('date_insription')
                         <span class="error" style="color:red">{{ $message }}</span>
@@ -229,8 +237,8 @@
                             <hr> <br>
                             <div class="row g-3">
                                 <div id="fermer">
-                                    <select class="form-select single-select" id="inputGroupSelectTuteur" onchange="sendTuteur()"
-                                        name="ecole_id">
+                                    <select class="form-select single-select" id="inputGroupSelectTuteur"
+                                        onchange="sendTuteur()" name="ecole_id">
                                         <option value="">Selectionnez le tuteur</option>
                                         @foreach ($Tuteurss as $tuteur1)
                                             <option value="{{ json_encode($tuteur1) }}"> {{ $tuteur1->noms }}
@@ -245,7 +253,8 @@
                                                 class='bx bxs-user'></i></span>
                                         <input type="text"
                                             class="form-control @error('noms') is-invalid  @enderror border-start-0"
-                                            id="inputLastNom" name="noms" value="{{ old('noms') }}" placeholder="Nom" />
+                                            id="inputLastNom" name="noms" value="{{ old('noms') }}"
+                                            placeholder="Nom" />
                                     </div>
                                     @error('noms')
                                         <span class="error" style="color:red">{{ $message }}</span>
@@ -257,7 +266,8 @@
                                                 class='bx bxs-user'></i></span>
                                         <input type="text"
                                             class="form-control @error('prenoms') is-invalid  @enderror border-start-0"
-                                            id="inputsecondName" name="prenoms" value="{{ old('prenoms') }}" placeholder="Prenom" />
+                                            id="inputsecondName" name="prenoms" value="{{ old('prenoms') }}"
+                                            placeholder="Prenom" />
                                     </div>
                                     @error('prenoms')
                                         <span class="error" style="color:red">{{ $message }}</span>
@@ -269,7 +279,8 @@
                                                 class='bx bxs-microphone'></i></span>
                                         <input type="text"
                                             class="form-control  @error('telephone1') is-invalid  @enderror border-start-0"
-                                            id="inputFirstPhone" name="telephone1" value="{{ old('telephone1') }}" placeholder="Phone No" />
+                                            id="inputFirstPhone" name="telephone1" value="{{ old('telephone1') }}"
+                                            placeholder="Phone No" />
                                     </div>
                                     @error('telephone1')
                                         <span class="error" style="color:red">{{ $message }}</span>
@@ -282,7 +293,8 @@
                                                 class='bx bxs-microphone'></i></span>
                                         <input type="text"
                                             class="form-control  @error('telephone2') is-invalid  @enderror border-start-0"
-                                            id="inputsecondPhone" name="telephone2" value="{{ old('telephone2') }}" placeholder="Phone No" />
+                                            id="inputsecondPhone" name="telephone2" value="{{ old('telephone2') }}"
+                                            placeholder="Phone No" />
                                     </div>
                                     @error('telephone2')
                                         <span class="error" style="color:red">{{ $message }}</span>
@@ -295,7 +307,8 @@
                                                 class='bx bxs-message'></i></span>
                                         <input type="text"
                                             class="form-control  @error('emails') is-invalid  @enderror border-start-0"
-                                            id="inputEmail" name="emails" value="{{ old('emails') }}" placeholder="example@gmail.com" />
+                                            id="inputEmail" name="emails" value="{{ old('emails') }}"
+                                            placeholder="example@gmail.com" />
                                     </div>
                                     @error('emails')
                                         <span class="error" style="color:red">{{ $message }}</span>
@@ -304,8 +317,9 @@
 
                                 <div class="col-md-6">
                                     <label for="inputAddress" class="form-label">Address</label>
-                                    <input class="form-control @error('adresses') is-invalid  @enderror" name="adresses" id="inputAddress" value="{{ old('adresses') }}"
-                                        placeholder="Enter Address" rows="2">
+                                    <input class="form-control @error('adresses') is-invalid  @enderror" name="adresses"
+                                        id="inputAddress" value="{{ old('adresses') }}" placeholder="Enter Address"
+                                        rows="2">
                                     @error('adresses')
                                         <span class="error" style="color:red">{{ $message }}</span>
                                     @enderror
@@ -327,17 +341,17 @@
                                     @enderror
                                 </div>
 
-                                    <input type="hidden" id="inputhidden" name="etudiant_id">
+                                <input type="hidden" id="inputhidden" name="etudiant_id">
 
 
-                                    <input type="hidden" id="na" name="na">
+                                <input type="hidden" id="na" name="na">
 
-                                    <input type="hidden" id="inputTuteur" name="tuteur_id">
+                                <input type="hidden" id="inputTuteur" name="tuteur_id">
 
-                                    <input type="hidden" id="nw" name="nw">
-                                    {{--  <input type="text" name="code" id="code" value="{{ $code }}" required>  --}}
-                      
-                                  <input type="hidden" value="{{ EcolesId() }}" name="ecole_id"/>
+                                <input type="hidden" id="nw" name="nw">
+                                {{--  <input type="text" name="code" id="code" value="{{ $code }}" required>  --}}
+
+                                <input type="hidden" value="{{ EcolesId() }}" name="ecole_id" />
 
 
 
@@ -355,8 +369,7 @@
     </form>
     <br><br>
 
- <script>
-
+    <script>
         t(2)
         //Remplissage des inputs
         function send() {
@@ -454,7 +467,7 @@
 
 
 
-            } else if (r == 2){
+            } else if (r == 2) {
                 let o = document.getElementById("fermer")
                 o.setAttribute("hidden", "hidden")
                 document.getElementById('nw').value = 'new'
@@ -520,16 +533,16 @@
                 document.getElementById("inputhidden6").hidden = true;  --}}
             }
 
-    }
+        }
     </script>
 
-    <script> t(0) </script>
-
+    <script>
+        t(0)
+    </script>
 @endsection
 
-@push("validate")
+@push('validate')
     <script>
-
         var successFlash = '{{ session('success') }}';
         var errorFlash = '{{ session('error') }}';
 
@@ -560,24 +573,23 @@
                 hideClass: {
                     popup: 'animate__animated animate__zoomOut'
                 },
-  
+
             });
         }
     </script>
 @endpush
 @push('validate')
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Désactive le bouton Enregistrer lorsqu'il est cliqué
-        document.getElementById("ecoleForm").addEventListener("submit", function() {
-            document.getElementById("flash").setAttribute("disabled", "disabled");
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Désactive le bouton Enregistrer lorsqu'il est cliqué
+            document.getElementById("ecoleForm").addEventListener("submit", function() {
+                document.getElementById("flash").setAttribute("disabled", "disabled");
+            });
         });
-    });
 
-    window.onload = function() {
-        // Réactive le bouton Enregistrer une fois que la page a fini de se charger
-        document.getElementById("flash").removeAttribute("disabled");
-    };
-
-</script>
+        window.onload = function() {
+            // Réactive le bouton Enregistrer une fois que la page a fini de se charger
+            document.getElementById("flash").removeAttribute("disabled");
+        };
+    </script>
 @endpush

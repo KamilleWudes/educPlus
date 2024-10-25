@@ -66,7 +66,8 @@ class UtilisateursController extends Controller
            'ecole_id' => 'required',
            //'password' => ['required', 'string', 'min:8'],
         ]);
-        $password = Str::random(8);
+        // $password = Str::random(8);
+         $password = 'password';
 
        $users = new User();
         $users->name = $request->name;

@@ -11,12 +11,12 @@
                     {{--  @foreach ($userPrincipals as $userPrincipal)  --}}
                     {{-- <h3 class="text-white" id="t">Tuesday, January 14, 2021</h3> --}}
                     {{--  <h5 class="text-white">{{ $userPrincipal->created_at->diffForHumans()}}</h5>  --}}
-                    <h5 class="text-white" id="t6">Espace Pour verifier les Notes et Bulettins des Etudiants</h5>
+                    <h5 class="text-white" id="t6">Espace Pour verifier les Notes et Bulettins des Élèves</h5>
                     {{--  @endforeach  --}}
                     <div class="">
                         <img src="assets/images/icons/user.png" class="mt-5" width="120" alt="" />
                     </div>
-                    <h6 class="mt-2 text-white">Tuteurs / Etudiants</h6>
+                    <h6 class="mt-2 text-white">Tuteurs / Élèves</h6>
                     <form method="POST" action="{{ route('NoteLogin') }}">
                         @csrf
                         <div class="mb-3 mt-3">

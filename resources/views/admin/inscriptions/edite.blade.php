@@ -120,7 +120,7 @@
                                     <div class="input-group"> <span class="input-group-text"><i
                                                 class='bx bxs-calendar'></i></span><input
                                             class="result form-control form-control @error('dateNaissance') is-invalid  @enderror"
-                                            name="dateNaissance" type="text" id="date" value="{{ $inscriptions->etudiant->dateNaissance }}"
+                                            name="dateNaissance" type="date" id="date" value="{{ $inscriptions->etudiant->dateNaissance }}"
                                             placeholder="Date de Naissance...">
                                     </div>
                                     @error('dateNaissance')

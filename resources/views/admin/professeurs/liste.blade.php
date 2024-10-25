@@ -10,7 +10,7 @@
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Liste Professeur</li>
+                            <li class="breadcrumb-item active" aria-current="page">Liste enseignant</li>
                         </ol>
                     </nav>
                 </div>
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <h6 class="mb-0 text-uppercase">Listes des Professeurs</h6>
+            <h6 class="mb-0 text-uppercase">Listes des Enseignants</h6>
             <hr />
             <div class="card">
                 <div class="card-body">

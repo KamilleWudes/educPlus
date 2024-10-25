@@ -24,33 +24,33 @@
                     </li>
 
                 </ul>
-            </li> 
+            </li>
         @endif
         @if (fullRoleSuperAdmin() == 'SuperAdmin')
-           <li>
+            <li>
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class='bx bx-home-circle'></i>
                     </div>
                     <div class="menu-title">Dashboard</div>
                 </a>
                 <ul>
-                  <li> <a href="{{ route('getHome') }}"><i class="bx bx-right-arrow-alt"></i>Home</a></li>
+                    <li> <a href="{{ route('getHome') }}"><i class="bx bx-right-arrow-alt"></i>Home</a></li>
 
 
                 </ul>
-            </li> 
+            </li>
         @endif
         @if (UserFullRole() == 'Admin')
             <li>
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class="bx bx-user-plus"></i>
                     </div>
-                    <div class="menu-title">Gestions des Etudiants</div>
+                    <div class="menu-title">Gestions des Élèves</div>
                 </a>
                 <ul>
                     {{-- <li> <a href="{{ route('addEtudiant') }}"><i class="bx bx-right-arrow-alt"></i>Nouvel Etudiant</a>
 						</li> --}}
-                    <li> <a href="{{ route('etudiant') }}"><i class="bx bx-right-arrow-alt"></i>Liste Etudiant</a>
+                    <li> <a href="{{ route('etudiant') }}"><i class="bx bx-right-arrow-alt"></i>Liste des Élèves</a>
                     </li>
                     {{-- <li> <a href="{{ route('etudiant-delete-list') }}"><i class="bx bx-right-arrow-alt"></i>Corbeille Etudiant</a>
 						</li> --}}
@@ -60,16 +60,16 @@
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class="bx bx-user-plus"></i>
                     </div>
-                    <div class="menu-title">Gestions des Professeurs</div>
+                    <div class="menu-title">Gestions des Enseignants</div>
                 </a>
                 <ul>
                     <li> <a href="{{ route('addprofesseur') }}"><i class="bx bx-right-arrow-alt"></i>Nouveau
-                            Professeur</a>
+                            Enseignant</a>
                     </li>
-                    <li> <a href="{{ route('professeur') }}"><i class="bx bx-right-arrow-alt"></i>Liste Professeur</a>
+                    <li> <a href="{{ route('professeur') }}"><i class="bx bx-right-arrow-alt"></i>Liste des Enseignants</a>
                     </li>
                     <li> <a href="{{ route('disposer') }}"><i class="bx bx-right-arrow-alt"></i>Liste Matière - classe
-                            -<bR> - Professeur<br></a>
+                            -<bR> - Enseignant<br></a>
                     </li>
                 </ul>
             </li>
@@ -122,8 +122,9 @@
                     </li>
                     <li> <a href="{{ route('Releves') }}"><i class="bx bx-right-arrow-alt"></i>Relevée de Notes</a>
                     </li>
-                     <li> <a href="{{ url('reset-password-professeur=' . ProfId()) }}"><i class="bx bx-right-arrow-alt"></i>Réinitialiser le mot de passe</a>
-                        </li>
+                    <li> <a href="{{ url('reset-password-professeur=' . ProfId()) }}"><i
+                                class="bx bx-right-arrow-alt"></i>Réinitialiser le mot de passe</a>
+                    </li>
                 </ul>
 
             </li>
@@ -165,11 +166,12 @@
                                 Compositions</a>
                         </li>
                         <li> <a href="{{ route('notes-etudiants') }}"><i class="bx bx-right-arrow-alt"></i>Notes
-                                Etudiants</a>
+                                Élèves</a>
                         </li>
                         <li> <a href="{{ route('Releve') }}"><i class="bx bx-right-arrow-alt"></i>Relevée de Notes</a>
                         </li>
-                        <li> <a href="{{ url('reset-password=' . Userid()) }}"><i class="bx bx-right-arrow-alt"></i>Réinitialiser le mot de passe</a>
+                        <li> <a href="{{ url('reset-password=' . Userid()) }}"><i
+                                    class="bx bx-right-arrow-alt"></i>Réinitialiser le mot de passe</a>
                         </li>
                     @endif
                     @if (fullRoleSuperAdmin() == 'SuperAdmin')
@@ -177,7 +179,8 @@
                         </li>
                         <li> <a href="{{ route('SuperAdmin') }}"><i class="bx bx-right-arrow-alt"></i>Utilisateurs</a>
                         </li>
-                        <li> <a href="{{ url('reset-password-utilisateur=' . superAdminId()) }}"><i class="bx bx-right-arrow-alt"></i>Réinitialiser le mot de passe</a>
+                        <li> <a href="{{ url('reset-password-utilisateur=' . superAdminId()) }}"><i
+                                    class="bx bx-right-arrow-alt"></i>Réinitialiser le mot de passe</a>
                         </li>
                     @endif
                 </ul>
@@ -194,10 +197,10 @@
                 </a>
                 <ul>
                     <li> <a href="{{ route('Note-etudiant') }}"><i class="bx bx-right-arrow-alt"></i>Notes
-                            Etudiants</a>
+                            Élèves</a>
                     </li>
                     <li> <a href="{{ route('bulettin-etudiant') }}"><i class="bx bx-right-arrow-alt"></i>Bulettins
-                            Etudiants </a>
+                            Élèves </a>
                     </li>
 
                 </ul>

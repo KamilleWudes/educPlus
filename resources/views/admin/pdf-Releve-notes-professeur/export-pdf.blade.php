@@ -162,7 +162,7 @@
                         <th>Produit</th>
                         {{-- <th>Rang</th> --}}
                         <th>Appréciation</th>
-                        <th>Professeur</th>
+                        <th>Enseignant</th>
                     </tr>
                 </thead>
                 <tbody>

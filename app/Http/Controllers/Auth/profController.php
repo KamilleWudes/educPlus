@@ -14,8 +14,6 @@ use App\Models\Ecole;
 use Illuminate\Support\Facades\DB;
 
 
-
-
 class profController extends Controller
 {
     public function __construct()
@@ -23,92 +21,16 @@ class profController extends Controller
         //$this->middleware('isLoggedIn');
 
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 
     public function loginProf(Request $request)
     { {
             $request->validate([
-                'email' => 'required|email',
+                'login' => 'required',
                 'password' => 'required',
             ]);
 
             if ($request->na == 'admin') {
-                $user = User::where("email", $request->email)->first();
+                $user = User::where("name", $request->login)->first();
                 if ($user && Hash::check($request->password, $user->password)) {
                     $request->session()->put('user', $user->id);
                     $request->session()->put('ecole_id', $user->ecole_id);
@@ -117,11 +39,8 @@ class profController extends Controller
                     return redirect('dashbord');
                 }
             } else {
-                // $request->validate([
-                //     'ecole_id' => 'required',
-                // ]);
 
-                $prof = Professeur::where("email", $request->email)->first();
+                $prof = Professeur::where("nom", $request->login)->first();
 
                 if ($prof && Hash::check($request->password, $prof->password)) {
 
@@ -168,7 +87,7 @@ class profController extends Controller
             //->where('annee_scolaires.annee1',lastAneeScolaire())
             ->select('classes.nom as classe', 'matiers.nom as matiere', 'professeurs.nom as nom', 'professeurs.prenom as prenom', 'professeurs.matricule as matricule', 'professeurs.created_at as created_at', 'professeurs.image as image', 'professeur_classe_matieres.id as id')
             ->orderBy('professeur_classe_matieres.created_at', 'desc')
-            ->take(7)
+            ->take(3)
             ->orderBy('professeur_classe_matieres.id', 'desc')
             ->get();
 

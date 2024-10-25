@@ -31,21 +31,21 @@
                                         <form class="row g-3" method="POST" action="{{ route('verification') }}">
                                             @csrf
                                             <div class="col-12">
-                                                <label for="inputEmailAddress" class="form-label">Email Address</label>
-                                                <input type="email"
+                                                <label for="inputEmailAddress" class="form-label">Entrez votre login</label>
+                                                <input type="name"
                                                     class="form-control @error('email') is-invalid @enderror"
-                                                    id="inputEmailAddress" name="email" value="{{ old('email') }}"
-                                                    placeholder="Email Address">
+                                                    id="inputEmailAddress" name="login" value="{{ old('email') }}"
+                                                    placeholder="Entrez votre login">
                                             </div>
 
                                             <div class="col-12">
-                                                <label for="inputChoosePassword" class="form-label">Enter
-                                                    Password</label>
+                                                <label for="inputChoosePassword" class="form-label">Entrez votre
+                                                    mot de passe</label>
                                                 <div class="input-group" id="show_hide_password">
                                                     <input type="password"
                                                         class="form-control border-end-0 @error('password') is-invalid @enderror"
                                                         name="password" id="inputChoosePassword"
-                                                        placeholder="Enter Password"> <a href="javascript:;"
+                                                        placeholder="Entrez votre mot de passe"> <a href="javascript:;"
                                                         class="input-group-text bg-transparent"><i
                                                             class='bx bx-hide'></i></a>
                                                 </div>

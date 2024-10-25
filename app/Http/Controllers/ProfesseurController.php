@@ -38,8 +38,8 @@ class ProfesseurController extends Controller
     public function index()
     {
 
-            $userId = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
-            $ecoleId = DB::table('users')
+        $userId = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
+        $ecoleId = DB::table('users')
             ->where('id', $userId)
             ->value('ecole_id');
 
@@ -50,47 +50,48 @@ class ProfesseurController extends Controller
             ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
             ->select('professeurs.*')
             ->where('ecoles.id', $ecoleId)
-            ->where('annee_scolaires.annee1',lastAneeScolaire())
+            ->where('annee_scolaires.annee1', lastAneeScolaire())
             ->distinct()
             ->get();
 
-            $anneesScolairesEcole = DB::table('annee_scolaires')
+        $anneesScolairesEcole = DB::table('annee_scolaires')
             ->join('professeur_classe_matieres', 'annee_scolaires.id', '=', 'professeur_classe_matieres.annee_scolaire_id')
             ->join('classes', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
             ->join('ecoles', 'classes.ecole_id', '=', 'ecoles.id')
             ->select('annee_scolaires.*')
             ->where('ecoles.id', $ecoleId)
-            ->orderBy("id","Desc")
+            ->orderBy("id", "Desc")
             ->distinct()
             ->get();
 
-        return view('admin.professeurs.liste', compact('professeurs','anneesScolairesEcole'));
+        return view('admin.professeurs.liste', compact('professeurs', 'anneesScolairesEcole'));
     }
 
-    public function GetProfesseur(request $request){
+    public function GetProfesseur(request $request)
+    {
         $userId = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
         $ecoleId = DB::table('users')
-        ->where('id', $userId)
-        ->value('ecole_id');
+            ->where('id', $userId)
+            ->value('ecole_id');
 
         $anneeScolaire = $request->input('professeur'); // Récupération de l'id de l'annee scolaire depuis le ajax
         $data = DB::table('professeurs')
-        ->join('professeur_classe_matieres', 'professeurs.id', '=', 'professeur_classe_matieres.professeur_id')
-        ->join('classes', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
-        ->join('ecoles', 'classes.ecole_id', '=', 'ecoles.id')
-        ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
-        ->select('professeurs.*')
-        ->where('ecoles.id', $ecoleId)
-        ->where('annee_scolaires.id','=', $anneeScolaire)
-        ->orderBy("id","Desc")
-        ->distinct()
-        ->get();
+            ->join('professeur_classe_matieres', 'professeurs.id', '=', 'professeur_classe_matieres.professeur_id')
+            ->join('classes', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
+            ->join('ecoles', 'classes.ecole_id', '=', 'ecoles.id')
+            ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->select('professeurs.*')
+            ->where('ecoles.id', $ecoleId)
+            ->where('annee_scolaires.id', '=', $anneeScolaire)
+            ->orderBy("id", "Desc")
+            ->distinct()
+            ->get();
 
-    return response()->json([
-        "professeurs"=>$data,
+        return response()->json([
+            "professeurs" => $data,
 
-    ]);
-}
+        ]);
+    }
 
     public function disposer()
     {
@@ -109,38 +110,38 @@ class ProfesseurController extends Controller
     {
         $user_id = Userid(); // Récupération de l'identifiant de l'utilisateur connecté
         $classes = DB::table('users')
-        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-        ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
-        ->where('users.id', '=', $user_id)
-        ->select('classes.id as id', 'classes.nom as nom')
-        ->orderBy("id","Desc")
-        ->get();
+            ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+            ->join('classes', 'ecoles.id', '=', 'classes.ecole_id')
+            ->where('users.id', '=', $user_id)
+            ->select('classes.id as id', 'classes.nom as nom')
+            ->orderBy("id", "Desc")
+            ->get();
         // $classes = classe::orderBy("id", "Desc")->get();
-       // $matieres = Matier::orderBy("id", "Desc")->get();
+        // $matieres = Matier::orderBy("id", "Desc")->get();
 
         $professeurss = Professeur::offset(0)->limit(1)->orderBy("id", "Desc")->get();
         $ecoleId = DB::table('users')
-        ->where('id', $user_id)
-        ->value('ecole_id');
+            ->where('id', $user_id)
+            ->value('ecole_id');
 
         $professeurs = DB::table('professeurs')
-        ->join('professeur_classe_matieres', 'professeurs.id', '=', 'professeur_classe_matieres.professeur_id')
-        ->join('classes', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
-        ->join('ecoles', 'classes.ecole_id', '=', 'ecoles.id')
-        ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
-        ->select('professeurs.*')
-        ->where('ecoles.id', $ecoleId)
-        ->orderBy("id","Desc")
-        ->distinct()
-        ->get();
+            ->join('professeur_classe_matieres', 'professeurs.id', '=', 'professeur_classe_matieres.professeur_id')
+            ->join('classes', 'professeur_classe_matieres.classe_id', '=', 'classes.id')
+            ->join('ecoles', 'classes.ecole_id', '=', 'ecoles.id')
+            ->join('annee_scolaires', 'professeur_classe_matieres.annee_scolaire_id', '=', 'annee_scolaires.id')
+            ->select('professeurs.*')
+            ->where('ecoles.id', $ecoleId)
+            ->orderBy("id", "Desc")
+            ->distinct()
+            ->get();
 
         $matieres = DB::table('users')
-        ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
-        ->join('matiers', 'ecoles.id', '=', 'matiers.ecole_id')
-        ->where('users.id', '=', $user_id)
-        ->select('matiers.nom as nom','matiers.id as id')
-        ->orderBy("id","Desc")
-        ->get();
+            ->join('ecoles', 'users.ecole_id', '=', 'ecoles.id')
+            ->join('matiers', 'ecoles.id', '=', 'matiers.ecole_id')
+            ->where('users.id', '=', $user_id)
+            ->select('matiers.nom as nom', 'matiers.id as id')
+            ->orderBy("id", "Desc")
+            ->get();
 
         return view('admin.professeurs.create', compact('professeurs', 'classes', 'matieres', 'professeurss'));
     }
@@ -155,8 +156,7 @@ class ProfesseurController extends Controller
     {
         if ($request->na == 'nouveau') {
 
-            
-                $this->validate($request, [
+            $this->validate($request, [
                 'nom' => 'required',
                 'prenom' => 'required',
                 'sexe' => 'required',
@@ -169,21 +169,23 @@ class ProfesseurController extends Controller
                 'matier_id' => 'required|array',
                 'matier_id.*' => 'integer',
                 'role' => 'required',
-                'image' => 'image|nullable|max:1999',  ]);
+                'image' => 'image|nullable|max:1999',
+            ]);
 
-                $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 'matier_id' => [
                     'required',
                     'array',
                     Rule::unique('professeur_classe_matieres', 'matier_id')->where(function ($query) use ($request) {
-                         $query->where('ecole_id', $request->ecole_id)
+                        $query->where('ecole_id', $request->ecole_id)
                             ->whereIn('classe_id', $request->classe_id)
-                            ->where('professeur_id', $request->professeur_id)
+                            //->where('professeur_id', $request->professeur_id)
                             ->where('annee_scolaire_id', $request->annee_scolaire_id);
+                    }),
+                ],
+            ]);
 
-                    }),], ]);
 
-          
             if ($validator->fails()) {
                 return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
             }
@@ -204,7 +206,8 @@ class ProfesseurController extends Controller
                 $fileNameTotore = 'user.png';
             }
 
-            $password = Str::random(8);
+            // $password = Str::random(8);
+             $password = 'password';
 
             $professeurs = new Professeur();
             $professeurs->nom = $request->nom;
@@ -220,38 +223,39 @@ class ProfesseurController extends Controller
             $professeurs->save();
             //$professeurs->id;
 
-             $matiere_ids = $request->input('matier_id');
-             $classe_ids = $request->input('classe_id');
+            $matiere_ids = $request->input('matier_id');
+            $classe_ids = $request->input('classe_id');
 
-                foreach ($classe_ids as $classe_id) {
-                    foreach ($matiere_ids as $matier_id){
-                        $ProfesseurClasseMatiere = new ProfesseurClasseMatiere();
-                        $ProfesseurClasseMatiere->professeur_id =$professeurs->id;
-                        $ProfesseurClasseMatiere->classe_id = $classe_id;
-                        $ProfesseurClasseMatiere->matier_id = $matier_id;
-                        $ProfesseurClasseMatiere->ecole_id = $request->ecole_id;
-                        $ProfesseurClasseMatiere->annee_scolaire_id = $request->annee_scolaire_id;
+            foreach ($classe_ids as $classe_id) {
+                foreach ($matiere_ids as $matier_id) {
+                    $ProfesseurClasseMatiere = new ProfesseurClasseMatiere();
+                    $ProfesseurClasseMatiere->professeur_id = $professeurs->id;
+                    $ProfesseurClasseMatiere->classe_id = $classe_id;
+                    $ProfesseurClasseMatiere->matier_id = $matier_id;
+                    $ProfesseurClasseMatiere->ecole_id = $request->ecole_id;
+                    $ProfesseurClasseMatiere->annee_scolaire_id = $request->annee_scolaire_id;
 
-                        $ProfesseurClasseMatiere->save();
-
-                    }
-
+                    $ProfesseurClasseMatiere->save();
                 }
+            }
 
-                $annes = substr(AnneScolaires(), 7, 2);
-                $matricule = substr($professeurs->nom, 0, 3) . substr($professeurs->prenom, 0, 1).$annes;
-                $professeurs->matricule = $matricule;
+            // $annes = substr(AnneScolaires(), 7, 2);
+            // $matricule = substr($professeurs->nom, 0, 3) . substr($professeurs->prenom, 0, 1) . $annes;
+            $anneeScolaire = substr(AnneScolaires(), 0, 4);
+            $randomNumber = str_pad(rand(0, 9999999999), 10, '0', STR_PAD_LEFT);
 
-                $professeurs->save();
-                $professeurs = Professeur::with(['classe', 'matieres', 'ecoles', 'anneesScolaires'])->find($professeurs->id);
+            $matricule = "{$anneeScolaire}{$randomNumber}";
+            $professeurs->matricule = $matricule;
 
-                if($professeurs){
-                    $professeurs->notify(new SendProfesseurRegistrationNotification($professeurs, $password));
-                }
-           return back()->with("success", "Professeur ajouté avec succè!");
+            $professeurs->save();
+            $professeurs = Professeur::with(['classe', 'matieres', 'ecoles', 'anneesScolaires'])->find($professeurs->id);
 
-           } else {
-$validator = Validator::make($request->all(), [
+            if ($professeurs) {
+                $professeurs->notify(new SendProfesseurRegistrationNotification($professeurs, $password));
+            }
+            return back()->with("success", "Professeur ajouté avec succè!");
+        } else {
+            $validator = Validator::make($request->all(), [
                 'matier_id' => 'required|array',
                 'professeur_id' => 'required',
                 'matier_id.*' => 'integer',
@@ -261,59 +265,45 @@ $validator = Validator::make($request->all(), [
                     'required',
                     'array',
                     Rule::unique('professeur_classe_matieres', 'matier_id')->where(function ($query) use ($request) {
-                         $query->where('ecole_id', $request->ecole_id)
+                        $query->where('ecole_id', $request->ecole_id)
                             ->whereIn('classe_id', $request->classe_id)
                             ->where('professeur_id', $request->professeur_id)
                             ->where('annee_scolaire_id', $request->annee_scolaire_id);
-                            
-                    }),],
+                    }),
+                    Rule::unique('professeur_classe_matieres', 'matier_id')->where(function ($query) use ($request) {
+                        $query->where('ecole_id', $request->ecole_id)
+                            ->whereIn('classe_id', $request->classe_id)
+                            ->where('annee_scolaire_id', $request->annee_scolaire_id);
+                    }),
+                ],
 
             ]);
             if ($validator->fails()) {
                 return redirect()->back()->with('error', 'La validation a échoué. Veuillez vérifier vos données.');
             }
 
-            // $ProfesseurClasseMatieres = new ProfesseurClasseMatiere();
-            // $ProfesseurClasseMatieres->professeur_id = $request->professeur_id;
-            // $ProfesseurClasseMatieres->classe_id = $request->classe_id;
-            // $ProfesseurClasseMatieres->matier_id = $request->matier_id;
+            $matiere_ids = $request->input('matier_id');
+            $classe_ids = $request->input('classe_id');
 
-            // $ProfesseurClasseMatieres->save();
-             $matiere_ids = $request->input('matier_id');
-             $classe_ids = $request->input('classe_id');
-
-             foreach ($classe_ids as $classe_id) {
-                foreach ($matiere_ids as $matier_id){
-                        $ProfesseurClasseMatiere = new ProfesseurClasseMatiere();
-                        $ProfesseurClasseMatiere->professeur_id =$request->professeur_id;
-                        $ProfesseurClasseMatiere->classe_id = $classe_id;
-                        $ProfesseurClasseMatiere->matier_id = $matier_id;
-                        $ProfesseurClasseMatiere->ecole_id = $request->ecole_id;
-                        $ProfesseurClasseMatiere->annee_scolaire_id = $request->annee_scolaire_id;
+            foreach ($classe_ids as $classe_id) {
+                foreach ($matiere_ids as $matier_id) {
+                    $ProfesseurClasseMatiere = new ProfesseurClasseMatiere();
+                    $ProfesseurClasseMatiere->professeur_id = $request->professeur_id;
+                    $ProfesseurClasseMatiere->classe_id = $classe_id;
+                    $ProfesseurClasseMatiere->matier_id = $matier_id;
+                    $ProfesseurClasseMatiere->ecole_id = $request->ecole_id;
+                    $ProfesseurClasseMatiere->annee_scolaire_id = $request->annee_scolaire_id;
 
 
-                        $ProfesseurClasseMatiere->save();
-
-                    }
-
+                    $ProfesseurClasseMatiere->save();
                 }
-                $ProfesseurClasseMatiere = Professeur::with(['classe', 'matieres', 'ecoles', 'anneesScolaires'])->find($request->professeur_id);
-                if($ProfesseurClasseMatiere){
-                    $ProfesseurClasseMatiere->notify(new SendProfesseurRegistrationNotification($ProfesseurClasseMatiere));
-                }
+            }
+            $ProfesseurClasseMatiere = Professeur::with(['classe', 'matieres', 'ecoles', 'anneesScolaires'])->find($request->professeur_id);
+            if ($ProfesseurClasseMatiere) {
+                $ProfesseurClasseMatiere->notify(new SendProfesseurRegistrationNotification($ProfesseurClasseMatiere));
+            }
             return back()->with("success", "Professeur ajouté avec succè!");
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -380,13 +370,17 @@ $validator = Validator::make($request->all(), [
             $professeurs->image = $fileName;
         }
         $professeurs->update();
-        $annes = substr(AnneScolaires(), 7, 2);
-        $matricule = substr($professeurs->nom, 0, 3) . substr($professeurs->prenom, 0, 1).$annes;
+        // $annes = substr(AnneScolaires(), 7, 2);
+        // $matricule = substr($professeurs->nom, 0, 3) . substr($professeurs->prenom, 0, 1) . $annes; 
+        $anneeScolaire = substr(AnneScolaires(), 0, 4);
+        $randomNumber = str_pad(rand(0, 9999999999), 10, '0', STR_PAD_LEFT);
+
+        $matricule = "{$anneeScolaire}{$randomNumber}";
         $professeurs->matricule = $matricule;
 
         $professeurs->save();
 
-        return back()->with("success", "professeurs mise à jour avec succè!");
+        return back()->with("success", "professeur mise à jour avec succè!");
     }
 
     /**

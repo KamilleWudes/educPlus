@@ -9,7 +9,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Professeur - classe - matière</li>
+                        <li class="breadcrumb-item active" aria-current="page">Enseignant - classe - matière</li>
                     </ol>
                 </nav>
             </div>
@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-xl-9 mx-auto">
                 <br> <br>
-                <h6 class="mb-0 text-uppercase">Formulaire d'edition du professeur</h6>
+                <h6 class="mb-0 text-uppercase">Formulaire d'edition du enseignant</h6>
                 <hr />
                 <div class="card">
                     <form class="row g-3" method="POST" action="{{ url('edition-professeur/' . $data->id) }}">
@@ -83,12 +83,12 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Selectionnez le Professeur</label>
+                                    <label class="form-label">Selectionnez le enseignant</label>
                                     <div class="input-group">
                                         <select
                                             class="single-select form-select  @error('professeur_id') is-invalid  @enderror"
                                             name="professeur_id">
-                                            <option value="">Professeur</option>
+                                            <option value="">Enseignant</option>
                                             @foreach ($professeurs as $professeur)
                                                 @if ($professeur->id == $data->professeur_id)
                                                     <option value="{{ $professeur->id }}" selected>{{ $professeur->nom }} {{ $professeur->prenom }} 

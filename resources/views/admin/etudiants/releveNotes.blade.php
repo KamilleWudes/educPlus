@@ -60,8 +60,8 @@
                         <table id="example2" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th style="text-align:center">Matricule</th>
-                                    <th style="text-align:center">Etudiant</th>
+                                    <th style="text-align:center">Matricules</th>
+                                    <th style="text-align:center">Élèves</th>
                                     <th style="text-align:center">Voir bulettin</th>
                                 </tr>
                             </thead>
