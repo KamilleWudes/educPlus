@@ -100,7 +100,7 @@
             </div>
 
             <div class="col-md-6 text-md-right">
-                <span class="float-right">REPUBLIC TOGOLAISE</span></p> <br>
+                <span class="float-right">REPUBLIQUE TOGOLAISE</span></p> <br>
                 <span class="float-right">Travail-Liberté-Patrie</span></p>
                 <br>
                 <strong>
